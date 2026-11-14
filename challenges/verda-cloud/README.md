@@ -1,7 +1,7 @@
 # Verda Cloud GPU Subchallenge — Self-Hosted Open-Weight Gemma & Nemotron Cluster
 
 ## Role in CheckEm
-The Hostinger VPS (`45.93.139.223` / `https://checkem.tech/`) runs our CPU-light Python web application, web scraper, provenance scorer, and Traefik reverse proxy. To run **fine-tuned open-weights models** (custom Gemma VL QLoRA and Nemotron 3.5 VL adapters, full token log-probabilities, high-resolution visual tiling, and batch evaluation sweeps) without VRAM constraints, CheckEm integrates seamlessly with an external **Verda Cloud GPU instance** (NVIDIA A100 / H100 / L40S).
+The Hostinger VPS (`https://checkem.tech/`) runs our CPU-light Python web application, web scraper, provenance scorer, and Traefik reverse proxy. To run **fine-tuned open-weights models** (custom Gemma VL QLoRA and Nemotron 3.5 VL adapters, full token log-probabilities, and high-resolution visual tiling) without VRAM constraints, CheckEm integrates with an external **Verda Cloud GPU instance** (NVIDIA A100 / H100 / L40S).
 
 ## Architecture: Hostinger Web App <-> Verda Cloud GPU Cluster
 
@@ -13,7 +13,7 @@ Hostinger VPS (checkem.tech)
          │                                     ├── Port 8001: Gemma VL + CheckEm QLoRA Adapter
          │                                     └── Port 8002: Nemotron 3.5 VL Reasoning Engine
          │                                     (Served via Caddy/Nginx reverse proxy on :8000/v1)
-         └── [if GEMINI_API_KEY set]      ──▶ Direct Google Gemini REST API
+         └── [fallback]                  ──▶ Hostinger AI Router (/v1/chat/completions)
 ```
 
 ## How CheckEm Routes to Verda Cloud (`app.py`)

@@ -3,7 +3,7 @@
 ## Role in CheckEm
 In the CheckEm ensemble, **Nemotron 3.5 VL** (`nemotron-lightning-3.5-30b-a3b` via Hostinger Router or self-hosted NVIDIA Nemotron 3.5 VL on Verda Cloud GPUs) serves as our **Logical Fallacy, Whataboutism & Claim Integrity Juror**:
 1. **Structural Fallacy Analysis**: Unlike surface sentiment detectors, reasoning-capable Nemotron models excel at detecting logical non-sequiturs such as **Whataboutism** (deflecting criticism to unrelated targets), **False Dilemma** (artificial binary framing), and **Fabricated Authority**.
-2. **Hard-Negative Calibration**: Because CheckEm uses explicit reasoning steps, Nemotron separates *descriptive mentions* of fallacies (e.g., Wikipedia's *Whataboutism* article -> **0/8 flagged sections**) from active manipulative arguments.
+2. **Hard-Negative Restraint**: Because CheckEm uses explicit reasoning steps, Nemotron separates *descriptive mentions* of fallacies (e.g., Wikipedia's *Whataboutism* article stays unflagged) from active manipulative arguments.
 3. **Multimodal Document & Chart Forensics**: When paired with multimodal Nemotron VL weights on Verda Cloud GPUs, it inspects scraped page images, infographics, and screenshot banners to cross-check visual captions against body claims.
 
 ## How CheckEm Integrates Nemotron (`app.py`)
