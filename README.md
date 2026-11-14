@@ -119,7 +119,7 @@ python3 benchmarks/evaluate.py
 ├── docs/PRESENTATION.md           # Marp Markdown slide deck
 ├── static/
 │   ├── index.html                 # Minimalist 3-tier progressive web UI
-│   └── slides.html                # Interactive 10-slide presentation served at /slides
+│   └── slides.html                # Visual-first 5-slide presentation served at /slides
 ├── Dockerfile
 ├── docker-compose.yml
 ├── requirements.txt

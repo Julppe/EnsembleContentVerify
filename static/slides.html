@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CheckEm — Challenge Presentation Slides</title>
+  <title>CheckEm — Visual Presentation (5 Slides)</title>
   <style>
     :root {
       --bg: #f8fafc;
@@ -11,17 +11,16 @@
       --surface-alt: #f1f5f9;
       --border: #e2e8f0;
       --text: #0f172a;
-      --text-soft: #475569;
       --muted: #64748b;
       --accent: #4f46e5;
-      --accent-soft: rgba(79, 70, 229, 0.08);
-      --green: #059669;
-      --green-soft: rgba(5, 150, 105, 0.1);
-      --amber: #d97706;
-      --amber-soft: rgba(217, 119, 6, 0.1);
-      --red: #dc2626;
-      --red-soft: rgba(220, 38, 38, 0.1);
-      --shadow: 0 20px 50px rgba(15, 23, 42, 0.07);
+      --accent-soft: rgba(79, 70, 229, 0.1);
+      --green: #10b981;
+      --green-soft: rgba(16, 185, 129, 0.14);
+      --amber: #f59e0b;
+      --amber-soft: rgba(245, 158, 11, 0.14);
+      --red: #ef4444;
+      --red-soft: rgba(239, 68, 68, 0.12);
+      --shadow: 0 24px 60px rgba(15, 23, 42, 0.07);
     }
     [data-theme="dark"] {
       --bg: #090b10;
@@ -29,17 +28,16 @@
       --surface-alt: #181d2c;
       --border: #232a3e;
       --text: #f1f5f9;
-      --text-soft: #cbd5e1;
       --muted: #94a3b8;
       --accent: #818cf8;
-      --accent-soft: rgba(129, 140, 248, 0.14);
+      --accent-soft: rgba(129, 140, 248, 0.16);
       --green: #34d399;
-      --green-soft: rgba(52, 211, 153, 0.12);
+      --green-soft: rgba(52, 211, 153, 0.14);
       --amber: #fbbf24;
-      --amber-soft: rgba(251, 191, 36, 0.12);
+      --amber-soft: rgba(251, 191, 36, 0.14);
       --red: #f87171;
-      --red-soft: rgba(248, 113, 113, 0.12);
-      --shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+      --red-soft: rgba(248, 113, 113, 0.14);
+      --shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -52,39 +50,29 @@
       flex-direction: column;
     }
     .topbar {
-      height: 54px;
-      padding: 0 24px;
+      height: 48px;
+      padding: 0 20px;
       border-bottom: 1px solid var(--border);
       background: var(--surface);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 0.85rem;
-      z-index: 10;
+      font-size: 0.82rem;
     }
     .topbar a, .topbar button {
-      color: var(--text-soft);
+      color: var(--muted);
       text-decoration: none;
-      background: var(--surface-alt);
+      background: transparent;
       border: 1px solid var(--border);
-      padding: 6px 12px;
+      padding: 5px 11px;
       border-radius: 7px;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 600;
       cursor: pointer;
     }
     .topbar a:hover, .topbar button:hover {
-      border-color: var(--accent);
       color: var(--text);
-    }
-    .brand { font-weight: 700; display: flex; align-items: center; gap: 10px; }
-    .brand span.pill {
-      font-size: 0.72rem;
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: var(--accent-soft);
-      color: var(--accent);
-      font-weight: 700;
+      border-color: var(--accent);
     }
 
     .stage {
@@ -92,610 +80,449 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 28px;
-      overflow: hidden;
+      padding: 24px;
     }
     .slide {
       display: none;
       width: 100%;
       max-width: 1040px;
-      min-height: 560px;
+      height: 580px;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 46px 56px;
+      border-radius: 20px;
+      padding: 40px 52px 32px;
       box-shadow: var(--shadow);
       flex-direction: column;
       justify-content: space-between;
-      animation: fadeIn 0.2s ease-out;
+      animation: fade 0.18s ease-out;
     }
     .slide.active { display: flex; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
-    .eyebrow {
-      font-size: 0.76rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      font-weight: 700;
-      color: var(--accent);
-      margin-bottom: 10px;
-    }
-    h1 { font-size: 2.35rem; font-weight: 800; letter-spacing: -0.025em; line-height: 1.15; margin-bottom: 16px; }
-    h2 { font-size: 1.8rem; font-weight: 780; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 14px; }
-    .lead { font-size: 1.08rem; color: var(--text-soft); line-height: 1.6; max-width: 68ch; }
-
-    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 22px; }
-    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 22px; }
-    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 22px; }
-    @media (max-width: 820px) {
-      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
-      .slide { padding: 26px 24px; min-height: auto; max-height: 82vh; overflow-y: auto; }
-      h1 { font-size: 1.65rem; }
-      h2 { font-size: 1.35rem; }
-    }
-
-    .card {
-      background: var(--surface-alt);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 18px 20px;
-    }
-    .card h3 { font-size: 0.98rem; font-weight: 750; margin-bottom: 6px; }
-    .card p, .card li { font-size: 0.87rem; color: var(--text-soft); line-height: 1.5; }
-    .card ul { padding-left: 18px; margin-top: 6px; }
-    .card li { margin-bottom: 4px; }
-
-    .metric-box {
-      background: var(--surface-alt);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 18px;
-      text-align: center;
-    }
-    .metric-val { font-size: 2rem; font-weight: 800; color: var(--green); }
-    .metric-lbl { font-size: 0.78rem; color: var(--muted); font-weight: 600; margin-top: 4px; }
-
-    .badge {
-      display: inline-block;
-      font-size: 0.74rem;
-      font-weight: 700;
-      padding: 3px 9px;
-      border-radius: 999px;
-      margin-bottom: 8px;
-    }
-    .badge.green { background: var(--green-soft); color: var(--green); }
-    .badge.amber { background: var(--amber-soft); color: var(--amber); }
-    .badge.red { background: var(--red-soft); color: var(--red); }
-    .badge.accent { background: var(--accent-soft); color: var(--accent); }
-
-    table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 0.86rem; }
-    th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); }
-    th { font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
-    code {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 0.82em;
-      background: var(--surface-alt);
-      padding: 2px 5px;
-      border-radius: 4px;
-      border: 1px solid var(--border);
-    }
-
-    .flow {
+    .slide-head {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      gap: 10px;
-      margin-top: 24px;
+      align-items: baseline;
+    }
+    .slide-head h1, .slide-head h2 {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+    }
+    .slide-num {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+    }
+    .visual-center {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    }
+    .visual-center svg {
+      width: 100%;
+      max-height: 410px;
+      height: auto;
+    }
+    .tagline {
+      margin-top: 14px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: -0.01em;
+    }
+
+    /* Slide 4 Ring Gauges */
+    .gauges {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 48px;
+      width: 100%;
       flex-wrap: wrap;
     }
-    .flow-step {
-      flex: 1;
-      min-width: 150px;
-      background: var(--surface-alt);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 14px;
-      text-align: center;
-    }
-    .flow-step strong { display: block; font-size: 0.86rem; margin-bottom: 4px; }
-    .flow-step span { font-size: 0.76rem; color: var(--muted); }
-    .arrow { color: var(--muted); font-weight: 700; font-size: 1.1rem; }
-
-    .slide-foot {
-      margin-top: 24px;
-      padding-top: 14px;
-      border-top: 1px solid var(--border);
+    .gauge-item {
       display: flex;
-      justify-content: space-between;
-      font-size: 0.78rem;
-      color: var(--muted);
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
     }
+    .gauge-item svg {
+      width: 184px;
+      height: 184px;
+    }
+    .gauge-label {
+      font-size: 0.96rem;
+      font-weight: 700;
+    }
+    .gauge-sub {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: -6px;
+    }
+
+    /* Slide 5 UI Wireframe */
+    .demo-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 18px;
+      padding: 11px 22px;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      transition: transform 0.12s;
+    }
+    .demo-cta:hover { transform: translateY(-1px); }
 
     .controls {
-      height: 54px;
+      height: 48px;
       border-top: 1px solid var(--border);
       background: var(--surface);
-      padding: 0 24px;
+      padding: 0 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-    .progress { flex: 1; max-width: 360px; height: 6px; background: var(--surface-alt); border-radius: 999px; overflow: hidden; margin: 0 16px; }
-    .progress-fill { height: 100%; background: var(--accent); transition: width 0.2s; }
+    .dots { display: flex; gap: 8px; align-items: center; }
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--border);
+      cursor: pointer;
+      border: none;
+    }
+    .dot.active { background: var(--accent); width: 22px; border-radius: 999px; }
     .nav-btns { display: flex; gap: 8px; }
     .nav-btns button {
       background: var(--surface-alt);
       color: var(--text);
       border: 1px solid var(--border);
-      padding: 6px 14px;
+      padding: 5px 13px;
       border-radius: 7px;
       font-weight: 600;
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       cursor: pointer;
     }
     .nav-btns button:hover { border-color: var(--accent); }
 
+    @media (max-width: 780px) {
+      .slide { height: auto; min-height: 440px; padding: 24px 20px; }
+      .slide-head h1, .slide-head h2 { font-size: 1.45rem; }
+      .gauges { gap: 20px; }
+      .gauge-item svg { width: 130px; height: 130px; }
+    }
     @media print {
       body { height: auto; overflow: visible; }
       .topbar, .controls { display: none; }
       .stage { display: block; padding: 0; }
-      .slide { display: flex !important; page-break-after: always; box-shadow: none; margin-bottom: 24px; min-height: 92vh; }
+      .slide { display: flex !important; page-break-after: always; box-shadow: none; margin-bottom: 20px; height: 92vh; }
     }
   </style>
 </head>
 <body>
   <div class="topbar">
-    <div class="brand">
-      <a href="/">← Back to CheckEm App</a>
-      <span>CheckEm (`checkem.tech`)</span>
-      <span class="pill">Technical Deck</span>
-    </div>
-    <div style="display:flex;gap:8px;align-items:center;">
-      <button onclick="window.print()">Print / Save PDF</button>
-      <button id="theme-btn" onclick="toggleTheme()">🌙 Dark</button>
+    <a href="/">← checkem.tech</a>
+    <div style="display:flex;gap:8px;">
+      <button onclick="window.print()">PDF</button>
+      <button id="theme-btn" onclick="toggleTheme()">🌙</button>
     </div>
   </div>
 
-  <div class="stage">
-    <!-- Slide 1 -->
+  <main class="stage">
+    <!-- SLIDE 1: Hero Visual -->
     <section class="slide active">
-      <div>
-        <div class="eyebrow">Information Integrity &amp; Media Literacy</div>
-        <h1>CheckEm: Multimodal VLM Ensemble for Manipulation Detection &amp; Provenance</h1>
-        <p class="lead">
-          Moving beyond opaque "True/Fake" black-box scores: CheckEm classifies specific rhetorical &amp; visual manipulation techniques, scores source provenance, and explains every verdict in plain language through multi-model voting.
-        </p>
-        <div class="grid-3">
-          <div class="card">
-            <span class="badge accent">Pillar 1</span>
-            <h3>Name the Technique</h3>
-            <p>Pinpoints exact text spans and classifies propaganda tactics (Loaded Language, Fear Appeal, Whataboutism, Fabricated Authority) with plain-language educational breakdowns.</p>
-          </div>
-          <div class="card">
-            <span class="badge amber">Pillar 2</span>
-            <h3>Trust the Source</h3>
-            <p>Computes transparent 4-signal provenance scoring across domain reputation, content originality, AI synthesis risk, and citation link networks.</p>
-          </div>
-          <div class="card">
-            <span class="badge green">Pillar 3</span>
-            <h3>Measurable Precision &amp; FPR</h3>
-            <p>Evaluated continuously with confusion matrices, hard-negative False-Positive Rate (0% on objective articles about propaganda), and inter-model agreement.</p>
-          </div>
-        </div>
+      <div class="slide-head">
+        <h1>CheckEm</h1>
+        <span class="slide-num">1 / 5</span>
       </div>
-      <div class="slide-foot">
-        <span>Live Production Deployment: https://checkem.tech/</span>
-        <span>Slide 1 / 10</span>
+      <div class="visual-center">
+        <svg viewBox="0 0 880 340" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="CheckEm overview diagram">
+          <!-- Web Page Card -->
+          <rect x="20" y="65" width="200" height="210" rx="14" fill="var(--surface-alt)" stroke="var(--border)" stroke-width="2"/>
+          <circle cx="44" cy="88" r="5" fill="var(--red)"/>
+          <circle cx="60" cy="88" r="5" fill="var(--amber)"/>
+          <circle cx="76" cy="88" r="5" fill="var(--green)"/>
+          <line x1="20" y1="106" x2="220" y2="106" stroke="var(--border)" stroke-width="1.5"/>
+          <rect x="38" y="122" width="164" height="46" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <text x="120" y="150" text-anchor="middle" fill="var(--accent)" font-size="13" font-weight="700">Page Images</text>
+          <rect x="38" y="182" width="164" height="14" rx="4" fill="var(--border)"/>
+          <rect x="38" y="206" width="136" height="14" rx="4" fill="var(--red-soft)" stroke="var(--red)" stroke-width="1"/>
+          <rect x="38" y="230" width="152" height="14" rx="4" fill="var(--border)"/>
+
+          <!-- Arrows to VLM Jury -->
+          <path d="M228 170 L300 100" stroke="var(--muted)" stroke-width="2" marker-end="url(#arr)"/>
+          <path d="M228 170 L300 170" stroke="var(--muted)" stroke-width="2" marker-end="url(#arr)"/>
+          <path d="M228 170 L300 240" stroke="var(--muted)" stroke-width="2" marker-end="url(#arr)"/>
+
+          <!-- 3-Model VLM Jury -->
+          <rect x="310" y="72" width="210" height="54" rx="12" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
+          <text x="415" y="104" text-anchor="middle" fill="var(--text)" font-size="15" font-weight="700">Gemma 4 31B VL</text>
+
+          <rect x="310" y="143" width="210" height="54" rx="12" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
+          <text x="415" y="175" text-anchor="middle" fill="var(--text)" font-size="15" font-weight="700">Nemotron 3.5 VL</text>
+
+          <rect x="310" y="214" width="210" height="54" rx="12" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
+          <text x="415" y="246" text-anchor="middle" fill="var(--text)" font-size="15" font-weight="700">Gemini 3.1 VL</text>
+
+          <!-- Arrows to Outputs -->
+          <path d="M528 100 L602 122" stroke="var(--muted)" stroke-width="2" marker-end="url(#arr)"/>
+          <path d="M528 170 L602 125" stroke="var(--muted)" stroke-width="2" marker-end="url(#arr)"/>
+          <path d="M528 170 L602 222" stroke="var(--muted)" stroke-width="2" marker-end="url(#arr)"/>
+          <path d="M528 240 L602 226" stroke="var(--muted)" stroke-width="2" marker-end="url(#arr)"/>
+
+          <!-- Dual Output -->
+          <rect x="612" y="64" width="248" height="94" rx="14" fill="var(--red-soft)" stroke="var(--red)" stroke-width="2"/>
+          <text x="736" y="102" text-anchor="middle" fill="var(--red)" font-size="16" font-weight="800">Name the Technique</text>
+          <text x="736" y="128" text-anchor="middle" fill="var(--text)" font-size="13" font-weight="600">Span Highlights + Jury Reasons</text>
+
+          <rect x="612" y="182" width="248" height="94" rx="14" fill="var(--green-soft)" stroke="var(--green)" stroke-width="2"/>
+          <text x="736" y="220" text-anchor="middle" fill="var(--green)" font-size="16" font-weight="800">Trust the Source</text>
+          <text x="736" y="246" text-anchor="middle" fill="var(--text)" font-size="13" font-weight="600">0–100 Provenance Score</text>
+
+          <defs>
+            <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--muted)"/>
+            </marker>
+          </defs>
+        </svg>
+        <div class="tagline">Multimodal VLM Manipulation &amp; Source Provenance Jury</div>
       </div>
     </section>
 
-    <!-- Slide 2 -->
+    <!-- SLIDE 2: Rhetoric vs Provenance -->
     <section class="slide">
-      <div>
-        <div class="eyebrow">Problem Statement</div>
-        <h2>Why Binary "Fake News" Labels Fail Readers</h2>
-        <p class="lead">
-          Modern persuasion campaigns blend half-truths, selective framing, and synthetic imagery. Telling a reader "82% Fake" creates defensiveness rather than media literacy — and naively flagging keywords produces high false positives on journalism and encyclopedias.
-        </p>
-        <div class="grid-2">
-          <div class="card">
-            <span class="badge red">Traditional Detectors</span>
-            <ul>
-              <li>Single black-box score with zero pedagogical explanation.</li>
-              <li>Keyword triggers flag educational pages discussing propaganda ("Hard Negatives").</li>
-              <li>Ignore embedded visuals and synthetic AI-generated imagery.</li>
-              <li>Single-model bias goes unchecked without voting consensus.</li>
-            </ul>
-          </div>
-          <div class="card">
-            <span class="badge green">The CheckEm Approach</span>
-            <ul>
-              <li><strong>Teaches the "Why":</strong> Names the exact technique and quotes the trigger phrase.</li>
-              <li><strong>Separates Tone from Trust:</strong> Evaluates <em>who</em> says it (Provenance) separately from <em>how</em> they frame it (Rhetoric).</li>
-              <li><strong>Multimodal VLM Jury:</strong> 3 independent VLMs vote per page, per section, and per image.</li>
-              <li><strong>Hard-Negative Calibrated:</strong> Proven 0% FPR on Wikipedia articles defining propaganda.</li>
-            </ul>
-          </div>
-        </div>
+      <div class="slide-head">
+        <h2>Rhetoric ≠ Provenance</h2>
+        <span class="slide-num">2 / 5</span>
       </div>
-      <div class="slide-foot">
-        <span>Challenge Overview</span>
-        <span>Slide 2 / 10</span>
+      <div class="visual-center">
+        <svg viewBox="0 0 880 350" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Rhetoric vs Provenance comparison chart">
+          <!-- Column Headers -->
+          <text x="40" y="34" fill="var(--muted)" font-size="13" font-weight="700">SOURCE</text>
+          <text x="310" y="34" fill="var(--muted)" font-size="13" font-weight="700">ENSEMBLE VERDICT</text>
+          <text x="610" y="34" fill="var(--muted)" font-size="13" font-weight="700">TRUST SCORE (PROVENANCE)</text>
+          <line x1="20" y1="48" x2="860" y2="48" stroke="var(--border)" stroke-width="1.5"/>
+
+          <!-- Row 1: EFF -->
+          <rect x="20" y="66" width="840" height="76" rx="12" fill="var(--surface-alt)" stroke="var(--border)" stroke-width="1.5"/>
+          <circle cx="48" cy="104" r="9" fill="var(--red)"/>
+          <text x="72" y="109" fill="var(--text)" font-size="17" font-weight="700">eff.org/issues/ai</text>
+          <rect x="310" y="86" width="215" height="36" rx="18" fill="var(--red-soft)" stroke="var(--red)" stroke-width="1.5"/>
+          <text x="417" y="109" text-anchor="middle" fill="var(--red)" font-size="13.5" font-weight="700">3/3 Persuasive Framing</text>
+          <rect x="610" y="92" width="170" height="24" rx="12" fill="var(--border)"/>
+          <rect x="610" y="92" width="148" height="24" rx="12" fill="var(--green)"/>
+          <text x="795" y="109" fill="var(--green)" font-size="16" font-weight="800">87</text>
+
+          <!-- Row 2: Wikipedia Deepfake -->
+          <rect x="20" y="160" width="840" height="76" rx="12" fill="var(--surface-alt)" stroke="var(--border)" stroke-width="1.5"/>
+          <circle cx="48" cy="198" r="9" fill="var(--amber)"/>
+          <text x="72" y="203" fill="var(--text)" font-size="17" font-weight="700">wikipedia.org/Deepfake</text>
+          <rect x="310" y="180" width="248" height="36" rx="18" fill="var(--amber-soft)" stroke="var(--amber)" stroke-width="1.5"/>
+          <text x="434" y="203" text-anchor="middle" fill="var(--amber)" font-size="13.5" font-weight="700">Text Clean · 3/3 AI Images</text>
+          <rect x="610" y="186" width="170" height="24" rx="12" fill="var(--border)"/>
+          <rect x="610" y="186" width="150" height="24" rx="12" fill="var(--green)"/>
+          <text x="795" y="203" fill="var(--green)" font-size="16" font-weight="800">88</text>
+
+          <!-- Row 3: Synthetic Propaganda -->
+          <rect x="20" y="254" width="840" height="76" rx="12" fill="var(--surface-alt)" stroke="var(--border)" stroke-width="1.5"/>
+          <circle cx="48" cy="292" r="9" fill="var(--red)"/>
+          <text x="72" y="297" fill="var(--text)" font-size="17" font-weight="700">civic-pulse-daily (Toy)</text>
+          <rect x="310" y="274" width="215" height="36" rx="18" fill="var(--red-soft)" stroke="var(--red)" stroke-width="1.5"/>
+          <text x="417" y="297" text-anchor="middle" fill="var(--red)" font-size="13.5" font-weight="700">3/3 Propaganda</text>
+          <rect x="610" y="280" width="170" height="24" rx="12" fill="var(--border)"/>
+          <rect x="610" y="280" width="54" height="24" rx="12" fill="var(--red)"/>
+          <text x="795" y="297" fill="var(--red)" font-size="16" font-weight="800">32</text>
+        </svg>
       </div>
     </section>
 
-    <!-- Slide 3 -->
+    <!-- SLIDE 3: Architecture -->
     <section class="slide">
-      <div>
-        <div class="eyebrow">Pillar 1 — Name the Technique</div>
-        <h2>Pedagogical Taxonomy Across Text &amp; Visuals</h2>
-        <p class="lead">
-          Every flagged section or image highlights the trigger quote and attaches a plain-language explanation so readers learn to spot the tactic independently next time.
-        </p>
-        <div class="grid-4">
-          <div class="card">
-            <h3>Loaded Language</h3>
-            <p>Emotionally charged epithets pushing outrage or moral condemnation before facts are examined.</p>
-          </div>
-          <div class="card">
-            <h3>Fear Appeal</h3>
-            <p>Escalates existential dread or imminent catastrophe to bypass deliberative judgment.</p>
-          </div>
-          <div class="card">
-            <h3>Whataboutism</h3>
-            <p>Deflects accountability on a claim by pointing to an unrelated fault of critics.</p>
-          </div>
-          <div class="card">
-            <h3>Fabricated Authority</h3>
-            <p>Invokes unverifiable institutes, secret studies, or anonymous insiders for unearned credibility.</p>
-          </div>
-          <div class="card">
-            <h3>False Dilemma</h3>
-            <p>Collapses complex policy trade-offs into two extreme binary choices.</p>
-          </div>
-          <div class="card">
-            <h3>Scapegoating</h3>
-            <p>Blames a broad group or attacks speaker motives rather than addressing evidence.</p>
-          </div>
-          <div class="card">
-            <h3>Synthetic Image</h3>
-            <p>Detects generative artifacts (texture smoothness, lighting anomalies, warped geometry) via vision pixels.</p>
-          </div>
-          <div class="card">
-            <h3>Visual Framing</h3>
-            <p>Identifies staged or decontextualized visuals paired with sensationalist captions.</p>
-          </div>
-        </div>
+      <div class="slide-head">
+        <h2>Architecture</h2>
+        <span class="slide-num">3 / 5</span>
       </div>
-      <div class="slide-foot">
-        <span>Manipulation Taxonomy</span>
-        <span>Slide 3 / 10</span>
+      <div class="visual-center">
+        <svg viewBox="0 0 880 350" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="System Architecture diagram">
+          <!-- Stage 1 -->
+          <rect x="20" y="105" width="175" height="140" rx="14" fill="var(--surface-alt)" stroke="var(--border)" stroke-width="2"/>
+          <text x="107" y="160" text-anchor="middle" fill="var(--accent)" font-size="14" font-weight="800">INGESTION</text>
+          <text x="107" y="186" text-anchor="middle" fill="var(--text)" font-size="15" font-weight="700">Oxylabs API</text>
+          <text x="107" y="208" text-anchor="middle" fill="var(--muted)" font-size="12">Sections + Images</text>
+
+          <path d="M202 175 L254 175" stroke="var(--muted)" stroke-width="2.5" marker-end="url(#arr2)"/>
+
+          <!-- Stage 2 Container -->
+          <rect x="262" y="34" width="336" height="282" rx="16" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+          <text x="430" y="64" text-anchor="middle" fill="var(--accent)" font-size="13" font-weight="800">PARALLEL ENSEMBLE</text>
+
+          <!-- Router / Verda Boxes -->
+          <rect x="284" y="84" width="292" height="58" rx="10" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/>
+          <text x="430" y="110" text-anchor="middle" fill="var(--text)" font-size="14.5" font-weight="700">Hostinger AI Router</text>
+          <text x="430" y="129" text-anchor="middle" fill="var(--muted)" font-size="12">Gemma 4 VL · Nemotron 3.5 · Gemini VL</text>
+
+          <rect x="284" y="158" width="292" height="58" rx="10" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/>
+          <text x="430" y="184" text-anchor="middle" fill="var(--text)" font-size="14.5" font-weight="700">Verda Cloud GPU (vLLM)</text>
+          <text x="430" y="203" text-anchor="middle" fill="var(--muted)" font-size="12">Open-Weight QLoRA &amp; Logprob Tuning</text>
+
+          <rect x="284" y="232" width="292" height="58" rx="10" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/>
+          <text x="430" y="258" text-anchor="middle" fill="var(--text)" font-size="14.5" font-weight="700">Provenance Engine</text>
+          <text x="430" y="277" text-anchor="middle" fill="var(--muted)" font-size="12">Domain · Originality · Auth · Citations</text>
+
+          <path d="M606 175 L658 175" stroke="var(--muted)" stroke-width="2.5" marker-end="url(#arr2)"/>
+
+          <!-- Stage 3 Hostinger VPS -->
+          <rect x="666" y="105" width="194" height="140" rx="14" fill="var(--green-soft)" stroke="var(--green)" stroke-width="2"/>
+          <text x="763" y="158" text-anchor="middle" fill="var(--green)" font-size="14" font-weight="800">HOSTINGER VPS</text>
+          <text x="763" y="185" text-anchor="middle" fill="var(--text)" font-size="16" font-weight="800">checkem.tech</text>
+          <text x="763" y="208" text-anchor="middle" fill="var(--muted)" font-size="12">Docker · Traefik TLS</text>
+
+          <defs>
+            <marker id="arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--muted)"/>
+            </marker>
+          </defs>
+        </svg>
       </div>
     </section>
 
-    <!-- Slide 4 -->
+    <!-- SLIDE 4: Measured Accuracy -->
     <section class="slide">
-      <div>
-        <div class="eyebrow">Pillar 2 — Trust the Source</div>
-        <h2>Four-Signal Page Provenance Scoring (0–100)</h2>
-        <p class="lead">
-          Even persuasive advocacy from a verifiable organization (<code>eff.org</code>, Trust 87) differs fundamentally from an unverified synthetic outlet (<code>civic-pulse-daily</code>, Trust 32). CheckEm surfaces all four provenance sub-scores explicitly:
-        </p>
-        <div class="grid-2">
-          <div class="card">
-            <h3>1. Domain &amp; Publisher Identity (32%)</h3>
-            <p>Checks HTTPS security, TLD authority (<code>.gov</code>, <code>.int</code>, <code>.org</code>), subdomain anomalies, and established editorial registry heuristics.</p>
+      <div class="slide-head">
+        <h2>Measured Accuracy</h2>
+        <span class="slide-num">4 / 5</span>
+      </div>
+      <div class="visual-center">
+        <div class="gauges">
+          <div class="gauge-item">
+            <svg viewBox="0 0 160 160">
+              <circle cx="80" cy="80" r="64" fill="none" stroke="var(--border)" stroke-width="14"/>
+              <circle cx="80" cy="80" r="64" fill="none" stroke="var(--green)" stroke-width="14" stroke-dasharray="402" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 80 80)"/>
+              <text x="80" y="88" text-anchor="middle" fill="var(--text)" font-size="30" font-weight="800">100%</text>
+            </svg>
+            <div class="gauge-label">Page Precision</div>
+            <div class="gauge-sub">TP=2 · FP=0 · F1=1.00</div>
           </div>
-          <div class="card">
-            <h3>2. Content Originality (20%)</h3>
-            <p>Measures unique structural block ratio vs duplicated/cloned boilerplate across extracted sections and depth of original prose.</p>
+
+          <div class="gauge-item">
+            <svg viewBox="0 0 160 160">
+              <circle cx="80" cy="80" r="64" fill="none" stroke="var(--green)" stroke-width="14" stroke-dasharray="402" stroke-dashoffset="0"/>
+              <text x="80" y="88" text-anchor="middle" fill="var(--green)" font-size="30" font-weight="800">0.0%</text>
+            </svg>
+            <div class="gauge-label">Hard-Negative FPR</div>
+            <div class="gauge-sub">0/6 Wikipedia Articles</div>
           </div>
-          <div class="card">
-            <h3>3. Human &amp; Visual Authenticity (24%)</h3>
-            <p>Combines sentence-length burstiness/variance statistics with VLM image synthesis flags and fabricated-source penalties.</p>
-          </div>
-          <div class="card">
-            <h3>4. Citation &amp; Link Network Integrity (24%)</h3>
-            <p>Counts outbound reference links and distinct cited domains vs unlinked assertions citing "suppressed reports".</p>
+
+          <div class="gauge-item">
+            <svg viewBox="0 0 160 160">
+              <circle cx="80" cy="80" r="64" fill="none" stroke="var(--border)" stroke-width="14"/>
+              <circle cx="80" cy="80" r="64" fill="none" stroke="var(--accent)" stroke-width="14" stroke-dasharray="402" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 80 80)"/>
+              <text x="80" y="88" text-anchor="middle" fill="var(--text)" font-size="30" font-weight="800">100%</text>
+            </svg>
+            <div class="gauge-label">Visual Recall</div>
+            <div class="gauge-sub">4/4 Synthetic Images</div>
           </div>
         </div>
-      </div>
-      <div class="slide-foot">
-        <span>Provenance Architecture</span>
-        <span>Slide 4 / 10</span>
+        <div class="tagline">11 Pages · 75 Sections · 22 Images · 100% Jury Agreement</div>
       </div>
     </section>
 
-    <!-- Slide 5 -->
+    <!-- SLIDE 5: Live Demo UI -->
     <section class="slide">
-      <div>
-        <div class="eyebrow">System Architecture</div>
-        <h2>End-to-End Ingestion, Hybrid Inference &amp; Voting Pipeline</h2>
-        <p class="lead">
-          Public visitors browse pre-scraped pages or submit any URL without needing API credentials. Backend orchestrates scraping, vision extraction, and parallel ensemble voting.
-        </p>
-        <div class="flow">
-          <div class="flow-step">
-            <strong>1. Web Ingestion</strong>
-            <span>Oxylabs Web API + Direct Browser-UA Fallback</span>
-          </div>
-          <span class="arrow">→</span>
-          <div class="flow-step">
-            <strong>2. Clean Extraction</strong>
-            <span>Markdown Sections (sec-1..N) + Base64 Images (img-1..K)</span>
-          </div>
-          <span class="arrow">→</span>
-          <div class="flow-step">
-            <strong>3. Parallel VLM Jury</strong>
-            <span>Gemma 4 31B VL + Nemotron 3.5 VL + Gemini VL</span>
-          </div>
-          <span class="arrow">→</span>
-          <div class="flow-step">
-            <strong>4. Jury Aggregation</strong>
-            <span>Page, Section, Image Votes + 4-Signal Trust Score</span>
-          </div>
-        </div>
-        <div class="grid-3" style="margin-top:18px;">
-          <div class="card">
-            <h3>Hostinger VPS + Traefik</h3>
-            <p>Dockerized Python server on <code>checkem.tech</code> with automatic Let's Encrypt TLS &amp; persistent <code>cache_store.json</code>.</p>
-          </div>
-          <div class="card">
-            <h3>Verda Cloud GPU Ready</h3>
-            <p>Optional self-hosted vLLM endpoint (<code>VERDA_GPU_BASE_URL</code>) for open-weights Gemma &amp; Nemotron LoRA adapters.</p>
-          </div>
-          <div class="card">
-            <h3>Hostinger AI Router</h3>
-            <p>Unified OpenAI-compatible ensemble routing across <code>gemma-4-31b</code>, <code>nemotron-lightning-3.5-30b-a3b</code> &amp; <code>gemini-3.1-flash-lite</code>.</p>
-          </div>
-        </div>
+      <div class="slide-head">
+        <h2>Minimalist Progressive UX</h2>
+        <span class="slide-num">5 / 5</span>
       </div>
-      <div class="slide-foot">
-        <span>Infrastructure &amp; Dataflow</span>
-        <span>Slide 5 / 10</span>
+      <div class="visual-center">
+        <svg viewBox="0 0 880 300" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Progressive UI flow diagram">
+          <!-- Step 1: Collapsed Bar -->
+          <rect x="20" y="88" width="245" height="54" rx="10" fill="var(--surface-alt)" stroke="var(--border)" stroke-width="2"/>
+          <circle cx="46" cy="115" r="7" fill="var(--red)"/>
+          <text x="64" y="120" fill="var(--text)" font-size="14" font-weight="700">EFF: AI Policy</text>
+          <text x="242" y="120" fill="var(--muted)" font-size="14">▸</text>
+          <text x="142" y="170" text-anchor="middle" fill="var(--muted)" font-size="13" font-weight="700">1. Status Bar</text>
+
+          <path d="M274 115 L312 115" stroke="var(--muted)" stroke-width="2" marker-end="url(#arr3)"/>
+
+          <!-- Step 2: Expanded Dropdown -->
+          <rect x="320" y="54" width="245" height="122" rx="12" fill="var(--surface-alt)" stroke="var(--accent)" stroke-width="2"/>
+          <circle cx="344" cy="80" r="6" fill="var(--red)"/>
+          <text x="360" y="84" fill="var(--text)" font-size="13" font-weight="700">3/3 Flagged · Trust 87</text>
+          <rect x="336" y="102" width="136" height="24" rx="6" fill="var(--accent)"/>
+          <text x="404" y="118" text-anchor="middle" fill="#fff" font-size="11.5" font-weight="700">Full Page &amp; Highlights</text>
+          <rect x="336" y="134" width="104" height="24" rx="6" fill="var(--surface)" stroke="var(--border)"/>
+          <text x="388" y="150" text-anchor="middle" fill="var(--text)" font-size="11" font-weight="600">Summary</text>
+          <rect x="448" y="134" width="100" height="24" rx="6" fill="var(--surface)" stroke="var(--border)"/>
+          <text x="498" y="150" text-anchor="middle" fill="var(--text)" font-size="11" font-weight="600">Original ↗</text>
+          <text x="442" y="206" text-anchor="middle" fill="var(--muted)" font-size="13" font-weight="700">2. Jury &amp; Actions</text>
+
+          <path d="M574 115 L612 115" stroke="var(--muted)" stroke-width="2" marker-end="url(#arr3)"/>
+
+          <!-- Step 3: Highlight -> Vote Inspector -->
+          <rect x="620" y="54" width="240" height="122" rx="12" fill="var(--surface-alt)" stroke="var(--red)" stroke-width="2"/>
+          <rect x="638" y="74" width="204" height="26" rx="5" fill="var(--red-soft)" stroke="var(--red)"/>
+          <text x="740" y="91" text-anchor="middle" fill="var(--red)" font-size="12" font-weight="700">Fear Appeal · Loaded Words</text>
+          <text x="642" y="124" fill="var(--text)" font-size="12" font-weight="600">Gemma: 🚩 · Nemotron: 🚩 · Gemini: 🚩</text>
+          <rect x="638" y="136" width="204" height="20" rx="4" fill="var(--border)"/>
+          <text x="740" y="206" text-anchor="middle" fill="var(--muted)" font-size="13" font-weight="700">3. Click Highlight → Reasons</text>
+
+          <defs>
+            <marker id="arr3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--muted)"/>
+            </marker>
+          </defs>
+        </svg>
+        <a href="/" class="demo-cta">Open Live Demo · checkem.tech →</a>
       </div>
     </section>
+  </main>
 
-    <!-- Slide 6 -->
-    <section class="slide">
-      <div>
-        <div class="eyebrow">Pillar 3 — Transparent &amp; Measurable</div>
-        <h2>Measured Precision, Recall &amp; False-Positive Rate</h2>
-        <p class="lead">
-          Evaluated live via <code>GET /api/metrics</code> across 11 pages (75 text sections, 22 extracted images), including 6 Wikipedia <strong>Hard Negatives</strong> covering propaganda terms objectively.
-        </p>
-        <div class="grid-4">
-          <div class="metric-box">
-            <div class="metric-val">100%</div>
-            <div class="metric-lbl">Page Precision (TP=2, FP=0)</div>
-          </div>
-          <div class="metric-box">
-            <div class="metric-val">100%</div>
-            <div class="metric-lbl">Page Recall (FN=0, F1=1.00)</div>
-          </div>
-          <div class="metric-box">
-            <div class="metric-val">0.0%</div>
-            <div class="metric-lbl">Hard-Negative FPR (0/6 Wiki)</div>
-          </div>
-          <div class="metric-box">
-            <div class="metric-val">100%</div>
-            <div class="metric-lbl">Image Forensics P &amp; R (4/4)</div>
-          </div>
-        </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Ensemble Member</th>
-              <th>Role / Analytical Lens</th>
-              <th>Page Accuracy</th>
-              <th>Precision</th>
-              <th>Recall</th>
-              <th>Jury Agreement</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Gemma 4 31B VL</strong></td>
-              <td>Visual Forensics &amp; Fear Framing</td>
-              <td>100%</td>
-              <td>100%</td>
-              <td>100%</td>
-              <td>100%</td>
-            </tr>
-            <tr>
-              <td><strong>Nemotron 3.5 VL</strong></td>
-              <td>Logical Fallacies &amp; Whataboutism</td>
-              <td>100%</td>
-              <td>100%</td>
-              <td>100%</td>
-              <td>100%</td>
-            </tr>
-            <tr>
-              <td><strong>Gemini 3.1 Flash Lite VL</strong></td>
-              <td>Loaded Language &amp; Source Provenance</td>
-              <td>100%</td>
-              <td>100%</td>
-              <td>100%</td>
-              <td>100%</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="slide-foot">
-        <span>Live Benchmark Metrics (/api/metrics)</span>
-        <span>Slide 6 / 10</span>
-      </div>
-    </section>
-
-    <!-- Slide 7 -->
-    <section class="slide">
-      <div>
-        <div class="eyebrow">Subchallenge — Open-Weights Gemma VL</div>
-        <h2>Going Beyond Zero-Shot with Fine-Tuned Gemma</h2>
-        <p class="lead">
-          Because Gemma is an open-weights VLM, we can tune and inspect it directly rather than treating it as an opaque API (see <code>challenges/gemma/README.md</code>).
-        </p>
-        <div class="grid-3">
-          <div class="card">
-            <h3>1. QLoRA Span Adaptation</h3>
-            <p>4-bit NF4 LoRA fine-tuning (<code>r=16, alpha=32</code>) on SemEval-2020 Task 11 propaganda techniques + encyclopedic hard negatives for tight span boundaries.</p>
-          </div>
-          <div class="card">
-            <h3>2. Logprob Thresholding</h3>
-            <p>Access token log-probabilities for <code>"questionable"</code> vs <code>"clean"</code> to tune precision vs recall explicitly and suppress borderline false positives.</p>
-          </div>
-          <div class="card">
-            <h3>3. Pedagogical Counterfactuals</h3>
-            <p>Adapter also teaches Gemma to generate a neutral rewrite beside flagged quotes, showing readers <em>how</em> loaded adjectives shift tone.</p>
-          </div>
-        </div>
-      </div>
-      <div class="slide-foot">
-        <span>challenges/gemma/README.md</span>
-        <span>Slide 7 / 10</span>
-      </div>
-    </section>
-
-    <!-- Slide 8 -->
-    <section class="slide">
-      <div>
-        <div class="eyebrow">Subchallenge — Nemotron 3.5 VL &amp; Verda Cloud GPUs</div>
-        <h2>Logical Fallacy Jury + Self-Hosted GPU Inference</h2>
-        <p class="lead">
-          Nemotron 3.5 VL serves as our reasoning-focused fallacy &amp; visual integrity juror, hosted on Verda Cloud GPU instances via OpenAI-compatible vLLM (see <code>challenges/nemotron/</code> &amp; <code>challenges/verda-cloud/</code>).
-        </p>
-        <div class="grid-2">
-          <div class="card">
-            <h3>Nemotron 3.5 VL Specialization</h3>
-            <ul>
-              <li>Employs structured reasoning traces to test implication links (critical for <strong>Whataboutism</strong> &amp; <strong>False Dilemma</strong>).</li>
-              <li>Discriminates <em>describing</em> a fallacy vs <em>using</em> a fallacy to persuade.</li>
-              <li>Pairs vision inspection with chart/meme OCR context analysis.</li>
-              <li>Custom reasoning-distilled LoRA training supported via <code>challenges/nemotron/</code>.</li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3>Verda Cloud GPU Cluster Deployment</h3>
-            <ul>
-              <li>Provision an A100/H100 VM on Verda Cloud with Docker + NVIDIA Container Toolkit.</li>
-              <li>Run <code>deploy_verda.sh</code> to serve both fine-tuned Gemma VL &amp; Nemotron 3.5 VL LoRA adapters over vLLM.</li>
-              <li>Point <code>VERDA_GPU_BASE_URL</code> in <code>.env</code>; backend routes Gemma &amp; Nemotron straight to Verda with zero downtime fallback.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="slide-foot">
-        <span>challenges/nemotron/ &amp; challenges/verda-cloud/</span>
-        <span>Slide 8 / 10</span>
-      </div>
-    </section>
-
-    <!-- Slide 9 -->
-    <section class="slide">
-      <div>
-        <div class="eyebrow">Challenge Evaluation</div>
-        <h2>Alignment with Main Challenge Judging Criteria</h2>
-        <p class="lead">
-          Every engineering and UX decision maps directly to the weighted rubric, emphasizing measurable reliability over a fragile happy-path demo.
-        </p>
-        <div class="grid-2">
-          <div class="card">
-            <span class="badge green">40% Weight</span>
-            <h3>Detection Quality &amp; Explainability</h3>
-            <p><strong>100% Precision &amp; 0.0% Hard-Negative FPR</strong> across 6 Wikipedia articles about manipulation, paired with <code>Name the Technique</code> quote highlights and <code>Trust the Source</code> 4-signal provenance.</p>
-          </div>
-          <div class="card">
-            <span class="badge accent">25% Weight</span>
-            <h3>Technical Execution &amp; Hostinger Deploy</h3>
-            <p>Production Docker + Traefik HTTPS deployment at <code>https://checkem.tech/</code> integrated with Hostinger DNS, Hostinger AI Router, Oxylabs Web Scraper, and Verda GPU routing.</p>
-          </div>
-          <div class="card">
-            <span class="badge amber">20% Weight</span>
-            <h3>Originality &amp; Real-World Impact</h3>
-            <p>Decouples <em>rhetoric</em> from <em>provenance</em> (credible orgs aren't flattened into "fake news"), enhanced by open-weight Gemma QLoRA tuning and logprob thresholding.</p>
-          </div>
-          <div class="card">
-            <span class="badge accent">15% Weight</span>
-            <h3>Demo Clarity</h3>
-            <p>Minimalist 3-tier progressive UI (status bars → inline votes → interactive highlights &amp; concise model views) plus live web slide deck at <code>/slides</code>.</p>
-          </div>
-        </div>
-      </div>
-      <div class="slide-foot">
-        <span>Judging Rubric Alignment (40% / 25% / 20% / 15%)</span>
-        <span>Slide 9 / 10</span>
-      </div>
-    </section>
-
-    <!-- Slide 10 -->
-    <section class="slide">
-      <div>
-        <div class="eyebrow">User Experience — Progressive Disclosure</div>
-        <h2>Minimalist Landing UX at https://checkem.tech/</h2>
-        <p class="lead">
-          Complexity lives underneath a calm, fast 3-tier progressive interface so readers are never overwhelmed on arrival.
-        </p>
-        <div class="grid-3">
-          <div class="card">
-            <span class="badge green">Tier 1: Quiet List</span>
-            <h3>Thin Horizontal Bars</h3>
-            <p>Only 3 elements per site: Green/Yellow/Red status dot, Page Title, and Expand Chevron.</p>
-          </div>
-          <div class="card">
-            <span class="badge amber">Tier 2: Dropdown</span>
-            <h3>Technical Vote Strip</h3>
-            <p>Expands inline to reveal per-model votes, flagged counts, Trust Score, and 3 focused actions.</p>
-          </div>
-          <div class="card">
-            <span class="badge accent">Tier 3: Deep Views</span>
-            <h3>Highlights, Summary &amp; Source</h3>
-            <p>Interactive Full-Page Highlight Reader (click any highlight for per-model reasoning), Concise Model Summary, or Original Page.</p>
-          </div>
-        </div>
-      </div>
-      <div class="slide-foot">
-        <span>Thank You — Try CheckEm Live at https://checkem.tech/</span>
-        <span>Slide 10 / 10</span>
-      </div>
-    </section>
-  </div>
-
-  <div class="controls">
-    <div style="font-size:0.8rem; color:var(--muted);">Use <code>←</code> / <code>→</code> or <code>Space</code> to navigate</div>
-    <div class="progress"><div class="progress-fill" id="progress-fill"></div></div>
+  <footer class="controls">
+    <div class="dots" id="dots"></div>
     <div class="nav-btns">
-      <button onclick="prevSlide()">← Prev</button>
-      <button onclick="nextSlide()">Next →</button>
+      <button onclick="go(idx - 1)">←</button>
+      <button onclick="go(idx + 1)">→</button>
     </div>
-  </div>
+  </footer>
 
   <script>
     const slides = Array.from(document.querySelectorAll('.slide'));
+    const dotsEl = document.getElementById('dots');
     let idx = 0;
 
     function applyTheme(t) {
       document.documentElement.setAttribute('data-theme', t);
       localStorage.setItem('nt_theme', t);
-      document.getElementById('theme-btn').textContent = t === 'dark' ? '☀️ Light' : '🌙 Dark';
+      document.getElementById('theme-btn').textContent = t === 'dark' ? '☀️' : '🌙';
     }
     function toggleTheme() {
       applyTheme((document.documentElement.getAttribute('data-theme') || 'light') === 'light' ? 'dark' : 'light');
     }
     applyTheme(localStorage.getItem('nt_theme') || 'light');
 
-    function showSlide(i) {
+    dotsEl.innerHTML = slides.map((_, i) => `<button class="dot" onclick="go(${i})" aria-label="Slide ${i + 1}"></button>`).join('');
+    const dots = Array.from(dotsEl.querySelectorAll('.dot'));
+
+    function go(i) {
       idx = Math.max(0, Math.min(slides.length - 1, i));
       slides.forEach((s, n) => s.classList.toggle('active', n === idx));
-      document.getElementById('progress-fill').style.width = `${((idx + 1) / slides.length) * 100}%`;
+      dots.forEach((d, n) => d.classList.toggle('active', n === idx));
     }
-    function nextSlide() { showSlide(idx + 1); }
-    function prevSlide() { showSlide(idx - 1); }
 
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); nextSlide(); }
-      if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prevSlide(); }
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); go(idx + 1); }
+      if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(idx - 1); }
     });
-    showSlide(0);
+    go(0);
   </script>
 </body>
 </html>
