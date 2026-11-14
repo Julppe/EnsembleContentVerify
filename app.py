@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
 """
-Name the Technique — Multi-VLM Ensemble Website Content & Image Reviewer
-=========================================================================
+CheckEm — Multi-VLM Ensemble Website Content & Image Reviewer
+=============================================================
 Preconfigured server-side via `/root/hostinger-ai-reviewer/.env` so end users
-only interact with the web app as a clean, public-ready review interface:
+interact directly with the web review interface without API keys:
 1. Scrapes real web pages (via Oxylabs Web API with automatic direct HTTP fallback),
    isolates article content, extracts clean Markdown, numbered sections (`sec-1`..`sec-N`),
    and content images (`img-1`..`img-K`).
-2. Runs parallel ensemble voting across configured Hostinger AI Router models
-   (e.g., `gemma-4-31b`, `nemotron-lightning-3.5-30b-a3b`, `gemini-3.1-flash-lite`),
-   attaching base64-encoded page images for vision-capable VLMs to inspect for
-   AI-generated / synthetic / manipulative imagery alongside text manipulation detection.
+2. Runs parallel ensemble voting across a 5-model cross-family VLM jury
+   (`gemma-4-31b`, `nemotron-3.5-super-vl`, `gemini-3.1-flash-lite`,
+   `kimi-k2.6`, `claude-haiku-4.5`), routing Nemotron 3.5 Super VL via
+   `https://containers.datacrunch.io/nemotron-3-5-super-vl-b300/v1` when `VERDA_INFERENCE_KEY`
+   is set (with NVIDIA Build and Hostinger AI Router fallbacks).
 3. Persists scraped pages and ensemble reviews in `cache_store.json`.
 """
 
@@ -22,6 +23,7 @@ import html.parser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
 import os
+import random
 import re
 import threading
 import time
@@ -84,31 +86,71 @@ TECHNIQUE_EXPLANATIONS = {
     ),
 }
 
+NEMOTRON_B300_BASE_URL = "https://containers.datacrunch.io/nemotron-3-5-super-vl-b300/v1"
+NVIDIA_BUILD_BASE_URL = "https://integrate.api.nvidia.com/v1"
+LEGACY_THREE_MODEL_CSV = "gemma-4-31b,nemotron-lightning-3.5-30b-a3b,gemini-3.1-flash-lite"
+DEFAULT_FIVE_MODEL_CSV = (
+    "gemma-4-31b,"
+    "nemotron-3.5-super-vl,"
+    "gemini-3.1-flash-lite,"
+    "kimi-k2.6,"
+    "claude-haiku-4.5"
+)
+
 MODEL_PROFILES = {
     "gemma-4-31b": {
         "name": "Gemma 4 31B VL",
-        "focus": "Visual Forensics, Fear Appeal & Counterfactual Framing",
+        "focus": "Lightweight Open-Weight Visual Forensics & Fear Appeal (Google)",
         "vision": True,
-        "provider_hint": "verda_or_router",
+    },
+    "nemotron-3.5-super-vl": {
+        "name": "Nemotron 3.5 Super VL",
+        "focus": "Sparse MoE Logical Fallacies, Whataboutism & Visual Integrity (NVIDIA)",
+        "vision": True,
+    },
+    "nvidia/nemotron-3.5-super-vl-120b-a12b": {
+        "name": "Nemotron 3.5 Super VL",
+        "focus": "Sparse MoE Logical Fallacies, Whataboutism & Visual Integrity (NVIDIA)",
+        "vision": True,
     },
     "nemotron-lightning-3.5-30b-a3b": {
-        "name": "Nemotron 3.5 VL",
-        "focus": "Logical Fallacies, Whataboutism, Claim & Visual Integrity",
+        "name": "Nemotron 3.5 Lightning VL",
+        "focus": "Lightweight MoE Logical Fallacies & Visual Integrity (NVIDIA)",
         "vision": True,
-        "provider_hint": "verda_or_router",
     },
     "gemini-3.1-flash-lite": {
         "name": "Gemini 3.1 Flash Lite VL",
-        "focus": "Multimodal Propaganda, Loaded Language & Source Provenance",
+        "focus": "Multimodal Propaganda, Loaded Language & Source Provenance (Google)",
         "vision": True,
-        "provider_hint": "router",
+    },
+    "kimi-k2.6": {
+        "name": "Kimi K2.6 VL",
+        "focus": "Cross-Cultural Framing, Scapegoating & Narrative Bias (MoonshotAI)",
+        "vision": True,
+    },
+    "kimi-k3-fast": {
+        "name": "Kimi K3 Fast VL",
+        "focus": "Fast Multimodal Framing & Scapegoating Analysis (MoonshotAI)",
+        "vision": True,
+    },
+    "claude-haiku-4.5": {
+        "name": "Claude Haiku 4.5 VL",
+        "focus": "Editorial Context, False Dilemma & Citation Auditing (Anthropic)",
+        "vision": True,
+    },
+    "claude-sonnet-4.6": {
+        "name": "Claude Sonnet 4.6 VL",
+        "focus": "Deep Editorial Context & Rhetorical Nuance (Anthropic)",
+        "vision": True,
     },
 }
 
 DEFAULT_MODEL_LENSES = [
-    "Visual Forensics, Fear Appeal & Rhetorical Framing",
-    "Logical Fallacies, Whataboutism & Claim Integrity",
-    "Multimodal Propaganda, Loaded Language & Source Verification",
+    "Lightweight Open-Weight Visual Forensics & Fear Appeal (Google)",
+    "Sparse MoE Logical Fallacies, Whataboutism & Visual Integrity (NVIDIA)",
+    "Multimodal Propaganda, Loaded Language & Source Provenance (Google)",
+    "Cross-Cultural Framing, Scapegoating & Narrative Bias (MoonshotAI)",
+    "Editorial Context, False Dilemma & Citation Auditing (Anthropic)",
 ]
 
 RUNTIME_CONFIG = {
@@ -116,11 +158,13 @@ RUNTIME_CONFIG = {
     "hostinger_ai_router_key": "",
     "hostinger_ai_router_base_url": "https://router.hostinger.com/v1",
     "hostinger_api_token": "",
-    "ai_router_models": "gemma-4-31b,nemotron-lightning-3.5-30b-a3b,gemini-3.1-flash-lite",
-    "verda_gpu_base_url": "",
-    "verda_api_key": "",
-    "verda_gemma_model": "",
-    "verda_nemotron_model": "",
+    "ai_router_models": DEFAULT_FIVE_MODEL_CSV,
+    "verda_inference_key": "",
+    "nemotron_inference_base_url": NEMOTRON_B300_BASE_URL,
+    "nemotron_inference_model": "nemotron-3.5-super-vl",
+    "nvidia_api_key": "",
+    "nvidia_api_base_url": NVIDIA_BUILD_BASE_URL,
+    "nvidia_nemotron_model": "nvidia/nemotron-3.5-super-vl-120b-a12b",
 }
 
 REVIEW_MODELS = []
@@ -236,15 +280,26 @@ def build_model_registry(models_csv: str) -> list:
 
 
 def load_env_file():
+    nvidia_key_names = {"NVIDIA_API_KEY", "NEMOTRON_API_KEY", "NVIDIA_BUILD_API_KEY", "NGC_API_KEY"}
     if os.path.exists(ENV_PATH):
         with open(ENV_PATH, "r", encoding="utf-8") as f:
             for line in f:
                 raw = line.strip()
-                if not raw or raw.startswith("#") or "=" not in raw:
+                if not raw or raw.startswith("#"):
+                    continue
+                if raw.startswith("nvapi-"):
+                    RUNTIME_CONFIG["nvidia_api_key"] = raw
+                    continue
+                if "=" not in raw:
                     continue
                 k, v = raw.split("=", 1)
-                key = k.strip().lower()
+                raw_key = k.strip()
+                key = raw_key.lower()
                 val = v.strip().strip('"').strip("'")
+                if raw_key.upper() in nvidia_key_names or val.startswith("nvapi-"):
+                    if val:
+                        RUNTIME_CONFIG["nvidia_api_key"] = val
+                    continue
                 if key in RUNTIME_CONFIG and val:
                     RUNTIME_CONFIG[key] = val
 
@@ -254,14 +309,22 @@ def load_env_file():
         "HOSTINGER_AI_ROUTER_BASE_URL": "hostinger_ai_router_base_url",
         "HOSTINGER_API_TOKEN": "hostinger_api_token",
         "AI_ROUTER_MODELS": "ai_router_models",
-        "VERDA_GPU_BASE_URL": "verda_gpu_base_url",
-        "VERDA_API_KEY": "verda_api_key",
-        "VERDA_GEMMA_MODEL": "verda_gemma_model",
-        "VERDA_NEMOTRON_MODEL": "verda_nemotron_model",
+        "VERDA_INFERENCE_KEY": "verda_inference_key",
+        "NEMOTRON_INFERENCE_BASE_URL": "nemotron_inference_base_url",
+        "NEMOTRON_INFERENCE_MODEL": "nemotron_inference_model",
+        "NVIDIA_API_KEY": "nvidia_api_key",
+        "NEMOTRON_API_KEY": "nvidia_api_key",
+        "NVIDIA_BUILD_API_KEY": "nvidia_api_key",
+        "NGC_API_KEY": "nvidia_api_key",
+        "NVIDIA_API_BASE_URL": "nvidia_api_base_url",
+        "NVIDIA_NEMOTRON_MODEL": "nvidia_nemotron_model",
     }
     for env_key, cfg_key in env_map.items():
         if os.environ.get(env_key):
             RUNTIME_CONFIG[cfg_key] = os.environ[env_key].strip()
+
+    if RUNTIME_CONFIG.get("ai_router_models", "").strip() == LEGACY_THREE_MODEL_CSV:
+        RUNTIME_CONFIG["ai_router_models"] = DEFAULT_FIVE_MODEL_CSV
 
     global REVIEW_MODELS
     REVIEW_MODELS = build_model_registry(RUNTIME_CONFIG["ai_router_models"])
@@ -1146,6 +1209,36 @@ def _build_prompt_text(model_cfg: dict, sections: list, images: list, page_data:
     )
 
 
+def _post_with_backoff(
+    url: str,
+    headers: dict,
+    json_payload: dict,
+    timeout: int = 75,
+    max_retries: int = 3,
+) -> requests.Response:
+    """POST JSON payload with jittered exponential backoff on 429 / 5xx / transient errors."""
+    last_exc = None
+    for attempt in range(max_retries + 1):
+        try:
+            resp = requests.post(url, headers=headers, json=json_payload, timeout=timeout)
+            if resp.status_code not in (429, 500, 502, 503, 504) or attempt == max_retries:
+                return resp
+            retry_after = resp.headers.get("Retry-After", "").strip()
+            if retry_after.isdigit():
+                delay = min(15.0, float(retry_after) + random.uniform(0.1, 0.5))
+            else:
+                delay = min(15.0, 1.5 * (2 ** attempt) + random.uniform(0.1, 0.7))
+        except requests.RequestException as exc:
+            last_exc = exc
+            if attempt == max_retries:
+                raise
+            delay = min(15.0, 1.5 * (2 ** attempt) + random.uniform(0.1, 0.7))
+        time.sleep(delay)
+    if last_exc:
+        raise last_exc
+    raise RuntimeError("Request failed after retries")
+
+
 def call_hostinger_ai_router(
     model_cfg: dict,
     sections: list,
@@ -1158,23 +1251,30 @@ def call_hostinger_ai_router(
 ) -> dict:
     cfg = cfg or {}
     mid_low = model_cfg["id"].lower()
+    is_nemotron = "nemotron" in mid_low
 
-    # Optional self-hosted Verda Cloud GPU vLLM endpoint for Gemma / Nemotron
     active_base = base_url
     active_key = router_key
     target_model_id = model_cfg["id"]
     provider_mode = "live_router"
     provider_label = "Hostinger AI Router"
 
-    if cfg.get("verda_gpu_base_url") and ("gemma" in mid_low or "nemotron" in mid_low):
-        active_base = cfg["verda_gpu_base_url"]
-        active_key = cfg.get("verda_api_key") or router_key or "verda-vllm-token"
-        if "gemma" in mid_low and cfg.get("verda_gemma_model"):
-            target_model_id = cfg["verda_gemma_model"]
-        elif "nemotron" in mid_low and cfg.get("verda_nemotron_model"):
-            target_model_id = cfg["verda_nemotron_model"]
-        provider_mode = "live_verda_gpu"
-        provider_label = "Verda Cloud GPU vLLM"
+    if is_nemotron:
+        if cfg.get("verda_inference_key"):
+            active_base = cfg.get("nemotron_inference_base_url") or NEMOTRON_B300_BASE_URL
+            active_key = cfg["verda_inference_key"]
+            target_model_id = cfg.get("nemotron_inference_model") or "nemotron-3.5-super-vl"
+            provider_mode = "live_nemotron_b300"
+            provider_label = "Nemotron 3.5 Super VL B300 API"
+        elif cfg.get("nvidia_api_key"):
+            active_base = cfg.get("nvidia_api_base_url") or NVIDIA_BUILD_BASE_URL
+            active_key = cfg["nvidia_api_key"]
+            target_model_id = cfg.get("nvidia_nemotron_model") or "nvidia/nemotron-3.5-super-vl-120b-a12b"
+            provider_mode = "live_nvidia_build"
+            provider_label = "NVIDIA Build API"
+        elif target_model_id in ("nemotron-3.5-super-vl", "nvidia/nemotron-3.5-super-vl-120b-a12b"):
+            target_model_id = "nemotron-lightning-3.5-30b-a3b"
+            provider_label = "Hostinger AI Router (Nemotron 3.5 Lightning fallback)"
 
     if not active_key:
         return _heuristic_fallback(model_cfg, sections, images, "No HOSTINGER_AI_ROUTER_KEY configured")
@@ -1201,6 +1301,7 @@ def call_hostinger_ai_router(
         user_content = prompt_text
         attached_ids = []
 
+    orig_attached_ids = list(attached_ids)
     payload = {
         "model": target_model_id,
         "messages": [
@@ -1215,29 +1316,36 @@ def call_hostinger_ai_router(
     }
 
     try:
-        resp = requests.post(endpoint, headers=headers, json=payload, timeout=75)
+        resp = _post_with_backoff(endpoint, headers, payload, timeout=75)
         if resp.status_code >= 400 and use_vision:
             payload["messages"][1]["content"] = prompt_text
             use_vision = False
             attached_ids = []
-            resp = requests.post(endpoint, headers=headers, json=payload, timeout=75)
+            resp = _post_with_backoff(endpoint, headers, payload, timeout=75)
 
-        if resp.status_code >= 400 and provider_mode == "live_verda_gpu" and router_key:
-            # Graceful fallback to Hostinger AI Router if Verda GPU endpoint is unreachable
+        if resp.status_code >= 400 and provider_mode in ("live_nemotron_b300", "live_nvidia_build") and router_key:
+            # Graceful fallback to Hostinger AI Router if dedicated Nemotron endpoint is unavailable
             endpoint = f"{base_url.rstrip('/')}/chat/completions"
             headers["Authorization"] = f"Bearer {router_key}"
-            payload["model"] = model_cfg["id"]
+            fallback_id = "nemotron-lightning-3.5-30b-a3b" if target_model_id in ("nemotron-3.5-super-vl", "nvidia/nemotron-3.5-super-vl-120b-a12b") else model_cfg["id"]
+            payload["model"] = fallback_id
+            payload["messages"][1]["content"] = user_content
+            attached_ids = list(orig_attached_ids)
+            use_vision = bool(orig_attached_ids)
             provider_mode = "live_router"
-            provider_label = "Hostinger AI Router (Verda fallback)"
-            resp = requests.post(endpoint, headers=headers, json=payload, timeout=75)
+            provider_label = "Hostinger AI Router (Nemotron fallback)"
+            resp = _post_with_backoff(endpoint, headers, payload, timeout=75)
+            if resp.status_code >= 400 and use_vision:
+                payload["messages"][1]["content"] = prompt_text
+                use_vision = False
+                attached_ids = []
+                resp = _post_with_backoff(endpoint, headers, payload, timeout=75)
 
         if resp.status_code >= 400:
             return _heuristic_fallback(model_cfg, sections, images, f"Router HTTP {resp.status_code}: {resp.text[:140]}")
 
         msg = resp.json()["choices"][0]["message"]
-        raw_text = msg.get("content") or ""
-        if not raw_text and msg.get("reasoning"):
-            raw_text = msg["reasoning"]
+        raw_text = msg.get("content") or msg.get("reasoning_content") or msg.get("reasoning") or ""
         parsed = _parse_json_lenient(raw_text)
 
         return _normalize_parsed_evaluation(
@@ -1253,52 +1361,17 @@ def call_hostinger_ai_router(
         return _heuristic_fallback(model_cfg, sections, images, f"Inference error: {str(exc)[:140]}")
 
 
-def run_multi_model_review(page_data: dict) -> dict:
-    with STATE_LOCK:
-        active_models = [dict(m) for m in REVIEW_MODELS if m.get("enabled", True)]
-        cfg_snapshot = dict(RUNTIME_CONFIG)
-        router_key = cfg_snapshot["hostinger_ai_router_key"]
-        base_url = cfg_snapshot["hostinger_ai_router_base_url"]
-
-    sections = page_data.get("sections") or split_markdown_into_sections(page_data.get("readable_markdown", ""))
-    if not sections:
-        sections = [{"section_id": "sec-1", "heading": page_data.get("title", "Page"), "text": page_data.get("readable_markdown", "")[:1000]}]
-
-    images = page_data.get("images") or []
-    # Download content images once in parallel for Vision VLMs
-    image_data_uris = {}
-    if images and any(m.get("vision") for m in active_models):
-        with ThreadPoolExecutor(max_workers=3) as img_pool:
-            fmap = {img_pool.submit(fetch_image_as_data_uri, im["src"]): im["image_id"] for im in images[:3]}
-            for fut in as_completed(fmap):
-                uri = fut.result()
-                if uri:
-                    image_data_uris[fmap[fut]] = uri
-
-    raw_model_results = []
-    with ThreadPoolExecutor(max_workers=min(5, max(1, len(active_models)))) as pool:
-        futures = [
-            pool.submit(
-                call_hostinger_ai_router,
-                m,
-                sections,
-                images,
-                image_data_uris,
-                page_data,
-                router_key,
-                base_url,
-                cfg_snapshot,
-            )
-            for m in active_models
-        ]
-        for fut in as_completed(futures):
-            raw_model_results.append(fut.result())
-
-    order = {m["id"]: idx for idx, m in enumerate(active_models)}
-    raw_model_results.sort(key=lambda r: order.get(r["model_id"], 999))
-
+def aggregate_ensemble_results(
+    page_data: dict,
+    sections: list,
+    images: list,
+    raw_model_results: list,
+    inspected_image_ids: set | None = None,
+) -> dict:
+    """Aggregates per-juror structured votes into page, section, and image consensus."""
     total_models = len(raw_model_results)
     live_count = sum(1 for r in raw_model_results if str(r.get("mode", "")).startswith("live_"))
+    inspected_ids = set(inspected_image_ids or [])
 
     # 1. Page-Level Aggregation
     page_q_votes = sum(1 for r in raw_model_results if r["page_vote"] == "questionable")
@@ -1402,7 +1475,7 @@ def run_multi_model_review(page_data: dict) -> dict:
             img_model_votes.append({
                 "model_id": r["model_id"],
                 "model_name": r["model_name"],
-                "vision_inspected": r["vision_inspected"] and (iid in image_data_uris),
+                "vision_inspected": bool(r.get("vision_inspected")) and (not inspected_ids or iid in inspected_ids),
                 "vote": ev["vote"],
                 "flags": ev.get("flags", []),
                 "reason": ev.get("reason", ""),
@@ -1468,6 +1541,59 @@ def run_multi_model_review(page_data: dict) -> dict:
         "sections": section_results,
         "images": image_results,
     }
+
+
+def run_multi_model_review(page_data: dict) -> dict:
+    with STATE_LOCK:
+        active_models = [dict(m) for m in REVIEW_MODELS if m.get("enabled", True)]
+        cfg_snapshot = dict(RUNTIME_CONFIG)
+        router_key = cfg_snapshot["hostinger_ai_router_key"]
+        base_url = cfg_snapshot["hostinger_ai_router_base_url"]
+
+    sections = page_data.get("sections") or split_markdown_into_sections(page_data.get("readable_markdown", ""))
+    if not sections:
+        sections = [{"section_id": "sec-1", "heading": page_data.get("title", "Page"), "text": page_data.get("readable_markdown", "")[:1000]}]
+
+    images = page_data.get("images") or []
+    # Download content images once in parallel for Vision VLMs
+    image_data_uris = {}
+    if images and any(m.get("vision") for m in active_models):
+        with ThreadPoolExecutor(max_workers=3) as img_pool:
+            fmap = {img_pool.submit(fetch_image_as_data_uri, im["src"]): im["image_id"] for im in images[:3]}
+            for fut in as_completed(fmap):
+                uri = fut.result()
+                if uri:
+                    image_data_uris[fmap[fut]] = uri
+
+    raw_model_results = []
+    with ThreadPoolExecutor(max_workers=min(5, max(1, len(active_models)))) as pool:
+        futures = [
+            pool.submit(
+                call_hostinger_ai_router,
+                m,
+                sections,
+                images,
+                image_data_uris,
+                page_data,
+                router_key,
+                base_url,
+                cfg_snapshot,
+            )
+            for m in active_models
+        ]
+        for fut in as_completed(futures):
+            raw_model_results.append(fut.result())
+
+    order = {m["id"]: idx for idx, m in enumerate(active_models)}
+    raw_model_results.sort(key=lambda r: order.get(r["model_id"], 999))
+
+    return aggregate_ensemble_results(
+        page_data,
+        sections,
+        images,
+        raw_model_results,
+        inspected_image_ids=set(image_data_uris.keys()),
+    )
 
 
 # ---------------------------------------------------------------------------

@@ -2349,13 +2349,14 @@
       document.getElementById('reader-subtitle').textContent = metaSub;
 
       // Map image URLs so inline markdown renders overlays natively when flagged
+      const isMinoritySplit = (qVotes, totalM) => totalM > 1 && qVotes < Math.ceil(totalM / 2);
       const imgBySrc = {};
       rawImages.forEach(im => {
         const revImg = revImagesById[im.image_id] || im;
         const qVotes = revImg.questionable_votes ?? 0;
         const totalM = revImg.total_models ?? (review?.models_count || 0);
         const isFlagged = Boolean(revImg.is_flagged);
-        const isUncertain = isFlagged && totalM > 1 && qVotes === 1;
+        const isUncertain = isFlagged && isMinoritySplit(qVotes, totalM);
         const meta = {
           image_id: im.image_id,
           isFlagged,
@@ -2410,7 +2411,7 @@
             const qVotes = revImg.questionable_votes ?? 0;
             const totalM = revImg.total_models ?? (review?.models_count || 0);
             const isFlagged = Boolean(revImg.is_flagged);
-            const isUncertain = isFlagged && totalM > 1 && qVotes === 1;
+            const isUncertain = isFlagged && isMinoritySplit(qVotes, totalM);
             if (isFlagged) {
               return renderFlaggedImgHtml(src, escapeHtml(im.alt || ''), {
                 image_id: im.image_id,
@@ -2426,6 +2427,12 @@
       ` : '';
 
       const bylineParts = [site.domain, page.word_count ? `${page.word_count} words` : null].filter(Boolean).join(' · ');
+      const jurySize = review?.models_count || state.models?.length || 5;
+      const majorityMin = jurySize > 1 ? Math.ceil(jurySize / 2) : 1;
+      const redLegendLabel = jurySize > 1 ? `${majorityMin}–${jurySize} / ${jurySize} models` : 'Flagged';
+      const amberLegendLabel = majorityMin > 2
+        ? `1–${majorityMin - 1} / ${jurySize} uncertain`
+        : (jurySize > 1 ? `1 / ${jurySize} uncertain` : 'Uncertain');
 
       bodyEl.innerHTML = `
         <div class="webpage-canvas">
@@ -2436,8 +2443,8 @@
                 : escapeHtml(displayUrl)}
             </div>
             <div class="webpage-legend" aria-label="Overline highlight legend">
-              <span><span style="display:inline-block;width:16px;border-top:2.5px solid var(--red);vertical-align:middle;margin-right:5px;"></span>2+ models</span>
-              <span><span style="display:inline-block;width:16px;border-top:2.5px solid var(--amber);vertical-align:middle;margin-right:5px;"></span>1 model (uncertain)</span>
+              <span><span style="display:inline-block;width:16px;border-top:2.5px solid var(--red);vertical-align:middle;margin-right:5px;"></span>${escapeHtml(redLegendLabel)}</span>
+              <span><span style="display:inline-block;width:16px;border-top:2.5px solid var(--amber);vertical-align:middle;margin-right:5px;"></span>${escapeHtml(amberLegendLabel)}</span>
             </div>
           </div>
           <article class="webpage-doc">
@@ -2459,7 +2466,7 @@
 
           const qVotes = revSec.questionable_votes ?? 0;
           const totalM = revSec.total_models ?? (review.models_count || 0);
-          const isUncertain = totalM > 1 && qVotes === 1;
+          const isUncertain = isMinoritySplit(qVotes, totalM);
 
           const hits = revSec.trigger_quotes?.length
             ? highlightQuotesInElement(secEl, revSec.trigger_quotes, sid, isUncertain)
