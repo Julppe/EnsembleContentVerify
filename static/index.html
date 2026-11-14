@@ -1,0 +1,2978 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CheckEm — Name the Technique &amp; Trust the Source</title>
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('nt_theme');
+        document.documentElement.setAttribute('data-theme', saved === 'dark' ? 'dark' : 'light');
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
+  <style>
+    :root,
+    [data-theme="light"] {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-subtle: #f1f5f9;
+      --surface-hover: #f8fafc;
+      --header-bg: rgba(255, 255, 255, 0.9);
+      --border: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --text: #0f172a;
+      --text-secondary: #334155;
+      --muted: #64748b;
+      --accent: #4f46e5;
+      --accent-hover: #4338ca;
+      --accent-soft: rgba(79, 70, 229, 0.08);
+      --accent-border: rgba(79, 70, 229, 0.24);
+      --green: #10b981;
+      --green-text: #047857;
+      --green-soft: rgba(16, 185, 129, 0.10);
+      --green-border: rgba(16, 185, 129, 0.28);
+      --amber: #f59e0b;
+      --amber-text: #b45309;
+      --amber-soft: rgba(245, 158, 11, 0.11);
+      --amber-border: rgba(245, 158, 11, 0.30);
+      --red: #ef4444;
+      --red-text: #dc2626;
+      --red-soft: rgba(239, 68, 68, 0.07);
+      --red-border: rgba(239, 68, 68, 0.28);
+      --mark-bg: rgba(239, 68, 68, 0.14);
+      --mark-bg-hover: rgba(239, 68, 68, 0.24);
+      --mark-border: rgba(220, 38, 38, 0.45);
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+      --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.06);
+      --shadow-modal: 0 24px 64px rgba(15, 23, 42, 0.16);
+      --backdrop: rgba(15, 23, 42, 0.42);
+      --code-bg: #f1f5f9;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0b0e14;
+      --surface: #121620;
+      --surface-subtle: #181e2c;
+      --surface-hover: #171c29;
+      --header-bg: rgba(18, 22, 32, 0.9);
+      --border: #22293a;
+      --border-strong: #334155;
+      --text: #f1f5f9;
+      --text-secondary: #cbd5e1;
+      --muted: #94a3b8;
+      --accent: #6366f1;
+      --accent-hover: #818cf8;
+      --accent-soft: rgba(99, 102, 241, 0.16);
+      --accent-border: rgba(129, 140, 248, 0.35);
+      --green: #10b981;
+      --green-text: #34d399;
+      --green-soft: rgba(16, 185, 129, 0.14);
+      --green-border: rgba(16, 185, 129, 0.34);
+      --amber: #f59e0b;
+      --amber-text: #fbbf24;
+      --amber-soft: rgba(245, 158, 11, 0.14);
+      --amber-border: rgba(245, 158, 11, 0.34);
+      --red: #ef4444;
+      --red-text: #f87171;
+      --red-soft: rgba(239, 68, 68, 0.13);
+      --red-border: rgba(239, 68, 68, 0.34);
+      --mark-bg: rgba(239, 68, 68, 0.22);
+      --mark-bg-hover: rgba(239, 68, 68, 0.36);
+      --mark-border: rgba(248, 113, 113, 0.55);
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.25);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+      --shadow-modal: 0 24px 64px rgba(0, 0, 0, 0.65);
+      --backdrop: rgba(2, 6, 23, 0.72);
+      --code-bg: #0f1420;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+      font-size: 14px;
+      transition: background-color 0.18s ease, color 0.18s ease;
+    }
+
+    body.modal-open {
+      overflow: hidden;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* Top Header (quiet, single-line, max height 56px) */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      height: 56px;
+      background: var(--header-bg);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .topbar-inner {
+      max-width: 780px;
+      height: 100%;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 15px;
+      letter-spacing: -0.02em;
+      flex-shrink: 0;
+    }
+
+    .brand-mark {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: var(--text);
+      color: var(--surface);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1;
+      height: 32px;
+      padding: 0 11px;
+      border-radius: 7px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background-color 0.14s ease, border-color 0.14s ease, color 0.14s ease, opacity 0.14s ease;
+    }
+
+    .btn:focus-visible,
+    .site-bar:focus-visible,
+    .flag-mark:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: var(--text);
+      color: var(--surface);
+      border-color: var(--text);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      opacity: 0.88;
+    }
+
+    .btn-accent {
+      background: var(--accent);
+      color: #ffffff;
+      border-color: var(--accent);
+    }
+
+    .btn-accent:hover:not(:disabled) {
+      background: var(--accent-hover);
+      border-color: var(--accent-hover);
+    }
+
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--text);
+      border-color: var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: var(--surface-subtle);
+      border-color: var(--border-strong);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--muted);
+      border-color: transparent;
+    }
+
+    .btn-ghost:hover:not(:disabled) {
+      color: var(--text);
+      background: var(--surface-subtle);
+    }
+
+    .btn-icon {
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      background: transparent;
+      color: var(--muted);
+      border-color: transparent;
+      font-size: 15px;
+    }
+
+    .btn-icon:hover:not(:disabled) {
+      background: var(--surface-subtle);
+      color: var(--text);
+    }
+
+    /* Main Landing Container */
+    .container {
+      max-width: 780px;
+      margin: 40px auto;
+      padding: 0 20px 72px;
+    }
+
+    .sites-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* Thin Horizontal Bars & Accordion */
+    .site-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-shadow: var(--shadow-sm);
+      transition: border-color 0.16s ease, box-shadow 0.16s ease;
+      overflow: hidden;
+    }
+
+    .site-card:hover {
+      border-color: var(--border-strong);
+    }
+
+    .site-card.expanded {
+      border-color: var(--border-strong);
+      box-shadow: var(--shadow-md);
+    }
+
+    .site-bar {
+      width: 100%;
+      min-height: 50px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      user-select: none;
+      background: transparent;
+      transition: background-color 0.14s ease;
+    }
+
+    .site-bar:hover {
+      background: var(--surface-hover);
+    }
+
+    .site-status-icon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .site-title {
+      flex: 1;
+      min-width: 0;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      letter-spacing: -0.005em;
+    }
+
+    .site-chevron {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.14s ease;
+    }
+
+    .site-card.expanded .site-chevron {
+      transform: rotate(90deg);
+      color: var(--text);
+    }
+
+    .site-drawer-wrap {
+      display: grid;
+      grid-template-rows: 0fr;
+      opacity: 0;
+      visibility: hidden;
+      transition: grid-template-rows 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.18s ease, visibility 0.22s ease;
+    }
+
+    .site-card.expanded .site-drawer-wrap {
+      grid-template-rows: 1fr;
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .site-drawer-inner {
+      overflow: hidden;
+    }
+
+    .site-drawer {
+      border-top: 1px solid var(--border);
+      background: var(--surface-subtle);
+      padding: 14px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Drawer Row 1: Technical Summary Strip */
+    .drawer-tech-strip {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .vote-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 500;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+
+    .vote-chip.clean {
+      border-color: var(--green-border);
+      background: var(--green-soft);
+      color: var(--green-text);
+    }
+
+    .vote-chip.flagged {
+      border-color: var(--red-border);
+      background: var(--red-soft);
+      color: var(--red-text);
+    }
+
+    .meta-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 9px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .trust-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      border: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .trust-chip.high {
+      color: var(--green-text);
+      background: var(--green-soft);
+      border-color: var(--green-border);
+    }
+
+    .trust-chip.moderate {
+      color: var(--amber-text);
+      background: var(--amber-soft);
+      border-color: var(--amber-border);
+    }
+
+    .trust-chip.low {
+      color: var(--red-text);
+      background: var(--red-soft);
+      border-color: var(--red-border);
+    }
+
+    .unreviewed-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .unreviewed-note {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .unreviewed-note.error {
+      color: var(--red-text);
+    }
+
+    /* Drawer Row 2: Three Required Options */
+    .drawer-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Empty / Loading Skeletons */
+    .skeleton-bar {
+      height: 50px;
+      border-radius: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .skeleton-bar::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(148, 163, 184, 0.12), transparent);
+      transform: translateX(-100%);
+      animation: shimmer 1.3s infinite;
+    }
+
+    @keyframes shimmer {
+      100% { transform: translateX(100%); }
+    }
+
+    .empty-state {
+      background: var(--surface);
+      border: 1px dashed var(--border-strong);
+      border-radius: 10px;
+      padding: 36px 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13.5px;
+    }
+
+    /* Modals */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: var(--backdrop);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+      animation: fadeIn 0.15s ease;
+    }
+
+    .modal-backdrop.nested {
+      z-index: 200;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal {
+      width: 100%;
+      max-width: 900px;
+      max-height: 88vh;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: var(--shadow-modal);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .modal.modal-summary {
+      max-width: 840px;
+    }
+
+    .modal.modal-inspector {
+      max-width: 680px;
+      max-height: 84vh;
+    }
+
+    .modal.modal-narrow {
+      max-width: 450px;
+    }
+
+    .modal-head {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: var(--surface);
+      flex-shrink: 0;
+    }
+
+    .modal-head-text {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .modal-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .modal-subtitle {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .modal-head-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .modal-close {
+      width: 30px;
+      height: 30px;
+      border-radius: 7px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.12s ease, color 0.12s ease;
+    }
+
+    .modal-close:hover {
+      background: var(--surface-subtle);
+      color: var(--text);
+    }
+
+    .modal-body {
+      padding: 20px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    /* Hint Banner in Reader */
+    .reader-hint {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 10px 14px;
+      margin-bottom: 18px;
+      border-radius: 8px;
+      background: var(--accent-soft);
+      border: 1px solid var(--accent-border);
+      color: var(--text-secondary);
+      font-size: 13px;
+    }
+
+    .reader-hint strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* Extracted Images Section in Reader */
+    .reader-images-block {
+      margin-bottom: 24px;
+    }
+
+    .section-eyebrow {
+      font-size: 11.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .reader-images-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
+      gap: 12px;
+    }
+
+    .reader-img-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+    }
+
+    .reader-img-card.clickable {
+      cursor: pointer;
+    }
+
+    .reader-img-card.clickable:hover {
+      border-color: var(--border-strong);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-1px);
+    }
+
+    .reader-img-card.flagged {
+      border-color: var(--red-border);
+      box-shadow: inset 3px 0 0 var(--red);
+      background: var(--red-soft);
+    }
+
+    .reader-img-card.flagged:hover {
+      border-color: var(--red);
+    }
+
+    .reader-img-thumb {
+      width: 100%;
+      height: 130px;
+      object-fit: cover;
+      background: var(--surface-subtle);
+      display: block;
+    }
+
+    .img-fallback {
+      width: 100%;
+      height: 130px;
+      background: var(--surface-subtle);
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .reader-img-meta {
+      padding: 9px 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .reader-img-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .code-id {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: var(--code-bg);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+
+    .reader-img-alt {
+      font-size: 12px;
+      color: var(--muted);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Article Reader Sections */
+    .reader-sections {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .reader-sec {
+      padding: 16px 18px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      transition: border-color 0.15s ease, background-color 0.15s ease;
+    }
+
+    .reader-sec.reviewed-clean {
+      cursor: pointer;
+    }
+
+    .reader-sec.reviewed-clean:hover {
+      border-color: var(--border-strong);
+      background: var(--surface-hover);
+    }
+
+    .reader-sec.flagged {
+      border-color: var(--red-border);
+      border-left: 3.5px solid var(--red);
+      background: var(--red-soft);
+      cursor: pointer;
+    }
+
+    .reader-sec.flagged.partial {
+      border-color: var(--amber-border);
+      border-left: 3.5px solid var(--amber);
+      background: var(--amber-soft);
+    }
+
+    .reader-sec-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .reader-sec-tags {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .inspect-hint {
+      font-family: inherit;
+      font-size: 11.5px;
+      font-weight: 500;
+      color: var(--muted);
+      opacity: 0.88;
+      background: transparent;
+      border: none;
+      padding: 2px 6px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.12s ease, opacity 0.12s ease;
+    }
+
+    .inspect-hint:hover {
+      opacity: 1;
+      background: var(--surface-subtle);
+    }
+
+    .inspect-hint:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .reader-sec.flagged .inspect-hint {
+      color: var(--red-text);
+    }
+
+    .reader-sec.flagged.partial .inspect-hint {
+      color: var(--amber-text);
+    }
+
+    .reader-sec-title {
+      font-size: 16.5px;
+      font-weight: 650;
+      line-height: 1.35;
+      color: var(--text);
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+
+    .reader-sec-title a,
+    .reader-sec-body a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .reader-sec-body {
+      font-size: 14.5px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+
+    .reader-sec-body p {
+      margin-bottom: 10px;
+    }
+
+    .reader-sec-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    .reader-sec-body ul,
+    .reader-sec-body ol {
+      padding-left: 20px;
+      margin-bottom: 10px;
+    }
+
+    .reader-sec-body li {
+      margin-bottom: 4px;
+    }
+
+    .reader-sec-body blockquote {
+      border-left: 3px solid var(--border-strong);
+      padding-left: 12px;
+      color: var(--muted);
+      margin: 10px 0;
+    }
+
+    .reader-sec-body img {
+      max-width: 100%;
+      max-height: 320px;
+      border-radius: 8px;
+      margin: 8px 0;
+      border: 1px solid var(--border);
+      display: block;
+    }
+
+    .reader-sec-body code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.88em;
+      padding: 1px 5px;
+      border-radius: 4px;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+    }
+
+    /* Clickable Trigger Quote Highlight */
+    mark.flag-mark {
+      background: var(--mark-bg);
+      color: inherit;
+      padding: 1px 4px;
+      border-radius: 4px;
+      border-bottom: 1.5px solid var(--mark-border);
+      cursor: pointer;
+      transition: background-color 0.14s ease;
+    }
+
+    mark.flag-mark:hover {
+      background: var(--mark-bg-hover);
+    }
+
+    /* Pills & Badges */
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 550;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-secondary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .pill.red {
+      background: var(--red-soft);
+      border-color: var(--red-border);
+      color: var(--red-text);
+    }
+
+    .pill.amber {
+      background: var(--amber-soft);
+      border-color: var(--amber-border);
+      color: var(--amber-text);
+    }
+
+    .pill.green {
+      background: var(--green-soft);
+      border-color: var(--green-border);
+      color: var(--green-text);
+    }
+
+    .pill.accent {
+      background: var(--accent-soft);
+      border-color: var(--accent-border);
+      color: var(--accent);
+    }
+
+    [data-theme="dark"] .pill.accent {
+      color: #a5b4fc;
+    }
+
+    /* Vote Inspector Modal */
+    .inspector-subject {
+      padding: 14px 16px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--surface-subtle);
+      margin-bottom: 16px;
+    }
+
+    .inspector-subject-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .inspector-heading {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    .inspector-quote {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-left: 3px solid var(--red);
+      background: var(--surface);
+      border-radius: 0 7px 7px 0;
+      font-size: 13.5px;
+      color: var(--text);
+      font-style: italic;
+    }
+
+    .inspector-img-preview {
+      margin-top: 8px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .inspector-img-preview img {
+      max-width: 220px;
+      max-height: 160px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      object-fit: contain;
+      background: var(--surface);
+    }
+
+    .verdict-note {
+      padding: 10px 13px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+
+    .explainer-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .explainer-card {
+      padding: 11px 13px;
+      border-radius: 8px;
+      border: 1px solid var(--accent-border);
+      background: var(--accent-soft);
+    }
+
+    .explainer-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 3px;
+    }
+
+    .explainer-desc {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .model-vote-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .model-vote-item {
+      padding: 12px 14px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .model-vote-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .model-vote-name {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .model-vote-reason {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    .model-vote-quote {
+      margin-top: 7px;
+      font-size: 12px;
+      color: var(--muted);
+      padding: 6px 9px;
+      border-radius: 6px;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+    }
+
+    /* Summary Modal (Option 2) */
+    .summary-banner {
+      padding: 16px 18px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      margin-bottom: 18px;
+    }
+
+    .summary-banner.questionable {
+      background: var(--red-soft);
+      border-color: var(--red-border);
+    }
+
+    .summary-banner.split {
+      background: var(--amber-soft);
+      border-color: var(--amber-border);
+    }
+
+    .summary-banner.clean {
+      background: var(--green-soft);
+      border-color: var(--green-border);
+    }
+
+    .summary-banner-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .summary-verdict-title {
+      font-size: 15px;
+      font-weight: 650;
+      color: var(--text);
+    }
+
+    .ratio-track {
+      height: 7px;
+      border-radius: 999px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .ratio-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: var(--green);
+      transition: width 0.3s ease;
+    }
+
+    .summary-banner.questionable .ratio-fill { background: var(--red); }
+    .summary-banner.split .ratio-fill { background: var(--amber); }
+
+    .summary-plain-text {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    .pills-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    /* Provenance Panel */
+    .provenance-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      background: var(--surface);
+      margin-bottom: 18px;
+    }
+
+    .provenance-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .provenance-score-num {
+      font-size: 20px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em;
+    }
+
+    .provenance-summary {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .signals-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .signal-item {
+      padding: 11px 13px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface-subtle);
+    }
+
+    .signal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .signal-label {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .signal-score {
+      font-size: 12px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      color: var(--text-secondary);
+    }
+
+    .signal-bar {
+      height: 5px;
+      border-radius: 999px;
+      background: var(--border);
+      overflow: hidden;
+      margin-bottom: 7px;
+    }
+
+    .signal-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+    }
+
+    .signal-bar-fill.high { background: var(--green); }
+    .signal-bar-fill.moderate { background: var(--amber); }
+    .signal-bar-fill.low { background: var(--red); }
+
+    .signal-detail {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    /* Side-by-side Model Cards */
+    .models-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+      gap: 12px;
+    }
+
+    .model-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      background: var(--surface);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .model-card-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .model-card-name {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .model-card-focus {
+      font-size: 11.5px;
+      color: var(--muted);
+      margin-top: 2px;
+      line-height: 1.4;
+    }
+
+    .model-card-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .model-card-reason {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Metrics Modal */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .kpi-card {
+      padding: 12px 13px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      background: var(--surface-subtle);
+    }
+
+    .kpi-label {
+      font-size: 11.5px;
+      color: var(--muted);
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .kpi-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em;
+    }
+
+    .kpi-sub {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .metrics-two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .panel-box {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      background: var(--surface);
+    }
+
+    .cm-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .cm-cell {
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface-subtle);
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+    }
+
+    .cm-cell strong {
+      font-size: 17px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .cm-cell span {
+      font-size: 11.5px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .stat-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .stat-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .stat-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .stat-row span {
+      color: var(--muted);
+    }
+
+    .stat-row strong {
+      color: var(--text);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .metrics-table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    .metrics-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      text-align: left;
+    }
+
+    .metrics-table th {
+      background: var(--surface-subtle);
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 11.5px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    .metrics-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .metrics-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .metrics-table td:first-child {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    /* Add URL Form */
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-size: 13px;
+      font-weight: 550;
+      color: var(--text);
+    }
+
+    .form-input {
+      width: 100%;
+      height: 38px;
+      padding: 0 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border-strong);
+      background: var(--surface);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 13.5px;
+      transition: border-color 0.14s ease, box-shadow 0.14s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+
+    .form-help {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .form-error {
+      margin-top: 10px;
+      padding: 8px 10px;
+      border-radius: 7px;
+      background: var(--red-soft);
+      border: 1px solid var(--red-border);
+      color: var(--red-text);
+      font-size: 12.5px;
+    }
+
+    .modal-footer {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    @media (max-width: 680px) {
+      .container {
+        margin: 24px auto;
+        padding: 0 14px 56px;
+      }
+      .signals-grid,
+      .metrics-two-col {
+        grid-template-columns: 1fr;
+      }
+      .kpi-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .modal-backdrop {
+        padding: 12px;
+      }
+      .modal-body {
+        padding: 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .topbar-inner {
+        padding: 0 12px;
+        gap: 8px;
+      }
+      .topbar-actions {
+        gap: 3px;
+      }
+      .btn {
+        font-size: 12px;
+        padding: 0 8px;
+        height: 30px;
+      }
+      .btn-icon {
+        width: 30px;
+        height: 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a href="/" class="brand" aria-label="CheckEm Home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span>CheckEm</span>
+      </a>
+      <nav class="topbar-actions" aria-label="Primary actions">
+        <a href="/slides" class="btn btn-ghost">Slides</a>
+        <button type="button" class="btn btn-ghost" id="metrics-btn">Metrics</button>
+        <button type="button" class="btn btn-secondary" id="add-url-btn">+ Add URL</button>
+        <button type="button" class="btn btn-icon" id="theme-toggle-btn" aria-label="Switch theme" title="Switch theme">🌙</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="sites-list" class="sites-list" role="list" aria-label="Reviewed web pages">
+      <div class="skeleton-bar"></div>
+      <div class="skeleton-bar"></div>
+      <div class="skeleton-bar"></div>
+      <div class="skeleton-bar"></div>
+      <div class="skeleton-bar"></div>
+    </div>
+  </main>
+
+  <!-- Option 1 Modal: Full Page & Highlights Reader -->
+  <div class="modal-backdrop" id="reader-modal" role="dialog" aria-modal="true" aria-labelledby="reader-title">
+    <div class="modal">
+      <div class="modal-head">
+        <div class="modal-head-text">
+          <div class="modal-title" id="reader-title">Full Page &amp; Highlights</div>
+          <div class="modal-subtitle" id="reader-subtitle"></div>
+        </div>
+        <div class="modal-head-actions">
+          <button type="button" class="modal-close" data-close-modal="reader-modal" aria-label="Close reader">✕</button>
+        </div>
+      </div>
+      <div class="modal-body" id="reader-body"></div>
+    </div>
+  </div>
+
+  <!-- Nested Modal: Individual Section / Image Vote Inspector -->
+  <div class="modal-backdrop nested" id="inspector-modal" role="dialog" aria-modal="true" aria-labelledby="inspector-title">
+    <div class="modal modal-inspector">
+      <div class="modal-head">
+        <div class="modal-head-text">
+          <div class="modal-title" id="inspector-title">Vote Inspector</div>
+          <div class="modal-subtitle" id="inspector-subtitle"></div>
+        </div>
+        <div class="modal-head-actions">
+          <button type="button" class="modal-close" data-close-modal="inspector-modal" aria-label="Close inspector">✕</button>
+        </div>
+      </div>
+      <div class="modal-body" id="inspector-body"></div>
+    </div>
+  </div>
+
+  <!-- Option 2 Modal: Concise Model Summary & Provenance -->
+  <div class="modal-backdrop" id="summary-modal" role="dialog" aria-modal="true" aria-labelledby="summary-title">
+    <div class="modal modal-summary">
+      <div class="modal-head">
+        <div class="modal-head-text">
+          <div class="modal-title" id="summary-title">Concise Model Summary</div>
+          <div class="modal-subtitle" id="summary-subtitle"></div>
+        </div>
+        <div class="modal-head-actions">
+          <button type="button" class="btn btn-secondary" id="summary-rerun-btn">Re-run AI Review</button>
+          <button type="button" class="modal-close" data-close-modal="summary-modal" aria-label="Close summary">✕</button>
+        </div>
+      </div>
+      <div class="modal-body" id="summary-body"></div>
+    </div>
+  </div>
+
+  <!-- Header Modal: Benchmark Precision & FPR Metrics -->
+  <div class="modal-backdrop" id="metrics-modal" role="dialog" aria-modal="true" aria-labelledby="metrics-title">
+    <div class="modal modal-summary">
+      <div class="modal-head">
+        <div class="modal-head-text">
+          <div class="modal-title" id="metrics-title">Ensemble Benchmark Metrics</div>
+          <div class="modal-subtitle">Precision, Recall, False-Positive Rate &amp; Inter-Model Agreement</div>
+        </div>
+        <div class="modal-head-actions">
+          <button type="button" class="modal-close" data-close-modal="metrics-modal" aria-label="Close metrics">✕</button>
+        </div>
+      </div>
+      <div class="modal-body" id="metrics-body"></div>
+    </div>
+  </div>
+
+  <!-- Header Modal: Add URL -->
+  <div class="modal-backdrop" id="add-site-modal" role="dialog" aria-modal="true" aria-labelledby="add-site-title">
+    <div class="modal modal-narrow">
+      <div class="modal-head">
+        <div class="modal-head-text">
+          <div class="modal-title" id="add-site-title">Add Website URL</div>
+          <div class="modal-subtitle">Scrape &amp; analyze a public page</div>
+        </div>
+        <div class="modal-head-actions">
+          <button type="button" class="modal-close" data-close-modal="add-site-modal" aria-label="Close add URL modal">✕</button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <form id="add-site-form">
+          <div class="form-field">
+            <label class="form-label" for="new-site-url">Public URL</label>
+            <input
+              type="text"
+              id="new-site-url"
+              class="form-input"
+              placeholder="https://en.wikipedia.org/wiki/Media_bias"
+              autocomplete="url"
+              required
+            />
+            <div class="form-help">Extracts readable sections, images, and source provenance automatically.</div>
+          </div>
+          <div class="form-error" id="add-site-error" hidden></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-ghost" data-close-modal="add-site-modal">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="add-site-submit">Add &amp; Scrape</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const TECHNIQUE_EXPLANATIONS = {
+      'Loaded Language': 'Uses emotionally charged, sensational, or morally condemning words instead of neutral descriptions to steer readers toward anger, approval, or distrust before weighing facts.',
+      'Fear Appeal': 'Amplifies worst-case threats or urgency to induce dread and push readers into accepting claims without calm evaluation of evidence.',
+      'Whataboutism': 'Deflects scrutiny from a claim or critique by pointing to an unrelated fault or hypocrisy of opponents.',
+      'Fabricated Authority': 'Cites impressive-sounding but unverifiable institutes, suppressed studies, or anonymous insiders to manufacture unearned credibility.',
+      'False Dilemma': 'Frames a complex issue as having only two extreme choices or outcomes, obscuring practical middle-ground alternatives.',
+      'Scapegoating / Ad Hominem': 'Blames a targeted group or attacks critics\' personal motives rather than addressing verifiable evidence.',
+      'AI-Generated / Synthetic Image': 'Displays hallmarks of generative AI synthesis (unnatural textures, anatomical/text artifacts, or synthetic origin) that can mislead if presented as documentary photography.',
+      'Manipulative Visual Framing': 'Uses staged, altered, out-of-context, or emotionally sensationalized imagery to bias reader conclusions.',
+      'Scapegoating': 'Assigns collective blame to a group rather than examining systemic causes or verifiable facts.',
+      'Ad Hominem': 'Attacks the character or motives of speakers instead of evaluating the substance of their claims.'
+    };
+
+    const state = {
+      websites: [],
+      models: [],
+      expandedSiteId: null,
+      activeModalSiteId: null,
+      busySiteIds: new Set()
+    };
+
+    /* ----- Theme Management (Light Default, localStorage 'nt_theme') ----- */
+    function applyTheme(theme) {
+      const normalized = theme === 'dark' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', normalized);
+      try {
+        localStorage.setItem('nt_theme', normalized);
+      } catch (e) {}
+      const btn = document.getElementById('theme-toggle-btn');
+      if (btn) {
+        btn.textContent = normalized === 'dark' ? '☀️' : '🌙';
+        const label = normalized === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
+        btn.setAttribute('aria-label', label);
+        btn.setAttribute('title', label);
+      }
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'light';
+      applyTheme(current === 'light' ? 'dark' : 'light');
+    }
+
+    /* ----- Safe Utilities ----- */
+    function escapeHtml(str) {
+      return String(str ?? '').replace(/[&<>"']/g, ch => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[ch]));
+    }
+
+    function safeHref(url) {
+      const raw = String(url || '').trim();
+      if (!raw) return '';
+      if (raw.startsWith('/') && !raw.startsWith('//')) return raw;
+      try {
+        const parsed = new URL(raw, window.location.origin);
+        if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+          return raw;
+        }
+      } catch (e) {}
+      return '';
+    }
+
+    function safeImgSrc(src) {
+      const raw = String(src || '').trim();
+      if (!raw) return '';
+      if (raw.startsWith('data:image/')) return raw;
+      return safeHref(raw);
+    }
+
+    function formatPct(val) {
+      if (val === null || val === undefined || Number.isNaN(Number(val))) return '—';
+      const n = Number(val);
+      const pct = n <= 1 && n >= 0 ? n * 100 : n;
+      return `${pct.toFixed(1).replace(/\.0$/, '')}%`;
+    }
+
+    function explainTechnique(name) {
+      if (TECHNIQUE_EXPLANATIONS[name]) return TECHNIQUE_EXPLANATIONS[name];
+      const lower = String(name || '').toLowerCase();
+      for (const [k, v] of Object.entries(TECHNIQUE_EXPLANATIONS)) {
+        if (k.toLowerCase() === lower || lower.includes(k.toLowerCase()) || k.toLowerCase().includes(lower)) {
+          return v;
+        }
+      }
+      return 'Flagged by the ensemble as a persuasive framing or synthetic-media signal that warrants critical verification.';
+    }
+
+    function getSiteById(siteId) {
+      return state.websites.find(s => s.id === siteId) || null;
+    }
+
+    /* ----- Modal Lifecycle ----- */
+    const MODAL_STACK_ORDER = ['inspector-modal', 'reader-modal', 'summary-modal', 'metrics-modal', 'add-site-modal'];
+
+    function syncBodyScrollLock() {
+      const anyOpen = MODAL_STACK_ORDER.some(id => document.getElementById(id)?.classList.contains('open'));
+      document.body.classList.toggle('modal-open', anyOpen);
+    }
+
+    function openModal(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.classList.add('open');
+      syncBodyScrollLock();
+    }
+
+    function closeModal(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.classList.remove('open');
+      syncBodyScrollLock();
+    }
+
+    function closeTopmostModal() {
+      for (const id of MODAL_STACK_ORDER) {
+        const el = document.getElementById(id);
+        if (el && el.classList.contains('open')) {
+          closeModal(id);
+          return;
+        }
+      }
+    }
+
+    /* ----- Status Color Classification ----- */
+    function getStatusColor(site) {
+      const pe = site.review?.page_ensemble;
+      const fSec = site.review?.flagged_sections_count ?? 0;
+      const fImg = site.review?.flagged_images_count ?? 0;
+
+      if (pe?.verdict === 'questionable' || site.status === 'error') {
+        return { color: '#ef4444', key: 'red', label: 'Flagged content' };
+      }
+      if (
+        site.status === 'reviewed' &&
+        pe?.verdict === 'clean' &&
+        fSec === 0 &&
+        fImg === 0
+      ) {
+        return { color: '#10b981', key: 'green', label: 'Clean content' };
+      }
+      return { color: '#f59e0b', key: 'amber', label: 'Mixed or unreviewed content' };
+    }
+
+    function renderStatusIconSvg(statusInfo) {
+      return `
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <circle cx="8" cy="8" r="7" fill="${statusInfo.color}" fill-opacity="0.16"/>
+          <circle cx="8" cy="8" r="4" fill="${statusInfo.color}"/>
+        </svg>
+      `;
+    }
+
+    function renderChevronSvg() {
+      return `
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M6 3.5L10.5 8L6 12.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      `;
+    }
+
+    function renderCheckSvg() {
+      return `<svg width="11" height="11" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    }
+
+    function renderFlagDotSvg() {
+      return `<svg width="8" height="8" viewBox="0 0 8 8" fill="none" aria-hidden="true"><circle cx="4" cy="4" r="3.5" fill="currentColor"/></svg>`;
+    }
+
+    /* ----- Render Thin Horizontal Bar List ----- */
+    function renderSitesList() {
+      const listEl = document.getElementById('sites-list');
+      if (!state.websites.length) {
+        listEl.innerHTML = `<div class="empty-state">No URLs added yet. Click <strong>+ Add URL</strong> in the top bar to evaluate a page.</div>`;
+        return;
+      }
+
+      listEl.innerHTML = state.websites.map(site => {
+        const isExpanded = state.expandedSiteId === site.id;
+        const statusInfo = getStatusColor(site);
+        const drawerId = `drawer-${site.id}`;
+        const title = site.title || site.domain || site.url || site.id;
+
+        return `
+          <div class="site-card ${isExpanded ? 'expanded' : ''}" role="listitem" data-site-id="${escapeHtml(site.id)}">
+            <div
+              class="site-bar"
+              role="button"
+              tabindex="0"
+              aria-expanded="${isExpanded ? 'true' : 'false'}"
+              aria-controls="${escapeHtml(drawerId)}"
+              data-toggle-site="${escapeHtml(site.id)}"
+            >
+              <span class="site-status-icon" title="${escapeHtml(statusInfo.label)}">
+                ${renderStatusIconSvg(statusInfo)}
+              </span>
+              <span class="site-title">${escapeHtml(title)}</span>
+              <span class="site-chevron">${renderChevronSvg()}</span>
+            </div>
+            <div class="site-drawer-wrap" id="${escapeHtml(drawerId)}" aria-hidden="${isExpanded ? 'false' : 'true'}">
+              <div class="site-drawer-inner">
+                <div class="site-drawer">
+                  ${renderDrawerContent(site)}
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderDrawerContent(site) {
+      const isBusy = state.busySiteIds.has(site.id);
+      let row1Html = '';
+
+      if (site.review) {
+        const pe = site.review.page_ensemble || {};
+        const modelVotes = pe.model_votes || [];
+        const fSec = site.review.flagged_sections_count ?? 0;
+        const tSec = site.review.total_sections_count ?? (site.review.sections?.length || 0);
+        const fImg = site.review.flagged_images_count ?? 0;
+        const tImg = site.review.total_images_count ?? (site.review.images?.length || 0);
+
+        const voteChips = modelVotes.map(mv => {
+          const isQ = mv.vote === 'questionable';
+          return `
+            <span class="vote-chip ${isQ ? 'flagged' : 'clean'}">
+              ${isQ ? renderFlagDotSvg() : renderCheckSvg()}
+              <span>${escapeHtml(mv.model_name)}</span>
+              <span style="opacity:0.75;">· ${isQ ? 'Flagged' : 'Clean'}</span>
+            </span>
+          `;
+        }).join('');
+
+        const countsHtml = `
+          <span class="meta-chip">${fSec} / ${tSec} sections flagged</span>
+          <span class="meta-chip">${fImg} / ${tImg} images flagged</span>
+        `;
+
+        let trustHtml = '';
+        if (site.provenance && typeof site.provenance.overall_trust_score === 'number') {
+          const tierRaw = String(site.provenance.trust_tier || '').toLowerCase();
+          const tierClass = tierRaw === 'high' ? 'high' : (tierRaw === 'low' ? 'low' : 'moderate');
+          const tierLabel = tierRaw ? tierRaw.charAt(0).toUpperCase() + tierRaw.slice(1) : 'Rated';
+          trustHtml = `
+            <span class="trust-chip ${tierClass}">
+              Trust Score: ${site.provenance.overall_trust_score}/100 (${escapeHtml(tierLabel)})
+            </span>
+          `;
+        }
+
+        row1Html = `<div class="drawer-tech-strip">${voteChips}${countsHtml}${trustHtml}</div>`;
+      } else {
+        const noteText = site.status === 'error' && site.error_message
+          ? `Scrape issue: ${site.error_message}`
+          : 'Not yet reviewed by ensemble';
+        row1Html = `
+          <div class="drawer-tech-strip">
+            <div class="unreviewed-strip">
+              <span class="unreviewed-note ${site.status === 'error' ? 'error' : ''}">${escapeHtml(noteText)}</span>
+              <button
+                type="button"
+                class="btn btn-accent"
+                data-action="run-review"
+                data-site-id="${escapeHtml(site.id)}"
+                ${isBusy ? 'disabled' : ''}
+              >
+                ${isBusy ? 'Running AI Review…' : 'Run AI Review'}
+              </button>
+            </div>
+          </div>
+        `;
+      }
+
+      const row2Html = `
+        <div class="drawer-actions">
+          <button type="button" class="btn btn-primary" data-action="reader" data-site-id="${escapeHtml(site.id)}">
+            Full Page &amp; Highlights
+          </button>
+          <button type="button" class="btn btn-secondary" data-action="summary" data-site-id="${escapeHtml(site.id)}">
+            Concise Model Summary
+          </button>
+          <button type="button" class="btn btn-ghost" data-action="original" data-site-id="${escapeHtml(site.id)}">
+            Original Page ↗
+          </button>
+        </div>
+      `;
+
+      return row1Html + row2Html;
+    }
+
+    function toggleSiteAccordion(siteId) {
+      state.expandedSiteId = state.expandedSiteId === siteId ? null : siteId;
+      renderSitesList();
+    }
+
+    /* ----- API Refresh & Actions ----- */
+    async function refreshState() {
+      try {
+        const res = await fetch('/api/websites');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        state.websites = data.websites || [];
+        state.models = data.models || [];
+        renderSitesList();
+      } catch (err) {
+        document.getElementById('sites-list').innerHTML =
+          `<div class="empty-state">Unable to load reviewed pages (${escapeHtml(err.message)}).</div>`;
+      }
+    }
+
+    async function runReviewForSite(siteId) {
+      if (state.busySiteIds.has(siteId)) return null;
+      state.busySiteIds.add(siteId);
+      renderSitesList();
+
+      const rerunBtn = document.getElementById('summary-rerun-btn');
+      if (rerunBtn && state.activeModalSiteId === siteId) {
+        rerunBtn.disabled = true;
+        rerunBtn.textContent = 'Running Review…';
+      }
+
+      try {
+        const res = await fetch('/api/review', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ site_id: siteId })
+        });
+        const data = await res.json();
+        await refreshState();
+        return data;
+      } catch (err) {
+        return { ok: false, error: err.message };
+      } finally {
+        state.busySiteIds.delete(siteId);
+        renderSitesList();
+        if (rerunBtn) {
+          rerunBtn.disabled = false;
+          rerunBtn.textContent = 'Re-run AI Review';
+        }
+      }
+    }
+
+    /* ----- Safe Markdown Rendering ----- */
+    function formatInlineMarkdown(rawText) {
+      // Collapse multi-line linked images: [\n![alt](img)\n](href) -> ![alt](img)
+      let normalized = String(rawText || '').replace(
+        /\[\s*(!\[[^\]]*\]\([^)]+\))\s*\]\([^)]+\)/g,
+        '$1'
+      );
+      let s = escapeHtml(normalized);
+
+      // Wikipedia-style double-bracketed link [[18]](#cite...) -> [18]
+      s = s.replace(/\[(\[[^\]]+\])\]\(([^)\s]+)\)/g, (_, inner) => `<span style="color:var(--muted);font-size:0.85em;">${inner}</span>`);
+
+      // Images ![alt](url) supporting balanced parentheses inside URLs
+      s = s.replace(/!\[([^\]]*)\]\(([^\s()]*(?:\([^\s()]*\)[^\s()]*)*)\)/g, (_, alt, url) => {
+        const cleanSrc = safeImgSrc(url.replace(/&amp;/g, '&'));
+        if (!cleanSrc) return '';
+        return `<img src="${escapeHtml(cleanSrc)}" alt="${alt}" loading="lazy" data-img-fallback="true" />`;
+      });
+
+      // Links [text](url) supporting balanced parentheses inside URLs (e.g. Wikipedia)
+      s = s.replace(/\[([^\]]+)\]\(([^\s()]*(?:\([^\s()]*\)[^\s()]*)*)\)/g, (_, text, url) => {
+        const rawUrl = url.replace(/&amp;/g, '&');
+        const href = safeHref(rawUrl);
+        if (!href) return text;
+        return `<a href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">${text}</a>`;
+      });
+
+      s = s.replace(/`([^`]+)`/g, '<code>$1</code>');
+      s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      s = s.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+      return s;
+    }
+
+    function markdownToSafeHtml(md) {
+      const cleaned = String(md || '').replace(
+        /\[\s*(!\[[^\]]*\]\([^)]+\))\s*\]\([^)]+\)/g,
+        '$1'
+      );
+      const lines = cleaned.split(/\r?\n/);
+      let html = '';
+      let inList = false;
+
+      const closeList = () => {
+        if (inList) {
+          html += '</ul>';
+          inList = false;
+        }
+      };
+
+      for (const rawLine of lines) {
+        const line = rawLine.trim();
+        if (!line) {
+          closeList();
+          continue;
+        }
+        if (line.startsWith('### ')) {
+          closeList();
+          html += `<h3>${formatInlineMarkdown(line.slice(4))}</h3>`;
+        } else if (line.startsWith('## ')) {
+          closeList();
+          html += `<h2>${formatInlineMarkdown(line.slice(3))}</h2>`;
+        } else if (line.startsWith('# ')) {
+          closeList();
+          html += `<h1>${formatInlineMarkdown(line.slice(2))}</h1>`;
+        } else if (line.startsWith('> ')) {
+          closeList();
+          html += `<blockquote>${formatInlineMarkdown(line.slice(2))}</blockquote>`;
+        } else if (line.startsWith('- ') || line.startsWith('* ')) {
+          if (!inList) {
+            html += '<ul>';
+            inList = true;
+          }
+          html += `<li>${formatInlineMarkdown(line.slice(2))}</li>`;
+        } else {
+          closeList();
+          html += `<p>${formatInlineMarkdown(line)}</p>`;
+        }
+      }
+      closeList();
+      return html || '<p style="color:var(--muted);">(No text extracted for this section)</p>';
+    }
+
+    function normalizeForQuoteMatch(str) {
+      return str
+        .toLowerCase()
+        .replace(/[\u2018\u2019]/g, "'")
+        .replace(/[\u201c\u201d]/g, '"');
+    }
+
+    /* DOM-safe text-node quote highlighter so attributes & HTML tags are never broken */
+    function highlightQuotesInElement(rootEl, quotes, sectionId) {
+      const cleanQuotes = [...new Set((quotes || []).map(q => String(q || '').trim()).filter(q => q.length > 3))];
+      if (!cleanQuotes.length) return;
+      cleanQuotes.sort((a, b) => b.length - a.length);
+
+      for (const quote of cleanQuotes) {
+        const normQuote = normalizeForQuoteMatch(quote);
+        const walker = document.createTreeWalker(rootEl, NodeFilter.SHOW_TEXT, {
+          acceptNode(node) {
+            if (!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+            if (node.parentElement && node.parentElement.closest('mark.flag-mark, script, style')) {
+              return NodeFilter.FILTER_REJECT;
+            }
+            return NodeFilter.FILTER_ACCEPT;
+          }
+        });
+
+        const textNodes = [];
+        let curr;
+        while ((curr = walker.nextNode())) {
+          textNodes.push(curr);
+        }
+
+        for (const textNode of textNodes) {
+          const text = textNode.nodeValue;
+          const normText = normalizeForQuoteMatch(text);
+          let searchFrom = 0;
+          let idx = normText.indexOf(normQuote, searchFrom);
+          if (idx === -1) continue;
+
+          const frag = document.createDocumentFragment();
+          while (idx !== -1) {
+            if (idx > searchFrom) {
+              frag.appendChild(document.createTextNode(text.slice(searchFrom, idx)));
+            }
+            const mark = document.createElement('mark');
+            mark.className = 'flag-mark';
+            mark.setAttribute('role', 'button');
+            mark.setAttribute('tabindex', '0');
+            mark.setAttribute('data-inspect-section', sectionId);
+            mark.setAttribute('aria-label', 'Inspect model votes for highlighted phrase');
+            mark.textContent = text.slice(idx, idx + quote.length);
+            frag.appendChild(mark);
+
+            searchFrom = idx + quote.length;
+            idx = normText.indexOf(normQuote, searchFrom);
+          }
+          if (searchFrom < text.length) {
+            frag.appendChild(document.createTextNode(text.slice(searchFrom)));
+          }
+          textNode.parentNode.replaceChild(frag, textNode);
+        }
+      }
+    }
+
+    function wireImageFallbacks(container) {
+      container.querySelectorAll('img[data-img-fallback="true"]').forEach(img => {
+        img.addEventListener('error', () => {
+          const box = document.createElement('div');
+          box.className = 'img-fallback';
+          box.textContent = img.getAttribute('alt') || 'Image preview unavailable';
+          img.replaceWith(box);
+        }, { once: true });
+      });
+    }
+
+    /* ----- Option 1: Full Page & Highlights Reader Modal ----- */
+    async function openReaderModal(siteId) {
+      const site = getSiteById(siteId);
+      if (!site) return;
+
+      state.activeModalSiteId = siteId;
+      document.getElementById('reader-title').textContent = site.title || site.domain || 'Full Page & Highlights';
+      document.getElementById('reader-subtitle').textContent = site.url || site.domain || '';
+      const bodyEl = document.getElementById('reader-body');
+      openModal('reader-modal');
+
+      if (!site.pages || !site.pages.length) {
+        bodyEl.innerHTML = `<div class="reader-hint">Fetching readable page content and images…</div>`;
+        try {
+          const res = await fetch('/api/scrape', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ site_id: siteId })
+          });
+          const data = await res.json();
+          await refreshState();
+          const updated = getSiteById(siteId);
+          if (!data.ok || !updated?.pages?.length) {
+            bodyEl.innerHTML = `<div class="form-error">${escapeHtml(data.error || 'Could not scrape page content.')}</div>`;
+            return;
+          }
+          renderReaderContent(updated);
+        } catch (err) {
+          bodyEl.innerHTML = `<div class="form-error">Scrape error: ${escapeHtml(err.message)}</div>`;
+        }
+        return;
+      }
+
+      renderReaderContent(site);
+    }
+
+    function renderReaderContent(site) {
+      const bodyEl = document.getElementById('reader-body');
+      const page = site.pages?.[0];
+      if (!page) {
+        bodyEl.innerHTML = `<div class="empty-state">No scraped page content available.</div>`;
+        return;
+      }
+
+      const review = site.review;
+      const revSectionsById = {};
+      (review?.sections || []).forEach(s => { revSectionsById[s.section_id] = s; });
+      const revImagesById = {};
+      (review?.images || []).forEach(im => { revImagesById[im.image_id] = im; });
+
+      const rawSections = (page.sections && page.sections.length)
+        ? page.sections
+        : (review?.sections || []);
+      const rawImages = (page.images && page.images.length)
+        ? page.images
+        : (review?.images || []);
+
+      const metaSub = [
+        site.domain,
+        page.word_count ? `${page.word_count} words` : null,
+        `${rawSections.length} sections`,
+        `${rawImages.length} images`
+      ].filter(Boolean).join(' · ');
+      document.getElementById('reader-subtitle').textContent = metaSub;
+
+      const hintBanner = `
+        <div class="reader-hint">
+          <span aria-hidden="true">💡</span>
+          <span>Click any <strong>highlighted section or image</strong> to inspect individual model votes &amp; reasoning.</span>
+        </div>
+      `;
+
+      const imagesHtml = rawImages.length ? `
+        <div class="reader-images-block">
+          <div class="section-eyebrow">Extracted Images (${rawImages.length})</div>
+          <div class="reader-images-grid">
+            ${rawImages.map(im => {
+              const revImg = revImagesById[im.image_id] || im;
+              const isReviewed = Boolean(review && revImagesById[im.image_id]);
+              const isFlagged = Boolean(revImg.is_flagged);
+              const src = safeImgSrc(im.src);
+              const qVotes = revImg.questionable_votes ?? 0;
+              const totalM = revImg.total_models ?? (review?.models_count || 0);
+              const flags = (revImg.consensus_flags || []).map(f =>
+                `<span class="pill red">${escapeHtml(f.name)}</span>`
+              ).join('');
+
+              const badgeHtml = isFlagged
+                ? `<span class="pill red">Flagged ${qVotes}/${totalM}</span>`
+                : (isReviewed ? `<span class="pill green">Clean</span>` : `<span class="pill">Unreviewed</span>`);
+
+              return `
+                <div
+                  class="reader-img-card ${isFlagged ? 'flagged' : ''} ${isReviewed ? 'clickable' : ''}"
+                  ${isReviewed ? `role="button" tabindex="0" data-inspect-image="${escapeHtml(im.image_id)}"` : ''}
+                >
+                  ${src
+                    ? `<img class="reader-img-thumb" src="${escapeHtml(src)}" alt="${escapeHtml(im.alt || im.image_id)}" loading="lazy" data-img-fallback="true" />`
+                    : `<div class="img-fallback">No image preview</div>`
+                  }
+                  <div class="reader-img-meta">
+                    <div class="reader-img-top">
+                      <code class="code-id">${escapeHtml(im.image_id)}</code>
+                      ${badgeHtml}
+                    </div>
+                    ${flags ? `<div style="display:flex;flex-wrap:wrap;gap:4px;">${flags}</div>` : ''}
+                    <div class="reader-img-alt">${escapeHtml(im.alt || 'Extracted page image')}</div>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      ` : '';
+
+      let sectionsHtml = '';
+      if (rawSections.length) {
+        sectionsHtml = `
+          <div class="section-eyebrow">Page Sections (${rawSections.length})</div>
+          <div class="reader-sections">
+            ${rawSections.map(sec => {
+              const revSec = revSectionsById[sec.section_id] || sec;
+              const isReviewed = Boolean(review && revSectionsById[sec.section_id]);
+              const isFlagged = Boolean(revSec.is_flagged);
+              const qVotes = revSec.questionable_votes ?? 0;
+              const totalM = revSec.total_models ?? (review?.models_count || 0);
+              const isPartial = isFlagged && totalM > 0 && qVotes < totalM;
+
+              const techPills = (revSec.consensus_techniques || []).map(t =>
+                `<span class="pill ${isPartial ? 'amber' : 'red'}">${escapeHtml(t.name)} (${t.count}/${totalM})</span>`
+              ).join('');
+
+              const statusPill = isFlagged
+                ? `<span class="pill ${isPartial ? 'amber' : 'red'}">${qVotes}/${totalM} models flagged</span>`
+                : (isReviewed ? `<span class="pill green">Clean</span>` : '');
+
+              const inspectCue = isReviewed
+                ? `<button type="button" class="inspect-hint" data-inspect-section="${escapeHtml(sec.section_id)}">${isFlagged ? 'Click to inspect votes →' : 'Inspect votes'}</button>`
+                : '';
+
+              return `
+                <article
+                  class="reader-sec ${isFlagged ? (isPartial ? 'flagged partial' : 'flagged') : (isReviewed ? 'reviewed-clean' : '')}"
+                  data-section-id="${escapeHtml(sec.section_id)}"
+                  ${isReviewed ? `data-inspect-section="${escapeHtml(sec.section_id)}"` : ''}
+                >
+                  <div class="reader-sec-head">
+                    <div class="reader-sec-tags">
+                      <code class="code-id">${escapeHtml(sec.section_id)}</code>
+                      ${statusPill}
+                      ${techPills}
+                    </div>
+                    ${inspectCue}
+                  </div>
+                  <h2 class="reader-sec-title">${formatInlineMarkdown(sec.heading || sec.section_id)}</h2>
+                  <div class="reader-sec-body">${markdownToSafeHtml(sec.text || '')}</div>
+                </article>
+              `;
+            }).join('')}
+          </div>
+        `;
+      } else {
+        sectionsHtml = `<div class="reader-sec"><div class="reader-sec-body">${markdownToSafeHtml(page.readable_markdown)}</div></div>`;
+      }
+
+      bodyEl.innerHTML = hintBanner + imagesHtml + sectionsHtml;
+      wireImageFallbacks(bodyEl);
+
+      // Apply DOM-safe trigger quote highlighting to flagged sections
+      if (review) {
+        bodyEl.querySelectorAll('.reader-sec').forEach(secEl => {
+          const sid = secEl.getAttribute('data-section-id');
+          const revSec = revSectionsById[sid];
+          if (revSec && revSec.trigger_quotes?.length) {
+            highlightQuotesInElement(secEl, revSec.trigger_quotes, sid);
+          }
+        });
+      }
+    }
+
+    /* ----- Nested Vote Inspector Modal (Section or Image) ----- */
+    function openSectionInspector(siteId, sectionId) {
+      const site = getSiteById(siteId);
+      const sec = site?.review?.sections?.find(s => s.section_id === sectionId);
+      if (!sec) return;
+
+      const isFlagged = Boolean(sec.is_flagged);
+      const qVotes = sec.questionable_votes ?? 0;
+      const totalM = sec.total_models ?? 0;
+
+      document.getElementById('inspector-title').textContent = `Section Vote Inspector — ${sec.section_id}`;
+      document.getElementById('inspector-subtitle').textContent = site.title || site.domain || '';
+
+      const allTechs = new Set((sec.consensus_techniques || []).map(t => t.name));
+      (sec.model_votes || []).forEach(mv => (mv.techniques || []).forEach(t => allTechs.add(t)));
+      const techList = [...allTechs];
+
+      const quotesHtml = (sec.trigger_quotes || []).length
+        ? sec.trigger_quotes.map(q => `<div class="inspector-quote">“${escapeHtml(q)}”</div>`).join('')
+        : '';
+
+      const explainerHtml = techList.length ? `
+        <div class="section-eyebrow">Why This Technique Matters</div>
+        <div class="explainer-list">
+          ${techList.map(t => `
+            <div class="explainer-card">
+              <div class="explainer-title">${escapeHtml(t)}</div>
+              <div class="explainer-desc">${escapeHtml(explainTechnique(t))}</div>
+            </div>
+          `).join('')}
+        </div>
+      ` : `
+        <div class="section-eyebrow">Ensemble Assessment</div>
+        <div class="verdict-note" style="background:var(--green-soft);border-color:var(--green-border);color:var(--green-text);">
+          No manipulation techniques were detected in this section. Compare individual model rationales below.
+        </div>
+      `;
+
+      const votesHtml = (sec.model_votes || []).map(mv => {
+        const isQ = mv.vote === 'questionable';
+        return `
+          <div class="model-vote-item">
+            <div class="model-vote-top">
+              <span class="model-vote-name">${escapeHtml(mv.model_name)}</span>
+              <span class="pill ${isQ ? 'red' : 'green'}">${isQ ? 'Questionable' : 'Clean'}</span>
+            </div>
+            ${(mv.techniques || []).length ? `
+              <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:7px;">
+                ${mv.techniques.map(t => `<span class="pill accent">${escapeHtml(t)}</span>`).join('')}
+              </div>
+            ` : ''}
+            <div class="model-vote-reason">${escapeHtml(mv.reason || 'No additional explanation provided.')}</div>
+            ${mv.trigger_quote ? `<div class="model-vote-quote">Cited phrase: “${escapeHtml(mv.trigger_quote)}”</div>` : ''}
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('inspector-body').innerHTML = `
+        <div class="inspector-subject">
+          <div class="inspector-subject-head">
+            <code class="code-id">${escapeHtml(sec.section_id)}</code>
+            <span class="pill ${isFlagged ? 'red' : 'green'}">${qVotes} / ${totalM} models flagged</span>
+          </div>
+          <div class="inspector-heading">${formatInlineMarkdown(sec.heading || sec.section_id)}</div>
+          ${quotesHtml}
+        </div>
+        <div class="verdict-note">
+          <strong>Ensemble Verdict:</strong> ${escapeHtml(sec.plain_language_verdict || '')}
+        </div>
+        ${explainerHtml}
+        <div class="section-eyebrow">Individual Model Votes (${(sec.model_votes || []).length})</div>
+        <div class="model-vote-list">${votesHtml}</div>
+      `;
+
+      openModal('inspector-modal');
+    }
+
+    function openImageInspector(siteId, imageId) {
+      const site = getSiteById(siteId);
+      const im = site?.review?.images?.find(x => x.image_id === imageId);
+      if (!im) return;
+
+      const isFlagged = Boolean(im.is_flagged);
+      const qVotes = im.questionable_votes ?? 0;
+      const totalM = im.total_models ?? 0;
+      const src = safeImgSrc(im.src);
+
+      document.getElementById('inspector-title').textContent = `Image Vote Inspector — ${im.image_id}`;
+      document.getElementById('inspector-subtitle').textContent = site.title || site.domain || '';
+
+      const allFlags = new Set((im.consensus_flags || []).map(f => f.name));
+      (im.model_votes || []).forEach(mv => (mv.flags || []).forEach(f => allFlags.add(f)));
+      const flagList = [...allFlags];
+
+      const explainerHtml = flagList.length ? `
+        <div class="section-eyebrow">Visual Forensics Explanation</div>
+        <div class="explainer-list">
+          ${flagList.map(fl => `
+            <div class="explainer-card">
+              <div class="explainer-title">${escapeHtml(fl)}</div>
+              <div class="explainer-desc">${escapeHtml(explainTechnique(fl))}</div>
+            </div>
+          `).join('')}
+        </div>
+      ` : `
+        <div class="section-eyebrow">Visual Forensics Assessment</div>
+        <div class="verdict-note" style="background:var(--green-soft);border-color:var(--green-border);color:var(--green-text);">
+          No synthetic artifacts or manipulative visual framing were flagged by the vision ensemble.
+        </div>
+      `;
+
+      const votesHtml = (im.model_votes || []).map(mv => {
+        const isQ = mv.vote === 'questionable';
+        return `
+          <div class="model-vote-item">
+            <div class="model-vote-top">
+              <span class="model-vote-name">
+                ${escapeHtml(mv.model_name)}
+                ${mv.vision_inspected ? '<span class="pill accent">Vision Inspected</span>' : '<span class="pill">Context Only</span>'}
+              </span>
+              <span class="pill ${isQ ? 'red' : 'green'}">${isQ ? 'Questionable' : 'Clean'}</span>
+            </div>
+            ${(mv.flags || []).length ? `
+              <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:7px;">
+                ${mv.flags.map(fl => `<span class="pill accent">${escapeHtml(fl)}</span>`).join('')}
+              </div>
+            ` : ''}
+            <div class="model-vote-reason">${escapeHtml(mv.reason || 'No visual concern reported.')}</div>
+          </div>
+        `;
+      }).join('');
+
+      const bodyEl = document.getElementById('inspector-body');
+      bodyEl.innerHTML = `
+        <div class="inspector-subject">
+          <div class="inspector-subject-head">
+            <code class="code-id">${escapeHtml(im.image_id)}</code>
+            <span class="pill ${isFlagged ? 'red' : 'green'}">${qVotes} / ${totalM} models flagged</span>
+          </div>
+          <div class="inspector-img-preview">
+            ${src ? `<img src="${escapeHtml(src)}" alt="${escapeHtml(im.alt || im.image_id)}" data-img-fallback="true" />` : ''}
+            <div style="flex:1;min-width:180px;">
+              <div style="font-size:13px;font-weight:550;color:var(--text);margin-bottom:4px;">Image Description</div>
+              <div style="font-size:12.5px;color:var(--muted);">${escapeHtml(im.alt || 'No alt description extracted')}</div>
+            </div>
+          </div>
+        </div>
+        <div class="verdict-note">
+          <strong>Visual Verdict:</strong> ${escapeHtml(im.plain_language_verdict || '')}
+        </div>
+        ${explainerHtml}
+        <div class="section-eyebrow">Individual Model Votes (${(im.model_votes || []).length})</div>
+        <div class="model-vote-list">${votesHtml}</div>
+      `;
+      wireImageFallbacks(bodyEl);
+      openModal('inspector-modal');
+    }
+
+    /* ----- Option 2: Concise Model Summary Modal ----- */
+    async function openSummaryModal(siteId) {
+      const site = getSiteById(siteId);
+      if (!site) return;
+
+      state.activeModalSiteId = siteId;
+      document.getElementById('summary-title').textContent = site.title || site.domain || 'Concise Model Summary';
+      document.getElementById('summary-subtitle').textContent = site.url || site.domain || '';
+      const bodyEl = document.getElementById('summary-body');
+      openModal('summary-modal');
+
+      if (!site.review) {
+        bodyEl.innerHTML = `<div class="reader-hint">Running multi-VLM ensemble review across configured models…</div>`;
+        const res = await runReviewForSite(siteId);
+        const updated = getSiteById(siteId);
+        if (!res?.ok || !updated?.review) {
+          bodyEl.innerHTML = `<div class="form-error">${escapeHtml(res?.error || 'Failed to generate AI review.')}</div>`;
+          return;
+        }
+        renderSummaryContent(updated);
+        return;
+      }
+
+      renderSummaryContent(site);
+    }
+
+    function renderSummaryContent(site) {
+      const bodyEl = document.getElementById('summary-body');
+      const review = site.review;
+      const pe = review?.page_ensemble;
+      if (!pe) {
+        bodyEl.innerHTML = `<div class="empty-state">Review details are not yet available for this page.</div>`;
+        return;
+      }
+
+      const verdict = pe.verdict || 'clean';
+      const qVotes = pe.questionable_votes ?? 0;
+      const totalM = pe.total_models || 1;
+      const ratioPct = Math.round((qVotes / totalM) * 100);
+      const verdictTitle = verdict === 'questionable'
+        ? 'Questionable Content Detected'
+        : (verdict === 'split' ? 'Mixed / Split Ensemble Vote' : 'Content Appears Clean');
+
+      const verdictPillClass = verdict === 'questionable' ? 'red' : (verdict === 'split' ? 'amber' : 'green');
+      const techPills = (pe.techniques_detected || []).map(t =>
+        `<span class="pill accent">${escapeHtml(t.name)} (${t.vote_count}/${totalM})</span>`
+      ).join('');
+
+      const bannerHtml = `
+        <div class="summary-banner ${escapeHtml(verdict)}">
+          <div class="summary-banner-top">
+            <span class="summary-verdict-title">${verdictTitle}</span>
+            <span class="pill ${verdictPillClass}">${qVotes} / ${totalM} models voted questionable</span>
+          </div>
+          <div class="ratio-track" aria-label="Questionable vote ratio">
+            <div class="ratio-fill" style="width:${verdict === 'clean' && qVotes === 0 ? 100 : ratioPct}%"></div>
+          </div>
+          <div class="summary-plain-text">${escapeHtml(pe.plain_language_summary || '')}</div>
+          ${techPills ? `<div class="pills-row">${techPills}</div>` : ''}
+        </div>
+      `;
+
+      const prov = site.provenance;
+      let provenanceHtml = '';
+      if (prov && typeof prov.overall_trust_score === 'number') {
+        const tier = String(prov.trust_tier || 'moderate').toLowerCase();
+        const tierClass = tier === 'high' ? 'green' : (tier === 'low' ? 'red' : 'amber');
+        const tierLabel = tier.charAt(0).toUpperCase() + tier.slice(1);
+        const signalKeys = [
+          'domain_reputation',
+          'content_originality',
+          'ai_generation_risk',
+          'link_network_integrity'
+        ];
+        const signals = prov.signals || {};
+
+        provenanceHtml = `
+          <div class="provenance-card">
+            <div class="provenance-top">
+              <div>
+                <div class="section-eyebrow" style="margin-bottom:2px;">Trust the Source — Provenance Breakdown</div>
+                <div class="provenance-score-num">${prov.overall_trust_score} <span style="font-size:13px;font-weight:500;color:var(--muted);">/ 100</span></div>
+              </div>
+              <span class="pill ${tierClass}">${escapeHtml(tierLabel)} Trust</span>
+            </div>
+            <div class="provenance-summary">${escapeHtml(prov.summary || '')}</div>
+            <div class="signals-grid">
+              ${signalKeys.map(key => {
+                const sig = signals[key];
+                if (!sig) return '';
+                const sc = Math.max(0, Math.min(100, Number(sig.score) || 0));
+                const barCls = sc >= 75 ? 'high' : (sc >= 45 ? 'moderate' : 'low');
+                return `
+                  <div class="signal-item">
+                    <div class="signal-head">
+                      <span class="signal-label">${escapeHtml(sig.label || key)}</span>
+                      <span class="signal-score">${sc}/100</span>
+                    </div>
+                    <div class="signal-bar">
+                      <div class="signal-bar-fill ${barCls}" style="width:${sc}%"></div>
+                    </div>
+                    <div class="signal-detail">${escapeHtml(sig.detail || '')}</div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        `;
+      } else {
+        provenanceHtml = `
+          <div class="provenance-card">
+            <div class="section-eyebrow">Trust the Source — Provenance Breakdown</div>
+            <div class="provenance-summary" style="margin-bottom:0;">Source provenance signals are initializing or unavailable for this page.</div>
+          </div>
+        `;
+      }
+
+      const modelsHtml = `
+        <div class="section-eyebrow">Each Model's Concise View</div>
+        <div class="models-grid">
+          ${(pe.model_votes || []).map(mv => {
+            const isQ = mv.vote === 'questionable';
+            const visionText = mv.vision_inspected
+              ? 'Vision + Text Inspected'
+              : (mv.vision_capable ? 'Vision Capable (Text)' : 'Text Analysis');
+            const mTechs = (mv.techniques || []).map(t => `<span class="pill accent">${escapeHtml(t)}</span>`).join('');
+            return `
+              <div class="model-card">
+                <div class="model-card-head">
+                  <div>
+                    <div class="model-card-name">${escapeHtml(mv.model_name)}</div>
+                    <div class="model-card-focus">${escapeHtml(mv.focus || '')}</div>
+                  </div>
+                  <span class="pill ${isQ ? 'red' : 'green'}">${isQ ? 'Questionable' : 'Clean'}</span>
+                </div>
+                <div class="model-card-meta">
+                  <span class="pill">${visionText}</span>
+                  ${mv.confidence ? `<span class="pill">${escapeHtml(mv.confidence)}% conf</span>` : ''}
+                </div>
+                ${mTechs ? `<div class="pills-row" style="margin-top:2px;">${mTechs}</div>` : ''}
+                <div class="model-card-reason">${escapeHtml(mv.reason || '')}</div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+
+      bodyEl.innerHTML = bannerHtml + provenanceHtml + modelsHtml;
+    }
+
+    /* ----- Metrics Modal (/api/metrics) ----- */
+    async function openMetricsModal() {
+      const bodyEl = document.getElementById('metrics-body');
+      bodyEl.innerHTML = `<div class="reader-hint">Loading benchmark evaluation metrics…</div>`;
+      openModal('metrics-modal');
+
+      try {
+        const res = await fetch('/api/metrics');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        renderMetricsContent(data);
+      } catch (err) {
+        bodyEl.innerHTML = `<div class="form-error">Unable to load benchmark metrics (${escapeHtml(err.message)}).</div>`;
+      }
+    }
+
+    function renderMetricsContent(data) {
+      const pm = data.page_metrics || {};
+      const sm = data.section_metrics || {};
+      const vm = data.visual_metrics || {};
+      const perModel = data.per_model || [];
+
+      const kpisHtml = `
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-label">Precision</div>
+            <div class="kpi-value">${formatPct(pm.precision)}</div>
+            <div class="kpi-sub">${pm.evaluated_pages ?? 0} evaluated pages</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Recall</div>
+            <div class="kpi-value">${formatPct(pm.recall)}</div>
+            <div class="kpi-sub">${pm.tp ?? 0} TP / ${(pm.tp ?? 0) + (pm.fn ?? 0)} actual pos</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">F1 Score</div>
+            <div class="kpi-value">${formatPct(pm.f1_score)}</div>
+            <div class="kpi-sub">Harmonic mean</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Overall FPR</div>
+            <div class="kpi-value">${formatPct(pm.false_positive_rate)}</div>
+            <div class="kpi-sub">${pm.fp ?? 0} false positives</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Hard-Negative FPR</div>
+            <div class="kpi-value" style="color:${Number(pm.hard_negative_fpr) === 0 ? 'var(--green-text)' : 'var(--text)'};">${formatPct(pm.hard_negative_fpr)}</div>
+            <div class="kpi-sub">${pm.hard_negative_fp ?? 0}/${pm.hard_negative_total ?? 0} encyclopedic refs</div>
+          </div>
+        </div>
+      `;
+
+      const middleHtml = `
+        <div class="metrics-two-col">
+          <div class="panel-box">
+            <div class="section-eyebrow">Page-Level Confusion Matrix</div>
+            <div class="cm-grid">
+              <div class="cm-cell"><span>True Positives (TP)</span><strong style="color:var(--green-text);">${pm.tp ?? 0}</strong></div>
+              <div class="cm-cell"><span>False Positives (FP)</span><strong style="color:${(pm.fp ?? 0) > 0 ? 'var(--red-text)' : 'var(--text)'};">${pm.fp ?? 0}</strong></div>
+              <div class="cm-cell"><span>False Negatives (FN)</span><strong style="color:${(pm.fn ?? 0) > 0 ? 'var(--amber-text)' : 'var(--text)'};">${pm.fn ?? 0}</strong></div>
+              <div class="cm-cell"><span>True Negatives (TN)</span><strong style="color:var(--green-text);">${pm.tn ?? 0}</strong></div>
+            </div>
+          </div>
+          <div class="panel-box">
+            <div class="section-eyebrow">Sections, Visual Forensics &amp; Agreement</div>
+            <div class="stat-list">
+              <div class="stat-row">
+                <span>Sections Flagged / Total</span>
+                <strong>${sm.flagged_sections ?? 0} / ${sm.total_sections ?? 0} (${sm.clean_sections ?? 0} clean)</strong>
+              </div>
+              <div class="stat-row">
+                <span>Visual Forensics Precision</span>
+                <strong>${formatPct(vm.precision)} (${vm.flagged_images ?? 0}/${vm.evaluated_images ?? 0} images)</strong>
+              </div>
+              <div class="stat-row">
+                <span>Visual Forensics Recall</span>
+                <strong>${formatPct(vm.recall)}</strong>
+              </div>
+              <div class="stat-row">
+                <span>Pairwise Inter-Model Agreement</span>
+                <strong>${formatPct(data.pairwise_agreement)}</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      const tableHtml = perModel.length ? `
+        <div class="section-eyebrow">Per-Model Accuracy &amp; Consensus Agreement</div>
+        <div class="metrics-table-wrap">
+          <table class="metrics-table">
+            <thead>
+              <tr>
+                <th>Model</th>
+                <th>Page Accuracy</th>
+                <th>Precision</th>
+                <th>Recall</th>
+                <th>Agreement w/ Consensus</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${perModel.map(m => `
+                <tr>
+                  <td>${escapeHtml(m.model_name || m.model_id)}</td>
+                  <td>${formatPct(m.page_accuracy)}</td>
+                  <td>${formatPct(m.precision)}</td>
+                  <td>${formatPct(m.recall)}</td>
+                  <td>${formatPct(m.agreement_with_consensus)}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      ` : '';
+
+      document.getElementById('metrics-body').innerHTML = kpisHtml + middleHtml + tableHtml;
+    }
+
+    /* ----- Add URL Modal (/api/websites) ----- */
+    function openAddUrlModal() {
+      const input = document.getElementById('new-site-url');
+      const errBox = document.getElementById('add-site-error');
+      input.value = '';
+      errBox.hidden = true;
+      errBox.textContent = '';
+      openModal('add-site-modal');
+      setTimeout(() => input.focus(), 40);
+    }
+
+    async function handleAddSiteSubmit(e) {
+      e.preventDefault();
+      const input = document.getElementById('new-site-url');
+      const errBox = document.getElementById('add-site-error');
+      const submitBtn = document.getElementById('add-site-submit');
+      const url = input.value.trim();
+      if (!url) return;
+
+      errBox.hidden = true;
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Adding & Scraping…';
+
+      try {
+        const res = await fetch('/api/websites', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url, auto_scrape: true })
+        });
+        const data = await res.json();
+        await refreshState();
+        if (!res.ok || data.ok === false) {
+          errBox.textContent = data.error || `Failed to scrape URL (HTTP ${res.status}).`;
+          errBox.hidden = false;
+          return;
+        }
+        if (data.site?.id) {
+          state.expandedSiteId = data.site.id;
+          renderSitesList();
+        }
+        closeModal('add-site-modal');
+      } catch (err) {
+        errBox.textContent = `Network error: ${err.message}`;
+        errBox.hidden = false;
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Add & Scrape';
+      }
+    }
+
+    /* ----- Event Wiring ----- */
+    document.getElementById('theme-toggle-btn').addEventListener('click', toggleTheme);
+    document.getElementById('metrics-btn').addEventListener('click', openMetricsModal);
+    document.getElementById('add-url-btn').addEventListener('click', openAddUrlModal);
+    document.getElementById('add-site-form').addEventListener('submit', handleAddSiteSubmit);
+
+    document.getElementById('summary-rerun-btn').addEventListener('click', async () => {
+      if (!state.activeModalSiteId) return;
+      const res = await runReviewForSite(state.activeModalSiteId);
+      const updated = getSiteById(state.activeModalSiteId);
+      if (res?.ok && updated?.review) {
+        renderSummaryContent(updated);
+      } else if (res?.error) {
+        document.getElementById('summary-body').insertAdjacentHTML(
+          'afterbegin',
+          `<div class="form-error" style="margin-bottom:14px;">${escapeHtml(res.error)}</div>`
+        );
+      }
+    });
+
+    // List delegation: bar toggle + drawer action buttons
+    document.getElementById('sites-list').addEventListener('click', async (e) => {
+      const actionBtn = e.target.closest('[data-action]');
+      if (actionBtn) {
+        const action = actionBtn.getAttribute('data-action');
+        const siteId = actionBtn.getAttribute('data-site-id');
+        if (!siteId) return;
+
+        if (action === 'run-review') {
+          await runReviewForSite(siteId);
+        } else if (action === 'reader') {
+          await openReaderModal(siteId);
+        } else if (action === 'summary') {
+          await openSummaryModal(siteId);
+        } else if (action === 'original') {
+          const site = getSiteById(siteId);
+          const href = safeHref(site?.url);
+          if (href) window.open(href, '_blank', 'noopener,noreferrer');
+        }
+        return;
+      }
+
+      const bar = e.target.closest('[data-toggle-site]');
+      if (bar) {
+        toggleSiteAccordion(bar.getAttribute('data-toggle-site'));
+      }
+    });
+
+    document.getElementById('sites-list').addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      const bar = e.target.closest('[data-toggle-site]');
+      if (bar) {
+        e.preventDefault();
+        toggleSiteAccordion(bar.getAttribute('data-toggle-site'));
+      }
+    });
+
+    // Reader delegation: clicking <mark.flag-mark>, flagged/reviewed sections, or reviewed images
+    document.getElementById('reader-body').addEventListener('click', (e) => {
+      if (e.target.closest('a')) return;
+
+      const mark = e.target.closest('mark.flag-mark');
+      if (mark) {
+        e.stopPropagation();
+        const sid = mark.getAttribute('data-inspect-section');
+        if (sid && state.activeModalSiteId) {
+          openSectionInspector(state.activeModalSiteId, sid);
+        }
+        return;
+      }
+
+      const imgCard = e.target.closest('[data-inspect-image]');
+      if (imgCard) {
+        const iid = imgCard.getAttribute('data-inspect-image');
+        if (iid && state.activeModalSiteId) {
+          openImageInspector(state.activeModalSiteId, iid);
+        }
+        return;
+      }
+
+      const secCard = e.target.closest('[data-inspect-section]');
+      if (secCard) {
+        const selection = window.getSelection ? window.getSelection().toString().trim() : '';
+        if (selection.length > 0) return;
+        const sid = secCard.getAttribute('data-inspect-section');
+        if (sid && state.activeModalSiteId) {
+          openSectionInspector(state.activeModalSiteId, sid);
+        }
+      }
+    });
+
+    document.getElementById('reader-body').addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      if (e.target.tagName === 'BUTTON') return;
+      const target = e.target.closest('[data-inspect-section], [data-inspect-image]');
+      if (!target) return;
+      e.preventDefault();
+      if (target.hasAttribute('data-inspect-image')) {
+        openImageInspector(state.activeModalSiteId, target.getAttribute('data-inspect-image'));
+      } else {
+        openSectionInspector(state.activeModalSiteId, target.getAttribute('data-inspect-section'));
+      }
+    });
+
+    // Close modal buttons & backdrop click & Escape
+    document.querySelectorAll('[data-close-modal]').forEach(btn => {
+      btn.addEventListener('click', () => closeModal(btn.getAttribute('data-close-modal')));
+    });
+
+    document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
+      backdrop.addEventListener('click', (e) => {
+        if (e.target === backdrop) closeModal(backdrop.id);
+      });
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeTopmostModal();
+    });
+
+    // Initialize theme icon & load websites
+    applyTheme(document.documentElement.getAttribute('data-theme') || 'light');
+    refreshState();
+  </script>
+</body>
+</html>

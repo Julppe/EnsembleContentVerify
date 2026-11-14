@@ -1,0 +1,78 @@
+services:
+  vllm-gemma:
+    image: vllm/vllm-openai:latest
+    container_name: verda-vllm-gemma
+    restart: unless-stopped
+    runtime: nvidia
+    environment:
+      - HUGGING_FACE_HUB_TOKEN=${HF_TOKEN}
+      - CUDA_VISIBLE_DEVICES=0
+    command:
+      - "--model"
+      - "google/gemma-3-27b-it"
+      - "--served-model-name"
+      - "gemma-checkem-vl"
+      - "--quantization"
+      - "fp8"
+      - "--max-model-len"
+      - "16384"
+      - "--enable-lora"
+      - "--api-key"
+      - "${VERDA_API_KEY:-verda-vllm-token}"
+    ports:
+      - "8001:8000"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  vllm-nemotron:
+    image: vllm/vllm-openai:latest
+    container_name: verda-vllm-nemotron
+    restart: unless-stopped
+    runtime: nvidia
+    environment:
+      - HUGGING_FACE_HUB_TOKEN=${HF_TOKEN}
+      - CUDA_VISIBLE_DEVICES=0
+    command:
+      - "--model"
+      - "nvidia/Llama-3_3-Nemotron-Super-49B-v1"
+      - "--served-model-name"
+      - "nemotron-checkem-vl"
+      - "--max-model-len"
+      - "16384"
+      - "--api-key"
+      - "${VERDA_API_KEY:-verda-vllm-token}"
+    ports:
+      - "8002:8000"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  verda-gateway:
+    image: nginx:1.27-alpine
+    container_name: verda-openai-gateway
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    command: >
+      sh -c "cat <<'EOF' > /etc/nginx/conf.d/default.conf
+      server {
+        listen 8000;
+        client_max_body_size 32M;
+        location /v1/ {
+          proxy_pass http://vllm-gemma:8000/v1/;
+          proxy_read_timeout 120s;
+        }
+      }
+      EOF
+      nginx -g 'daemon off;'"
+    depends_on:
+      - vllm-gemma

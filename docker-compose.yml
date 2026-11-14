@@ -1,0 +1,16 @@
+services:
+  checkem-app:
+    build: .
+    container_name: checkem-app
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.checkem.rule=Host(`checkem.tech`) || Host(`www.checkem.tech`)"
+      - "traefik.http.routers.checkem.entrypoints=websecure"
+      - "traefik.http.routers.checkem.tls=true"
+      - "traefik.http.routers.checkem.tls.certresolver=letsencrypt"
+      - "traefik.http.services.checkem.loadbalancer.server.port=8080"
