@@ -7,7 +7,7 @@ The Hostinger VPS (`https://checkem.tech/`) runs our CPU-light Python web applic
 
 ```
 Hostinger VPS (checkem.tech)
-  ├── Oxylabs Scraper + Provenance Scorer + Minimalist UI
+  ├── Oxylabs Scraper + Provenance Scorer + Web Server
   └── AI Ensemble Dispatcher (`app.py`)
          ├── [if VERDA_GPU_BASE_URL set] ──▶ Verda Cloud GPU VM (vLLM / NVIDIA NIM)
          │                                     ├── Port 8001: Gemma VL + CheckEm QLoRA Adapter

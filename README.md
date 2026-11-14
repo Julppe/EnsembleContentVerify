@@ -7,7 +7,7 @@
 
 **CheckEm** is a multimodal VLM ensemble web app that marks suspicious rhetoric and synthetic media with coloured overlines directly on a natural webpage preview, scores source provenance independently, and exposes model disagreement instead of hiding behind a single score.
 
-> **5-Slide Presentation:** [checkem.tech/slides](https://checkem.tech/slides) · [docs/PRESENTATION.md](docs/PRESENTATION.md)
+> **Presentation Deck:** [checkem.tech/slides](https://checkem.tech/slides) · [docs/PRESENTATION.md](docs/PRESENTATION.md)
 
 ## Core Pillars
 
@@ -17,11 +17,6 @@
    - **Urgent `.org` Advocacy:** Credible advocacy triggers rhetorical flags despite high source provenance.
    - **Encyclopedic AI Illustrations:** Neutral articles *about* synthetic media trigger image flags while prose stays unmarked.
    - **Calm Factual Errors:** Style classifiers inspect persuasion, not live ground-truth fact databases.
-
-## Minimalist UX
-- **Status Bar:** Thin horizontal rows (green = clean, yellow = split/partial, red = flagged).
-- **Dropdown Drawer:** Model vote tally, Trust Score, and three actions: **Full Page & Highlights**, **Concise Model Summary**, or **Original Page ↗**.
-- **Webpage Preview:** Renders clean content untouched and highlights only suspicious text/images with coloured overlines; clicking any overline opens every juror's vote and reason.
 
 ## Tech Subchallenges
 

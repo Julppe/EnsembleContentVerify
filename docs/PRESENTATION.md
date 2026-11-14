@@ -44,10 +44,4 @@ Hostinger VPS · https://checkem.tech/
 - `2–3 / 3 Consensus` ➔ **Red Overline** *(named technique + votes)*
 - **Where It Can Fail:** Urgent Advocacy (`.org`), Educational AI Images in Encyclopedias, Calm-Toned Factual Errors
 
----
-
-# Minimalist Progressive UX
-
-`1. Traffic-Light Status Bar` ➔ `2. Inline VLM Votes & Trust Score` ➔ `3. Webpage Preview w/ Coloured Overlines → Model Reasons`
-
 **Live App:** [https://checkem.tech/](https://checkem.tech/) · **Web Slides:** [https://checkem.tech/slides](https://checkem.tech/slides)
