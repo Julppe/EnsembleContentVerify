@@ -924,7 +924,7 @@
     mark.flag-mark {
       background: rgba(239, 68, 68, 0.11);
       color: inherit;
-      padding: 2px 3px 1px;
+      padding: 5px 8px 4px;
       border-radius: 2px;
       border-top: 2.5px solid var(--red);
       border-bottom: none;
@@ -945,6 +945,36 @@
 
     mark.flag-mark.uncertain:hover {
       background: rgba(245, 158, 11, 0.26);
+    }
+
+    .webpage-doc a:has(mark.flag-mark) {
+      text-decoration: none;
+    }
+
+    mark.flag-mark.has-link {
+      padding: 6px 11px 5px;
+      margin: 0 2px;
+      border: 1px solid rgba(239, 68, 68, 0.30);
+      border-top: 3px solid var(--red);
+      text-decoration: none;
+    }
+
+    mark.flag-mark.uncertain.has-link {
+      border-color: rgba(245, 158, 11, 0.34);
+      border-top-color: var(--amber);
+    }
+
+    .flag-link-core {
+      padding: 0 1px;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      border-radius: 2px;
+      transition: background-color 0.12s ease, color 0.12s ease;
+    }
+
+    .flag-link-core:hover {
+      background: var(--accent-soft);
+      color: var(--accent);
     }
 
     /* Pills & Badges */
@@ -2140,6 +2170,26 @@
         .replace(/[\u201c\u201d]/g, '"');
     }
 
+    function createOverlineMark(text, sectionId, isUncertain, isInsideLink) {
+      const mark = document.createElement('mark');
+      mark.className = `flag-mark${isUncertain ? ' uncertain' : ''}${isInsideLink ? ' has-link' : ''}`;
+      mark.setAttribute('role', 'button');
+      mark.setAttribute('tabindex', '0');
+      mark.setAttribute('data-inspect-section', sectionId);
+      mark.setAttribute('aria-label', 'Inspect model votes for flagged phrase');
+      if (isInsideLink) {
+        mark.title = 'Click surrounding highlight to inspect model votes';
+        const core = document.createElement('span');
+        core.className = 'flag-link-core';
+        core.title = 'Click middle text to open link';
+        core.textContent = text;
+        mark.appendChild(core);
+      } else {
+        mark.textContent = text;
+      }
+      return mark;
+    }
+
     function wrapTextNodesWithOverline(rootEl, sectionId, isUncertain) {
       const walker = document.createTreeWalker(rootEl, NodeFilter.SHOW_TEXT, {
         acceptNode(node) {
@@ -2158,13 +2208,8 @@
       }
 
       for (const textNode of textNodes) {
-        const mark = document.createElement('mark');
-        mark.className = isUncertain ? 'flag-mark uncertain' : 'flag-mark';
-        mark.setAttribute('role', 'button');
-        mark.setAttribute('tabindex', '0');
-        mark.setAttribute('data-inspect-section', sectionId);
-        mark.setAttribute('aria-label', 'Inspect model votes for flagged phrase');
-        mark.textContent = textNode.nodeValue;
+        const isInsideLink = Boolean(textNode.parentElement && textNode.parentElement.closest('a'));
+        const mark = createOverlineMark(textNode.nodeValue, sectionId, isUncertain, isInsideLink);
         textNode.parentNode.replaceChild(mark, textNode);
       }
     }
@@ -2197,6 +2242,7 @@
         for (const textNode of textNodes) {
           const text = textNode.nodeValue;
           const normText = normalizeForQuoteMatch(text);
+          const isInsideLink = Boolean(textNode.parentElement && textNode.parentElement.closest('a'));
           let searchFrom = 0;
           let idx = normText.indexOf(normQuote, searchFrom);
           if (idx === -1) continue;
@@ -2206,13 +2252,7 @@
             if (idx > searchFrom) {
               frag.appendChild(document.createTextNode(text.slice(searchFrom, idx)));
             }
-            const mark = document.createElement('mark');
-            mark.className = isUncertain ? 'flag-mark uncertain' : 'flag-mark';
-            mark.setAttribute('role', 'button');
-            mark.setAttribute('tabindex', '0');
-            mark.setAttribute('data-inspect-section', sectionId);
-            mark.setAttribute('aria-label', 'Inspect model votes for flagged phrase');
-            mark.textContent = text.slice(idx, idx + quote.length);
+            const mark = createOverlineMark(text.slice(idx, idx + quote.length), sectionId, isUncertain, isInsideLink);
             frag.appendChild(mark);
             matches += 1;
 
@@ -2854,10 +2894,24 @@
 
     // Reader delegation: clicking <mark.flag-mark>, flagged/reviewed sections, or reviewed images
     document.getElementById('reader-body').addEventListener('click', (e) => {
-      if (e.target.closest('a')) return;
-
       const mark = e.target.closest('mark.flag-mark');
       if (mark) {
+        const linkCore = e.target.closest('.flag-link-core');
+        const anchor = e.target.closest('a');
+        if (linkCore && anchor) {
+          const rect = linkCore.getBoundingClientRect();
+          const insetY = Math.min(4, rect.height * 0.22);
+          const insetX = Math.min(6, rect.width * 0.08);
+          const inMiddle = (
+            e.clientX >= rect.left + insetX
+            && e.clientX <= rect.right - insetX
+            && e.clientY >= rect.top + insetY
+            && e.clientY <= rect.bottom - insetY
+          );
+          if (inMiddle) return;
+        }
+
+        e.preventDefault();
         e.stopPropagation();
         const sid = mark.getAttribute('data-inspect-section');
         if (sid && state.activeModalSiteId) {
@@ -2865,6 +2919,8 @@
         }
         return;
       }
+
+      if (e.target.closest('a')) return;
 
       const imgCard = e.target.closest('[data-inspect-image]');
       if (imgCard) {
