@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CheckEm — Visual Presentation (4 Slides)</title>
+  <title>CheckEm — Presentation</title>
   <style>
     :root {
       --bg: #f8fafc;
@@ -15,12 +15,15 @@
       --accent: #4f46e5;
       --accent-soft: rgba(79, 70, 229, 0.1);
       --green: #10b981;
-      --green-soft: rgba(16, 185, 129, 0.14);
+      --green-soft: rgba(16, 185, 129, 0.13);
+      --green-text: #047857;
       --amber: #f59e0b;
-      --amber-soft: rgba(245, 158, 11, 0.14);
+      --amber-soft: rgba(245, 158, 11, 0.15);
+      --amber-text: #b45309;
       --red: #ef4444;
       --red-soft: rgba(239, 68, 68, 0.12);
-      --shadow: 0 24px 60px rgba(15, 23, 42, 0.07);
+      --red-text: #b91c1c;
+      --shadow: 0 20px 50px rgba(15, 23, 42, 0.07);
     }
     [data-theme="dark"] {
       --bg: #090b10;
@@ -33,11 +36,14 @@
       --accent-soft: rgba(129, 140, 248, 0.16);
       --green: #34d399;
       --green-soft: rgba(52, 211, 153, 0.14);
+      --green-text: #6ee7b7;
       --amber: #fbbf24;
-      --amber-soft: rgba(251, 191, 36, 0.14);
+      --amber-soft: rgba(251, 191, 36, 0.16);
+      --amber-text: #fde68a;
       --red: #f87171;
       --red-soft: rgba(248, 113, 113, 0.14);
-      --shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+      --red-text: #fca5a5;
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -50,7 +56,7 @@
       flex-direction: column;
     }
     .topbar {
-      height: 48px;
+      height: 46px;
       padding: 0 20px;
       border-bottom: 1px solid var(--border);
       background: var(--surface);
@@ -65,7 +71,7 @@
       background: transparent;
       border: 1px solid var(--border);
       padding: 5px 11px;
-      border-radius: 7px;
+      border-radius: 6px;
       font-size: 0.78rem;
       font-weight: 600;
       cursor: pointer;
@@ -80,21 +86,22 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 24px;
+      padding: 20px;
+      min-height: 0;
     }
     .slide {
       display: none;
       width: 100%;
-      max-width: 1040px;
-      height: 580px;
+      max-width: 1080px;
+      height: 600px;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 40px 52px 32px;
+      border-radius: 10px;
+      padding: 28px 40px 28px;
       box-shadow: var(--shadow);
       flex-direction: column;
       justify-content: space-between;
-      animation: fade 0.18s ease-out;
+      animation: fade 0.16s ease-out;
     }
     .slide.active { display: flex; }
     @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
@@ -103,11 +110,12 @@
       display: flex;
       justify-content: space-between;
       align-items: baseline;
+      margin-bottom: 14px;
     }
     .slide-head h1, .slide-head h2 {
-      font-size: 2rem;
+      font-size: 1.7rem;
       font-weight: 800;
-      letter-spacing: -0.025em;
+      letter-spacing: -0.02em;
     }
     .slide-num {
       font-size: 0.85rem;
@@ -122,68 +130,153 @@
       align-items: center;
       justify-content: center;
       width: 100%;
+      min-height: 0;
     }
-    .visual-center svg {
+    .visual-center > svg {
       width: 100%;
-      max-height: 410px;
+      max-height: 510px;
       height: auto;
     }
-    .tagline {
-      margin-top: 14px;
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--muted);
+
+    /* Slide 1: 2x2 News Headline Screenshot Grid */
+    .headline-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      width: 100%;
+      height: 100%;
+    }
+    .headline-slot {
+      position: relative;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface-alt);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 0;
+    }
+    .screenshot-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      background: var(--surface);
+    }
+    .screenshot-fallback {
+      display: none;
+      width: 100%;
+      height: 100%;
+      padding: 18px 20px;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-start;
+      background: var(--surface-alt);
+    }
+    .outlet-tag {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--accent);
+    }
+    .news-headline {
+      font-size: 1.06rem;
+      font-weight: 800;
+      line-height: 1.3;
+      color: var(--text);
       letter-spacing: -0.01em;
     }
-
-    /* Slide 4 Ring Gauges */
-    .gauges {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 48px;
-      width: 100%;
-      flex-wrap: wrap;
+    .slot-path {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
     }
-    .gauge-item {
+
+    /* Slide 3: Highlighted Sample Screenshot -> Arrows -> 5 Model Bubbles */
+    .flag-flow {
+      display: grid;
+      grid-template-columns: 330px 96px minmax(0, 1fr);
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      gap: 0;
+    }
+    .sample-shot-box {
+      height: 100%;
+      max-height: 450px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface-alt);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .sample-preview {
+      gap: 14px;
+      justify-content: center;
+    }
+    .sample-overline {
+      background: var(--red-soft);
+      border-top: 3px solid var(--red);
+      padding: 6px 8px;
+      border-radius: 0 0 4px 4px;
+      color: var(--text);
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
+    .sample-plain {
+      color: var(--muted);
+      font-size: 0.86rem;
+      line-height: 1.45;
+    }
+    .flow-arrows {
+      width: 96px;
+      height: 430px;
+      display: block;
+    }
+    .model-bubbles-col {
       display: flex;
       flex-direction: column;
+      justify-content: space-between;
+      height: 430px;
+      gap: 10px;
+    }
+    .model-row {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 178px minmax(0, 1fr);
       align-items: center;
-      gap: 12px;
+      gap: 14px;
+      padding: 4px 6px;
     }
-    .gauge-item svg {
-      width: 184px;
-      height: 184px;
+    .bubble-model {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--text);
     }
-    .gauge-label {
-      font-size: 0.96rem;
-      font-weight: 700;
+    .reason-red {
+      font-size: 0.88rem;
+      font-weight: 600;
+      line-height: 1.35;
+      color: var(--red-text);
     }
-    .gauge-sub {
-      font-size: 0.8rem;
-      color: var(--muted);
-      margin-top: -6px;
+    .reason-green {
+      font-size: 0.88rem;
+      font-weight: 600;
+      line-height: 1.35;
+      color: var(--green-text);
     }
-
-    /* Slide 5 UI Wireframe */
-    .demo-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 18px;
-      padding: 11px 22px;
-      background: var(--accent);
-      color: #fff;
-      text-decoration: none;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 0.95rem;
-      transition: transform 0.12s;
-    }
-    .demo-cta:hover { transform: translateY(-1px); }
 
     .controls {
-      height: 48px;
+      height: 46px;
       border-top: 1px solid var(--border);
       background: var(--surface);
       padding: 0 20px;
@@ -207,18 +300,20 @@
       color: var(--text);
       border: 1px solid var(--border);
       padding: 5px 13px;
-      border-radius: 7px;
+      border-radius: 6px;
       font-weight: 600;
       font-size: 0.8rem;
       cursor: pointer;
     }
     .nav-btns button:hover { border-color: var(--accent); }
 
-    @media (max-width: 780px) {
-      .slide { height: auto; min-height: 440px; padding: 24px 20px; }
-      .slide-head h1, .slide-head h2 { font-size: 1.45rem; }
-      .gauges { gap: 20px; }
-      .gauge-item svg { width: 130px; height: 130px; }
+    @media (max-width: 820px) {
+      body { height: auto; overflow: auto; }
+      .slide { height: auto; min-height: 460px; padding: 20px; }
+      .headline-grid { grid-template-columns: 1fr; }
+      .flag-flow { grid-template-columns: 1fr; gap: 14px; }
+      .flow-arrows { display: none; }
+      .model-bubbles-col { height: auto; }
     }
     @media print {
       body { height: auto; overflow: visible; }
@@ -238,21 +333,64 @@
   </div>
 
   <main class="stage">
-    <!-- SLIDE 1: Hero Visual -->
+    <!-- SLIDE 1: Motivation — News Headlines on Rising Misinformation -->
     <section class="slide active">
-      <div class="slide-head">
-        <h1>CheckEm</h1>
-        <span class="slide-num">1 / 4</span>
+      <div class="visual-center">
+        <div class="headline-grid">
+          <div class="headline-slot">
+            <!-- SCREENSHOT PLACEMENT: Slide 1 Headline 1 (/static/screenshots/headline-1.png) -->
+            <img class="screenshot-img" src="/static/screenshots/headline-1.png" alt="The Guardian — AI chatbots distort and mislead when asked about current affairs, BBC finds" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="screenshot-fallback">
+              <span class="outlet-tag">The Guardian · 2025</span>
+              <div class="news-headline">AI chatbots distort and mislead when asked about current affairs, BBC finds</div>
+              <span class="slot-path">/static/screenshots/headline-1.png</span>
+            </div>
+          </div>
+
+          <div class="headline-slot">
+            <!-- SCREENSHOT PLACEMENT: Slide 1 Headline 2 (/static/screenshots/headline-2.png) -->
+            <img class="screenshot-img" src="/static/screenshots/headline-2.png" alt="BBC — AI Distortion is new threat to trusted information" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="screenshot-fallback">
+              <span class="outlet-tag">BBC Media Centre · 2025</span>
+              <div class="news-headline">AI Distortion is new threat to trusted information</div>
+              <span class="slot-path">/static/screenshots/headline-2.png</span>
+            </div>
+          </div>
+
+          <div class="headline-slot">
+            <!-- SCREENSHOT PLACEMENT: Slide 1 Headline 3 (/static/screenshots/headline-3.png) -->
+            <img class="screenshot-img" src="/static/screenshots/headline-3.png" alt="The Guardian — AI-driven misinformation biggest short-term threat to global economy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="screenshot-fallback">
+              <span class="outlet-tag">The Guardian / WEF · 2024</span>
+              <div class="news-headline">AI-driven misinformation ‘biggest short-term threat to global economy’</div>
+              <span class="slot-path">/static/screenshots/headline-3.png</span>
+            </div>
+          </div>
+
+          <div class="headline-slot">
+            <!-- SCREENSHOT PLACEMENT: Slide 1 Headline 4 (/static/screenshots/headline-4.png) -->
+            <img class="screenshot-img" src="/static/screenshots/headline-4.png" alt="The Guardian — Nearly 50 news websites are AI-generated, a study says" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="screenshot-fallback">
+              <span class="outlet-tag">The Guardian · 2023</span>
+              <div class="news-headline">Nearly 50 news websites are ‘AI-generated’, a study says. Would I be able to tell?</div>
+              <span class="slot-path">/static/screenshots/headline-4.png</span>
+            </div>
+          </div>
+        </div>
       </div>
+    </section>
+
+    <!-- SLIDE 2: Big Picture ("Under the Hood") -->
+    <section class="slide">
       <div class="visual-center">
         <svg viewBox="0 0 880 340" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="CheckEm overview diagram">
           <!-- Web Page Card -->
-          <rect x="20" y="65" width="200" height="210" rx="14" fill="var(--surface-alt)" stroke="var(--border)" stroke-width="2"/>
+          <rect x="20" y="65" width="200" height="210" rx="10" fill="var(--surface-alt)" stroke="var(--border)" stroke-width="2"/>
           <circle cx="44" cy="88" r="5" fill="var(--red)"/>
           <circle cx="60" cy="88" r="5" fill="var(--amber)"/>
           <circle cx="76" cy="88" r="5" fill="var(--green)"/>
           <line x1="20" y1="106" x2="220" y2="106" stroke="var(--border)" stroke-width="1.5"/>
-          <rect x="38" y="122" width="164" height="46" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <rect x="38" y="122" width="164" height="46" rx="6" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 3"/>
           <text x="120" y="150" text-anchor="middle" fill="var(--accent)" font-size="13" font-weight="700">Page Images</text>
           <rect x="38" y="182" width="164" height="14" rx="4" fill="var(--border)"/>
           <rect x="38" y="206" width="136" height="14" rx="4" fill="var(--red-soft)" stroke="var(--red)" stroke-width="1"/>
@@ -266,36 +404,36 @@
           <path d="M228 170 L300 282" stroke="var(--muted)" stroke-width="2" marker-end="url(#arr)"/>
 
           <!-- 5-Model Cross-Family VLM Jury -->
-          <rect x="308" y="36" width="218" height="44" rx="10" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
+          <rect x="308" y="36" width="218" height="44" rx="8" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
           <text x="417" y="63" text-anchor="middle" fill="var(--text)" font-size="13.5" font-weight="700">Gemma 4 31B VL</text>
 
-          <rect x="308" y="92" width="218" height="44" rx="10" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
+          <rect x="308" y="92" width="218" height="44" rx="8" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
           <text x="417" y="119" text-anchor="middle" fill="var(--text)" font-size="13.5" font-weight="700">Nemotron 3.5 Super VL</text>
 
-          <rect x="308" y="148" width="218" height="44" rx="10" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
+          <rect x="308" y="148" width="218" height="44" rx="8" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
           <text x="417" y="175" text-anchor="middle" fill="var(--text)" font-size="13.5" font-weight="700">Gemini 3.1 Lite VL</text>
 
-          <rect x="308" y="204" width="218" height="44" rx="10" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
+          <rect x="308" y="204" width="218" height="44" rx="8" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
           <text x="417" y="231" text-anchor="middle" fill="var(--text)" font-size="13.5" font-weight="700">Kimi K2.6 VL</text>
 
-          <rect x="308" y="260" width="218" height="44" rx="10" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
+          <rect x="308" y="260" width="218" height="44" rx="8" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
           <text x="417" y="287" text-anchor="middle" fill="var(--text)" font-size="13.5" font-weight="700">Claude Haiku 4.5 VL</text>
 
-          <!-- Arrows to Outputs -->
-          <path d="M532 58 L604 114" stroke="var(--muted)" stroke-width="2" marker-end="url(#arr)"/>
-          <path d="M532 114 L604 118" stroke="var(--muted)" stroke-width="2" marker-end="url(#arr)"/>
-          <path d="M532 170 L604 122" stroke="var(--muted)" stroke-width="2" marker-end="url(#arr)"/>
-          <path d="M532 226 L604 222" stroke="var(--muted)" stroke-width="2" marker-end="url(#arr)"/>
-          <path d="M532 282 L604 228" stroke="var(--muted)" stroke-width="2" marker-end="url(#arr)"/>
+          <!-- Arrows from all 5 models to both outputs -->
+          <path d="M532 58 L616 106" stroke="var(--muted)" stroke-width="1.8" marker-end="url(#arr)"/>
+          <path d="M532 58 L616 220" stroke="var(--muted)" stroke-width="1.8" marker-end="url(#arr)"/>
+          <path d="M532 114 L616 110" stroke="var(--muted)" stroke-width="1.8" marker-end="url(#arr)"/>
+          <path d="M532 114 L616 224" stroke="var(--muted)" stroke-width="1.8" marker-end="url(#arr)"/>
+          <path d="M532 170 L616 114" stroke="var(--muted)" stroke-width="1.8" marker-end="url(#arr)"/>
+          <path d="M532 170 L616 228" stroke="var(--muted)" stroke-width="1.8" marker-end="url(#arr)"/>
+          <path d="M532 226 L616 118" stroke="var(--muted)" stroke-width="1.8" marker-end="url(#arr)"/>
+          <path d="M532 226 L616 232" stroke="var(--muted)" stroke-width="1.8" marker-end="url(#arr)"/>
+          <path d="M532 282 L616 122" stroke="var(--muted)" stroke-width="1.8" marker-end="url(#arr)"/>
+          <path d="M532 282 L616 236" stroke="var(--muted)" stroke-width="1.8" marker-end="url(#arr)"/>
 
-          <!-- Dual Output -->
-          <rect x="612" y="64" width="248" height="94" rx="14" fill="var(--red-soft)" stroke="var(--red)" stroke-width="2"/>
-          <text x="736" y="102" text-anchor="middle" fill="var(--red)" font-size="16" font-weight="800">Name the Technique</text>
-          <text x="736" y="128" text-anchor="middle" fill="var(--text)" font-size="13" font-weight="600">Span Highlights + Jury Reasons</text>
-
-          <rect x="612" y="182" width="248" height="94" rx="14" fill="var(--green-soft)" stroke="var(--green)" stroke-width="2"/>
-          <text x="736" y="220" text-anchor="middle" fill="var(--green)" font-size="16" font-weight="800">Trust the Source</text>
-          <text x="736" y="246" text-anchor="middle" fill="var(--text)" font-size="13" font-weight="600">0–100 Provenance Score</text>
+          <!-- Dual Output Labels (no bubbles, black text) -->
+          <text x="628" y="118" text-anchor="start" fill="#000000" font-size="18" font-weight="800">Content trustworthiness</text>
+          <text x="628" y="236" text-anchor="start" fill="#000000" font-size="18" font-weight="800">Source reliability</text>
 
           <defs>
             <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
@@ -303,152 +441,134 @@
             </marker>
           </defs>
         </svg>
-        <div class="tagline">Multimodal VLM Manipulation &amp; Source Provenance Jury</div>
       </div>
     </section>
 
-    <!-- SLIDE 2: Rhetoric vs Provenance -->
+    <!-- SLIDE 3: Per-Model Content Flagging -->
     <section class="slide">
-      <div class="slide-head">
-        <h2>Rhetoric ≠ Provenance</h2>
-        <span class="slide-num">2 / 4</span>
-      </div>
       <div class="visual-center">
-        <svg viewBox="0 0 880 350" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Rhetoric vs Provenance comparison chart">
-          <!-- Column Headers -->
-          <text x="40" y="34" fill="var(--muted)" font-size="13" font-weight="700">SOURCE</text>
-          <text x="310" y="34" fill="var(--muted)" font-size="13" font-weight="700">ENSEMBLE VERDICT</text>
-          <text x="610" y="34" fill="var(--muted)" font-size="13" font-weight="700">TRUST SCORE (PROVENANCE)</text>
-          <line x1="20" y1="48" x2="860" y2="48" stroke="var(--border)" stroke-width="1.5"/>
+        <div class="flag-flow">
+          <div class="sample-shot-box">
+            <!-- SCREENSHOT PLACEMENT: Slide 3 App Highlighted Sample (/static/screenshots/app-highlight.png) -->
+            <img class="screenshot-img" src="/static/screenshots/app-highlight.png" alt="CheckEm highlighted text sample" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="screenshot-fallback sample-preview">
+              <span class="outlet-tag">CheckEm Sample</span>
+              <div class="sample-plain">Public debate over regulatory timelines continues across multiple committees.</div>
+              <div class="sample-overline">Anonymous insiders warn refusing this bill will trigger catastrophic grid collapse overnight.</div>
+              <span class="slot-path">/static/screenshots/app-highlight.png</span>
+            </div>
+          </div>
 
-          <!-- Row 1: EFF -->
-          <rect x="20" y="66" width="840" height="76" rx="12" fill="var(--surface-alt)" stroke="var(--border)" stroke-width="1.5"/>
-          <circle cx="48" cy="104" r="9" fill="var(--red)"/>
-          <text x="72" y="109" fill="var(--text)" font-size="17" font-weight="700">eff.org/issues/ai</text>
-          <rect x="310" y="86" width="232" height="36" rx="18" fill="var(--red-soft)" stroke="var(--red)" stroke-width="1.5"/>
-          <text x="426" y="109" text-anchor="middle" fill="var(--red)" font-size="13.5" font-weight="700">5/5 Persuasive Framing</text>
-          <rect x="610" y="92" width="170" height="24" rx="12" fill="var(--border)"/>
-          <rect x="610" y="92" width="148" height="24" rx="12" fill="var(--green)"/>
-          <text x="795" y="109" fill="var(--green)" font-size="16" font-weight="800">87</text>
+          <svg class="flow-arrows" viewBox="0 0 96 430" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <marker id="arr-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--red)"/>
+              </marker>
+              <marker id="arr-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--green)"/>
+              </marker>
+            </defs>
+            <path d="M4 215 C42 215, 42 39, 88 39" stroke="var(--red)" stroke-width="2" marker-end="url(#arr-red)"/>
+            <path d="M4 215 C42 215, 42 127, 88 127" stroke="var(--red)" stroke-width="2" marker-end="url(#arr-red)"/>
+            <path d="M4 215 L88 215" stroke="var(--red)" stroke-width="2" marker-end="url(#arr-red)"/>
+            <path d="M4 215 C42 215, 42 303, 88 303" stroke="var(--green)" stroke-width="2" marker-end="url(#arr-green)"/>
+            <path d="M4 215 C42 215, 42 391, 88 391" stroke="var(--green)" stroke-width="2" marker-end="url(#arr-green)"/>
+          </svg>
 
-          <!-- Row 2: Wikipedia Deepfake -->
-          <rect x="20" y="160" width="840" height="76" rx="12" fill="var(--surface-alt)" stroke="var(--border)" stroke-width="1.5"/>
-          <circle cx="48" cy="198" r="9" fill="var(--amber)"/>
-          <text x="72" y="203" fill="var(--text)" font-size="17" font-weight="700">wikipedia.org/Deepfake</text>
-          <rect x="310" y="180" width="248" height="36" rx="18" fill="var(--amber-soft)" stroke="var(--amber)" stroke-width="1.5"/>
-          <text x="434" y="203" text-anchor="middle" fill="var(--amber)" font-size="13.5" font-weight="700">Text Clean · AI Images Flagged</text>
-          <rect x="610" y="186" width="170" height="24" rx="12" fill="var(--border)"/>
-          <rect x="610" y="186" width="150" height="24" rx="12" fill="var(--green)"/>
-          <text x="795" y="203" fill="var(--green)" font-size="16" font-weight="800">88</text>
+          <div class="model-bubbles-col">
+            <div class="model-row">
+              <span class="bubble-model">Gemma 4 31B VL</span>
+              <span class="reason-red">Triggers panic with unverified grid-collapse warnings.</span>
+            </div>
 
-          <!-- Row 3: Synthetic Propaganda -->
-          <rect x="20" y="254" width="840" height="76" rx="12" fill="var(--surface-alt)" stroke="var(--border)" stroke-width="1.5"/>
-          <circle cx="48" cy="292" r="9" fill="var(--red)"/>
-          <text x="72" y="297" fill="var(--text)" font-size="17" font-weight="700">civic-pulse-daily (Toy)</text>
-          <rect x="310" y="274" width="232" height="36" rx="18" fill="var(--red-soft)" stroke="var(--red)" stroke-width="1.5"/>
-          <text x="426" y="297" text-anchor="middle" fill="var(--red)" font-size="13.5" font-weight="700">5/5 Propaganda</text>
-          <rect x="610" y="280" width="170" height="24" rx="12" fill="var(--border)"/>
-          <rect x="610" y="280" width="54" height="24" rx="12" fill="var(--red)"/>
-          <text x="795" y="297" fill="var(--red)" font-size="16" font-weight="800">32</text>
-        </svg>
+            <div class="model-row">
+              <span class="bubble-model">Nemotron 3.5 Super VL</span>
+              <span class="reason-red">Relies on anonymous insiders without verifiable citations.</span>
+            </div>
+
+            <div class="model-row">
+              <span class="bubble-model">Gemini 3.1 Lite VL</span>
+              <span class="reason-red">Uses emotionally charged wording to pressure the reader.</span>
+            </div>
+
+            <div class="model-row">
+              <span class="bubble-model">Kimi K2.6 VL</span>
+              <span class="reason-green">Reads as standard policy commentary without deceptive intent.</span>
+            </div>
+
+            <div class="model-row">
+              <span class="bubble-model">Claude Haiku 4.5 VL</span>
+              <span class="reason-green">Frames an urgent debate using ordinary rhetorical emphasis.</span>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- SLIDE 3: Architecture -->
+    <!-- SLIDE 4: Model Voting Aggregation -->
     <section class="slide">
-      <div class="slide-head">
-        <h2>Architecture</h2>
-        <span class="slide-num">3 / 4</span>
-      </div>
       <div class="visual-center">
-        <svg viewBox="0 0 880 350" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="System Architecture diagram">
-          <!-- Stage 1 -->
-          <rect x="20" y="105" width="175" height="140" rx="14" fill="var(--surface-alt)" stroke="var(--border)" stroke-width="2"/>
-          <text x="107" y="160" text-anchor="middle" fill="var(--accent)" font-size="14" font-weight="800">INGESTION</text>
-          <text x="107" y="186" text-anchor="middle" fill="var(--text)" font-size="15" font-weight="700">Oxylabs API</text>
-          <text x="107" y="208" text-anchor="middle" fill="var(--muted)" font-size="12">Sections + Images</text>
-
-          <path d="M202 175 L254 175" stroke="var(--muted)" stroke-width="2.5" marker-end="url(#arr2)"/>
-
-          <!-- Stage 2 Container -->
-          <rect x="262" y="34" width="336" height="282" rx="16" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
-          <text x="430" y="64" text-anchor="middle" fill="var(--accent)" font-size="13" font-weight="800">5-MODEL CROSS-FAMILY ENSEMBLE</text>
-
-          <!-- Router / NVIDIA Build Boxes -->
-          <rect x="284" y="84" width="292" height="58" rx="10" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/>
-          <text x="430" y="110" text-anchor="middle" fill="var(--text)" font-size="14.5" font-weight="700">Hostinger AI Router (4 VLMs)</text>
-          <text x="430" y="129" text-anchor="middle" fill="var(--muted)" font-size="12">Gemma 4 · Gemini 3.1 · Kimi K2.6 · Claude 4.5</text>
-
-          <rect x="284" y="158" width="292" height="58" rx="10" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/>
-          <text x="430" y="184" text-anchor="middle" fill="var(--text)" font-size="14.5" font-weight="700">Managed Nemotron API</text>
-          <text x="430" y="203" text-anchor="middle" fill="var(--muted)" font-size="12">Nemotron 3.5 Super VL (12B Active MoE)</text>
-
-          <rect x="284" y="232" width="292" height="58" rx="10" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/>
-          <text x="430" y="258" text-anchor="middle" fill="var(--text)" font-size="14.5" font-weight="700">Provenance Engine</text>
-          <text x="430" y="277" text-anchor="middle" fill="var(--muted)" font-size="12">Domain · Originality · Auth · Citations</text>
-
-          <path d="M606 175 L658 175" stroke="var(--muted)" stroke-width="2.5" marker-end="url(#arr2)"/>
-
-          <!-- Stage 3 Hostinger VPS -->
-          <rect x="666" y="105" width="194" height="140" rx="14" fill="var(--green-soft)" stroke="var(--green)" stroke-width="2"/>
-          <text x="763" y="158" text-anchor="middle" fill="var(--green)" font-size="14" font-weight="800">HOSTINGER VPS</text>
-          <text x="763" y="185" text-anchor="middle" fill="var(--text)" font-size="16" font-weight="800">checkem.tech</text>
-          <text x="763" y="208" text-anchor="middle" fill="var(--muted)" font-size="12">Docker · Traefik TLS</text>
-
+        <svg viewBox="0 0 920 360" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Five model votes aggregated to Mixed">
           <defs>
-            <marker id="arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-              <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--muted)"/>
+            <marker id="v-arr-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--red)"/>
+            </marker>
+            <marker id="v-arr-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--green)"/>
             </marker>
           </defs>
+
+          <!-- Aggregated Mixed Result at Top -->
+          <rect x="325" y="24" width="270" height="84" rx="10" fill="var(--amber-soft)" stroke="var(--amber)" stroke-width="2.5"/>
+          <text x="460" y="75" text-anchor="middle" fill="var(--amber-text)" font-size="28" font-weight="800">Mixed</text>
+
+          <!-- Upward Arrows from Bottom Bubbles into Aggregated Result -->
+          <path d="M92 216 L360 116" stroke="var(--red)" stroke-width="2.2" marker-end="url(#v-arr-red)"/>
+          <path d="M276 216 L410 116" stroke="var(--red)" stroke-width="2.2" marker-end="url(#v-arr-red)"/>
+          <path d="M460 216 L460 116" stroke="var(--red)" stroke-width="2.2" marker-end="url(#v-arr-red)"/>
+          <path d="M644 216 L510 116" stroke="var(--green)" stroke-width="2.2" marker-end="url(#v-arr-green)"/>
+          <path d="M828 216 L560 116" stroke="var(--green)" stroke-width="2.2" marker-end="url(#v-arr-green)"/>
+
+          <!-- Bubble 1: Gemma (Suspicious / Red) -->
+          <rect x="12" y="250" width="160" height="84" rx="8" fill="var(--surface-alt)" stroke="var(--red)" stroke-width="2"/>
+          <rect x="38" y="224" width="108" height="28" rx="6" fill="var(--surface)"/>
+          <rect x="38" y="224" width="108" height="28" rx="6" fill="var(--red-soft)" stroke="var(--red)" stroke-width="2"/>
+          <text x="92" y="243" text-anchor="middle" fill="var(--red-text)" font-size="13" font-weight="800">Suspicious</text>
+          <text x="92" y="294" text-anchor="middle" fill="var(--text)" font-size="13.5" font-weight="700">Gemma 4</text>
+          <text x="92" y="313" text-anchor="middle" fill="var(--muted)" font-size="12" font-weight="600">31B VL</text>
+
+          <!-- Bubble 2: Nemotron (Suspicious / Red) -->
+          <rect x="196" y="250" width="160" height="84" rx="8" fill="var(--surface-alt)" stroke="var(--red)" stroke-width="2"/>
+          <rect x="222" y="224" width="108" height="28" rx="6" fill="var(--surface)"/>
+          <rect x="222" y="224" width="108" height="28" rx="6" fill="var(--red-soft)" stroke="var(--red)" stroke-width="2"/>
+          <text x="276" y="243" text-anchor="middle" fill="var(--red-text)" font-size="13" font-weight="800">Suspicious</text>
+          <text x="276" y="294" text-anchor="middle" fill="var(--text)" font-size="13.5" font-weight="700">Nemotron 3.5</text>
+          <text x="276" y="313" text-anchor="middle" fill="var(--muted)" font-size="12" font-weight="600">Super VL</text>
+
+          <!-- Bubble 3: Gemini (Suspicious / Red) -->
+          <rect x="380" y="250" width="160" height="84" rx="8" fill="var(--surface-alt)" stroke="var(--red)" stroke-width="2"/>
+          <rect x="406" y="224" width="108" height="28" rx="6" fill="var(--surface)"/>
+          <rect x="406" y="224" width="108" height="28" rx="6" fill="var(--red-soft)" stroke="var(--red)" stroke-width="2"/>
+          <text x="460" y="243" text-anchor="middle" fill="var(--red-text)" font-size="13" font-weight="800">Suspicious</text>
+          <text x="460" y="294" text-anchor="middle" fill="var(--text)" font-size="13.5" font-weight="700">Gemini 3.1</text>
+          <text x="460" y="313" text-anchor="middle" fill="var(--muted)" font-size="12" font-weight="600">Lite VL</text>
+
+          <!-- Bubble 4: Kimi (Trusted / Green) -->
+          <rect x="564" y="250" width="160" height="84" rx="8" fill="var(--surface-alt)" stroke="var(--green)" stroke-width="2"/>
+          <rect x="590" y="224" width="108" height="28" rx="6" fill="var(--surface)"/>
+          <rect x="590" y="224" width="108" height="28" rx="6" fill="var(--green-soft)" stroke="var(--green)" stroke-width="2"/>
+          <text x="644" y="243" text-anchor="middle" fill="var(--green-text)" font-size="13" font-weight="800">Trusted</text>
+          <text x="644" y="294" text-anchor="middle" fill="var(--text)" font-size="13.5" font-weight="700">Kimi K2.6</text>
+          <text x="644" y="313" text-anchor="middle" fill="var(--muted)" font-size="12" font-weight="600">VL</text>
+
+          <!-- Bubble 5: Claude (Trusted / Green) -->
+          <rect x="748" y="250" width="160" height="84" rx="8" fill="var(--surface-alt)" stroke="var(--green)" stroke-width="2"/>
+          <rect x="774" y="224" width="108" height="28" rx="6" fill="var(--surface)"/>
+          <rect x="774" y="224" width="108" height="28" rx="6" fill="var(--green-soft)" stroke="var(--green)" stroke-width="2"/>
+          <text x="828" y="243" text-anchor="middle" fill="var(--green-text)" font-size="13" font-weight="800">Trusted</text>
+          <text x="828" y="294" text-anchor="middle" fill="var(--text)" font-size="13.5" font-weight="700">Claude Haiku</text>
+          <text x="828" y="313" text-anchor="middle" fill="var(--muted)" font-size="12" font-weight="600">4.5 VL</text>
         </svg>
-        <div class="tagline">Compact &amp; Sparse MoE Open Weights Enable a Fast 5-Model Jury</div>
-      </div>
-    </section>
-
-    <!-- SLIDE 4: Uncertainty & Failure Boundaries -->
-    <section class="slide">
-      <div class="slide-head">
-        <h2>Uncertainty &amp; Failure Boundaries</h2>
-        <span class="slide-num">4 / 4</span>
-      </div>
-      <div class="visual-center">
-        <svg viewBox="0 0 880 345" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Uncertainty levels and failure boundaries">
-          <!-- Uncertainty Spectrum Overlines -->
-          <rect x="20" y="24" width="260" height="84" rx="12" fill="var(--surface-alt)" stroke="var(--border)" stroke-width="1.5"/>
-          <text x="150" y="54" text-anchor="middle" fill="var(--green)" font-size="14" font-weight="800">0 / 5 Flagged</text>
-          <text x="150" y="82" text-anchor="middle" fill="var(--text)" font-size="14" font-weight="600">Unmarked Webpage Text</text>
-
-          <rect x="310" y="24" width="260" height="84" rx="12" fill="var(--amber-soft)" stroke="var(--amber)" stroke-width="2"/>
-          <line x1="340" y1="70" x2="540" y2="70" stroke="var(--amber)" stroke-width="4"/>
-          <text x="440" y="54" text-anchor="middle" fill="var(--amber)" font-size="14" font-weight="800">1–2 / 5 Uncertain Split</text>
-          <text x="440" y="90" text-anchor="middle" fill="var(--text)" font-size="13.5" font-weight="600">Amber Overline → Check Why</text>
-
-          <rect x="600" y="24" width="260" height="84" rx="12" fill="var(--red-soft)" stroke="var(--red)" stroke-width="2"/>
-          <line x1="630" y1="70" x2="830" y2="70" stroke="var(--red)" stroke-width="4"/>
-          <text x="730" y="54" text-anchor="middle" fill="var(--red)" font-size="14" font-weight="800">3–5 / 5 Consensus</text>
-          <text x="730" y="90" text-anchor="middle" fill="var(--text)" font-size="13.5" font-weight="600">Red Overline → Jury Majority</text>
-
-          <!-- Arrow down to Exposed Failure Cases -->
-          <line x1="20" y1="138" x2="860" y2="138" stroke="var(--border)" stroke-width="1.5"/>
-          <text x="440" y="168" text-anchor="middle" fill="var(--muted)" font-size="13" font-weight="800">WHERE PREDICTIONS CAN FAIL (VISIBLE TO USER)</text>
-
-          <rect x="20" y="192" width="260" height="126" rx="12" fill="var(--surface-alt)" stroke="var(--border)" stroke-width="1.5"/>
-          <text x="150" y="232" text-anchor="middle" fill="var(--text)" font-size="15.5" font-weight="800">Urgent Advocacy</text>
-          <text x="150" y="260" text-anchor="middle" fill="var(--muted)" font-size="13">Credible .org policy urgency</text>
-          <text x="150" y="284" text-anchor="middle" fill="var(--amber)" font-size="13" font-weight="700">vs Trust Score 87/100</text>
-
-          <rect x="310" y="192" width="260" height="126" rx="12" fill="var(--surface-alt)" stroke="var(--border)" stroke-width="1.5"/>
-          <text x="440" y="232" text-anchor="middle" fill="var(--text)" font-size="15.5" font-weight="800">Educational AI Images</text>
-          <text x="440" y="260" text-anchor="middle" fill="var(--muted)" font-size="13">Synthetic demo in neutral wiki</text>
-          <text x="440" y="284" text-anchor="middle" fill="var(--amber)" font-size="13" font-weight="700">Visual Only · Text Clean</text>
-
-          <rect x="600" y="192" width="260" height="126" rx="12" fill="var(--surface-alt)" stroke="var(--border)" stroke-width="1.5"/>
-          <text x="730" y="232" text-anchor="middle" fill="var(--text)" font-size="15.5" font-weight="800">Dry Falsehoods</text>
-          <text x="730" y="260" text-anchor="middle" fill="var(--muted)" font-size="13">Detects rhetoric, not live facts</text>
-          <text x="730" y="284" text-anchor="middle" fill="var(--red)" font-size="13" font-weight="700">Need Provenance + Citations</text>
-        </svg>
-        <div class="tagline">Disagreement Exposed In-Place — Never Hidden Behind a Single Score</div>
-        <a href="/" class="demo-cta">Open Live Demo · checkem.tech →</a>
       </div>
     </section>
   </main>

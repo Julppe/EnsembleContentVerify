@@ -7619,5 +7619,617 @@
         }
       }
     }
+  },
+  "julppe-github-io": {
+    "id": "julppe-github-io",
+    "title": "julppe.github.io",
+    "domain": "julppe.github.io",
+    "url": "https://julppe.github.io/",
+    "source_kind": "real_page",
+    "website_type": "Custom Added Page",
+    "status": "reviewed",
+    "error_message": "",
+    "last_scraped_at": "2026-11-14T17:03:30Z",
+    "pages": [
+      {
+        "id": "julppe-github-io:index",
+        "slug": "index",
+        "url": "https://julppe.github.io/",
+        "title": "Julius Pesonen",
+        "readable_markdown": "Julius Pesonen\n\nI'm a research scientist in the Spectrophotogrammetry research group at [the Finnish Geospatial Research Institute. ](https://www.maanmittauslaitos.fi/en/research)\n\nI'm currently pursuing a doctoral degree at Aalto University under the supervision of [Professor Arno Solin](https://users.aalto.fi/~asolin/), and I'm advised by [Professor Eija Honkavaara.](https://www.maanmittauslaitos.fi/en/research/contact-information/staff/eija-honkavaara) From September 2025 to June 2026, I visited the [Department of Optics and Associated Techniques (DOTA)](https://www.onera.fr/en/phy-dota) at ONERA, Toulouse.\n\n[Scholar](https://scholar.google.com/citations?user=doUGlWAAAAAJ&hl=en) / [LinkedIn](https://www.linkedin.com/in/julius-pesonen/) / [Email](mailto:julius.pesonen@nls.fi)\n[\n![profile photo](https://julppe.github.io/images/profile_compressed1.jpeg)\n](https://julppe.github.io/images/profile_compressed1.jpeg)\n\n## Recent events\n\nOlder presentation materials are found in the last section of the page.\n\n- October 2026: [Poster on aerial 3D CV](https://raw.githubusercontent.com/Julppe/Julppe.github.io/master/posters/ellis_munich_poster.pptx.pdf) at FCAI AI Day.\n- September 2026: Online seminar talk on [weakly supervised ML for remote sensing](https://raw.githubusercontent.com/Julppe/Julppe.github.io/master/presentations/Seeing_beyond_the_labels.pdf) as part of the [MILO seminar series.](https://www.milo-seminars.org/)\n- September 2026: [Poster on aerial 3D CV](https://raw.githubusercontent.com/Julppe/Julppe.github.io/master/posters/ellis_munich_poster.pptx.pdf) at ELLIS Summerschool in Munich.\n\n## Research\n\nI'm interested in computer vision, deep learning, remote sensing and robotics. In my doctoral works, I'm exploring weakly supervised and real-time deep learning methods in practical remote sensing applications with limited inference resources.\n\n![Page image](https://julppe.github.io/images/treeseg.jpg)\n\n[ Learning Image-based Tree Crown Segmentation from Enhanced Lidar-based Pseudo-labels  ](https://arxiv.org/abs/2602.13022)\nJulius Pesonen, Stefan Rua, Josef Taher, Niko Koivumäki, Xiaowei Yu, Eija Honkavaara\n*ArXiv, 2026*\n[paper](https://arxiv.org/pdf/2602.13022)\n\nTraining a tree crown instance segmentation model for multispectral aerial imagery using automatically generated labels from sparse aerial laser scanning point clouds.\n\n![Page image](https://julppe.github.io/images/pf_teaser11.png)\n\n[ Distant Object Localisation from Noisy Image Segmentation Sequences  ](https://fgi_nls.gitlab.io/public/distant-localisation/)\nJulius Pesonen, Arno Solin, Eija Honkavaara\n*29th International Conference on Information Fusion (FUSION), 2026*\n[project page](https://fgi_nls.gitlab.io/public/distant-localisation/) / [paper](https://arxiv.org/pdf/2509.20906) / [code](https://gitlab.com/fgi_nls/public/distant-localisation) / [video](https://youtu.be/n2HdNdt6kIA)\n\nLocalising distant targets from noisy segmentation sequences of moving cameras using particle filters.\n\n![Page image](https://julppe.github.io/images/bff_dataset.png)\n\n[ Boreal Forest Fire: UAV-collected Wildfire Detection and Smoke Segmentation Dataset  ](https://doi.org/10.1038/s41597-025-05634-0)\nJulius Pesonen*, Anna-Maria Raita-Hakola*, Jukka Joutsalainen*, Teemu Hakala, Waleed Akhtar, Niko Koivumäki, Lauri Markelin, Juha Suomalainen, Raquel Alves de Oliveira, Ilkka Pölönen, Eija Honkavaara\n*Scientific Data, 2025*\n[paper](https://doi.org/10.1038/s41597-025-05634-0) / [data](https://doi.org/10.23729/fd-72c6cf74-b8eb-3687-860d-bf93a1ab94c9)\n\nUAV-collected dataset for supporting wildfire detection model research and development. Contains manually generated bounding box labels and SAM-generated masks for segmentation.\n\n[ Road Grip Uncertainty Estimation Through Surface State Segmentation  ](https://arxiv.org/abs/2504.08452)\nJyri Maanpää, Julius Pesonen, Iaroslav Melekhov, Heikki Hyyti, Juha Hyyppä\n*Scandinavian Conference on Image Analysis, 2025*\n[paper](https://arxiv.org/abs/2504.08452)\n\nBenchmark of uncertainty estimation methods in pixel-wise road surface grip prediction from RGB images and a novel approach using state segmentation.\n\n[ Detecting Wildfires on UAVs with Real-time Segmentation Trained by Larger Teacher Models  ](https://openaccess.thecvf.com/content/WACV2025/html/Pesonen_Detecting_Wildfires_on_UAVs_with_Real-Time_Segmentation_Trained_by_Larger_WACV_2025_paper.html)\nJulius Pesonen, Teemu Hakala, Väinö Karjalainen, Niko Koivumäki, Lauri Markelin, Anna-Maria Raita-Hakola, Juha Suomalainen, Ilkka Pölönen, Eija Honkavaara\n*Proceedings of the Winter Conference on Applications of Computer Vision (WACV), 2025*\n[code](https://gitlab.com/fgi_nls/public/wildfire-real-time-segmentation) / [paper](https://openaccess.thecvf.com/content/WACV2025/html/Pesonen_Detecting_Wildfires_on_UAVs_with_Real-Time_Segmentation_Trained_by_Larger_WACV_2025_paper.html) / [inference video](https://youtube.com/shorts/xL4HofrKf2I?feature=share) / [data](https://doi.org/10.23729/fd-72c6cf74-b8eb-3687-860d-bf93a1ab94c9)\n\nUAV-onboard wildfire detection using small segmentation models distilled from larger ones with bounding box guidance.\n\n[ Dense Road Surface Grip Map Prediction from Multimodal Image Data  ](https://arxiv.org/pdf/2404.17324)\nJyri Maanpää*, Julius Pesonen*, Heikki Hyyti, Iaroslav Melekhov, Juho Kannala, Petri Manninen, Antero Kukko, Juha Hyyppä\n*27th International Conference on Pattern Recognition, ICPR 2024*\n[code](https://gitlab.com/fgi_nls/public/grip-prediction) / [paper](https://link.springer.com/chapter/10.1007/978-3-031-78447-7_26)\n\nRoad slipperiness prediction from RGB, LiDAR, and thermal camera data for autonomous driving in adverse weather conditions.\n\n[ Pixelwise Road Surface Slipperiness Estimation for Autonomous Driving with Weakly Supervised Learning  ](https://aaltodoc.aalto.fi/bitstreams/3ce98257-86d2-4871-860f-4d3235ccf2fb/download)\nJulius Pesonen\n*Master thesis, 2023*\n[Aaltodoc](https://aaltodoc.aalto.fi/bitstreams/3ce98257-86d2-4871-860f-4d3235ccf2fb/download)\n\nRoad slipperiness prediction from RGB for autonomous driving in adverse weather conditions at input camera resolution.\n\n## Presentation materials\n\n- October 2026 FCAI AI Day poster titled [3D Computer Vision for Localisation of Distant Objects](https://raw.githubusercontent.com/Julppe/Julppe.github.io/master/posters/ellis_munich_poster.pptx.pdf)\n- September 2026 MILO online seminar talk titled [Seeing beyond the labels: Weakly supervised deep learning in remote sensing.](https://raw.githubusercontent.com/Julppe/Julppe.github.io/master/presentations/Seeing_beyond_the_labels.pdf)\n- September 2026 ELLIS Munich summer school poster titled [3D Computer Vision for Localisation of Distant Objects](https://raw.githubusercontent.com/Julppe/Julppe.github.io/master/posters/ellis_munich_poster.pptx.pdf)\n- June 2026 FUSION presentation titled [Distant Object Localisation from Noisy Image Segmentation Sequences](https://raw.githubusercontent.com/Julppe/Julppe.github.io/master/presentations/FUSION2026_distant_localisation.pdf)\n- June 2026 EARSeL Workshop on Imaging Spectroscopyposter poster titled [Adapting Vision Transformers for High Resolution Hyperspectral Tree Trait Estimation](https://raw.githubusercontent.com/Julppe/Julppe.github.io/master/posters/earsel_poster.pdf)\n- May 2026 visitor talk about my doctoral research at ONERA, INRIA, AgroParisTech, and AMIAD titled [Seeing beyond the labels: Weakly supervised deep learning in remote sensing.](https://raw.githubusercontent.com/Julppe/Julppe.github.io/master/presentations/Seeing_beyond_the_labels.pdf)\n- September 2025 M2L summer school poster titled [Finding 3D Positions of Distant Targets from a Moving Drone](https://raw.githubusercontent.com/Julppe/Julppe.github.io/master/posters/m2l_poster_julius_pesonen.pdf)\n- March 2025 WACV GeoCV workshop poster titled [Extending the Domain of Wildfire Smoke Segmentation with Diffusion-based Image Mixing](https://raw.githubusercontent.com/Julppe/Julppe.github.io/master/posters/domain_shifted_smoke_poster.pdf)\n- March 2025 WACV main conference poster titled [Detecting Wildfires on UAVs With Real-time Segmentation Trained by Larger Teacher Models](https://raw.githubusercontent.com/Julppe/Julppe.github.io/master/posters/wildfire_poster.pdf)\n- December 2024 ICPR main conference poster titled [Dense Road Surface Grip Map Prediction From Multimodal Image Data](https://raw.githubusercontent.com/Julppe/Julppe.github.io/master/posters/icpr_poster.pdf)\n- November 2024 FinDrones virtual poster titled [Automated Early Detection of Wildfires with UAVs in Regions of Weak Telecommunication](https://raw.githubusercontent.com/Julppe/Julppe.github.io/master/posters/FinDrones.pdf)\n- July 2024 ELLIS Robust LLMs workshop poster titled [Robust Wildfire Detection with LLM Pseudo-Labeling](https://raw.githubusercontent.com/Julppe/Julppe.github.io/master/posters/llm_poster.pdf)\n\n[Click here to share the page with a QR code.](https://julppe.github.io/images/qr_to_homepage.png) Design and source code from [Jon Barron's website](https://github.com/jonbarron/jonbarron_website).",
+        "sections": [
+          {
+            "section_id": "sec-1",
+            "heading": "Introduction",
+            "text": "Julius Pesonen\n\nI'm a research scientist in the Spectrophotogrammetry research group at [the Finnish Geospatial Research Institute. ](https://www.maanmittauslaitos.fi/en/research)\n\nI'm currently pursuing a doctoral degree at Aalto University under the supervision of [Professor Arno Solin](https://users.aalto.fi/~asolin/), and I'm advised by [Professor Eija Honkavaara.](https://www.maanmittauslaitos.fi/en/research/contact-information/staff/eija-honkavaara) From September 2025 to June 2026, I visited the [Department of Optics and Associated Techniques (DOTA)](https://www.onera.fr/en/phy-dota) at ONERA, Toulouse.\n\n[Scholar](https://scholar.google.com/citations?user=doUGlWAAAAAJ&hl=en) / [LinkedIn](https://www.linkedin.com/in/julius-pesonen/) / [Email](mailto:julius.pesonen@nls.fi)\n[\n![profile photo](https://julppe.github.io/images/profile_compressed1.jpeg)\n](https://julppe.github.io/images/profile_compressed1.jpeg)"
+          },
+          {
+            "section_id": "sec-2",
+            "heading": "Recent events",
+            "text": "Older presentation materials are found in the last section of the page.\n\n- October 2026: [Poster on aerial 3D CV](https://raw.githubusercontent.com/Julppe/Julppe.github.io/master/posters/ellis_munich_poster.pptx.pdf) at FCAI AI Day.\n- September 2026: Online seminar talk on [weakly supervised ML for remote sensing](https://raw.githubusercontent.com/Julppe/Julppe.github.io/master/presentations/Seeing_beyond_the_labels.pdf) as part of the [MILO seminar series.](https://www.milo-seminars.org/)\n- September 2026: [Poster on aerial 3D CV](https://raw.githubusercontent.com/Julppe/Julppe.github.io/master/posters/ellis_munich_poster.pptx.pdf) at ELLIS Summerschool in Munich."
+          },
+          {
+            "section_id": "sec-3",
+            "heading": "Research",
+            "text": "I'm interested in computer vision, deep learning, remote sensing and robotics. In my doctoral works, I'm exploring weakly supervised and real-time deep learning methods in practical remote sensing applications with limited inference resources.\n\n![Page image](https://julppe.github.io/images/treeseg.jpg)\n\n[ Learning Image-based Tree Crown Segmentation from Enhanced Lidar-based Pseudo-labels  ](https://arxiv.org/abs/2602.13022)\nJulius Pesonen, Stefan Rua, Josef Taher, Niko Koivumäki, Xiaowei Yu, Eija Honkavaara\n*ArXiv, 2026*\n[paper](https://arxiv.org/pdf/2602.13022)\n\nTraining a tree crown instance segmentation model for multispectral aerial imagery using automatically generated labels from sparse aerial laser scanning point clouds.\n\n![Page image](https://julppe.github.io/images/pf_teaser11.png)\n\n[ Distant Object Localisation from Noisy Image Segmentation Sequences  ](https://fgi_nls.gitlab.io/public/distant-localisation/)\nJulius Pesonen, Arno Solin, Eija Honkavaara\n*29th International..."
+          },
+          {
+            "section_id": "sec-4",
+            "heading": "Presentation materials",
+            "text": "- October 2026 FCAI AI Day poster titled [3D Computer Vision for Localisation of Distant Objects](https://raw.githubusercontent.com/Julppe/Julppe.github.io/master/posters/ellis_munich_poster.pptx.pdf)\n- September 2026 MILO online seminar talk titled [Seeing beyond the labels: Weakly supervised deep learning in remote sensing.](https://raw.githubusercontent.com/Julppe/Julppe.github.io/master/presentations/Seeing_beyond_the_labels.pdf)\n- September 2026 ELLIS Munich summer school poster titled [3D Computer Vision for Localisation of Distant Objects](https://raw.githubusercontent.com/Julppe/Julppe.github.io/master/posters/ellis_munich_poster.pptx.pdf)\n- June 2026 FUSION presentation titled [Distant Object Localisation from Noisy Image Segmentation Sequences](https://raw.githubusercontent.com/Julppe/Julppe.github.io/master/presentations/FUSION2026_distant_localisation.pdf)\n- June 2026 EARSeL Workshop on Imaging Spectroscopyposter poster titled [Adapting Vision Transformers for High..."
+          }
+        ],
+        "images": [
+          {
+            "image_id": "img-1",
+            "src": "https://julppe.github.io/images/profile_compressed1.jpeg",
+            "alt": "profile photo"
+          },
+          {
+            "image_id": "img-2",
+            "src": "https://julppe.github.io/images/treeseg.jpg",
+            "alt": "Page image"
+          },
+          {
+            "image_id": "img-3",
+            "src": "https://julppe.github.io/images/pf_teaser11.png",
+            "alt": "Page image"
+          },
+          {
+            "image_id": "img-4",
+            "src": "https://julppe.github.io/images/bff_dataset.png",
+            "alt": "Page image"
+          }
+        ],
+        "word_count": 1218,
+        "source_method": "Direct HTTP Article Extractor (Oxylabs Web API HTTP 401; fallback)"
+      }
+    ],
+    "review": {
+      "reviewed_at": "2026-11-14T17:03:55Z",
+      "page_id": "julppe-github-io:index",
+      "page_title": "Julius Pesonen",
+      "page_url": "https://julppe.github.io/",
+      "models_count": 5,
+      "live_models_count": 5,
+      "flagged_sections_count": 0,
+      "total_sections_count": 4,
+      "flagged_images_count": 0,
+      "total_images_count": 4,
+      "page_ensemble": {
+        "verdict": "clean",
+        "questionable_votes": 0,
+        "clean_votes": 5,
+        "total_models": 5,
+        "techniques_detected": [],
+        "plain_language_summary": "All 5 models voted this page Clean (0 flagged section(s), 0 flagged image(s)). Content and visuals appear informational and non-manipulative.",
+        "model_votes": [
+          {
+            "model_id": "gemma-4-31b",
+            "model_name": "Gemma 4 31B VL",
+            "focus": "Lightweight Open-Weight Visual Forensics & Fear Appeal (Google)",
+            "vision_capable": true,
+            "vision_inspected": true,
+            "mode": "live_router",
+            "note": "Live via Hostinger AI Router (Vision + Text)",
+            "vote": "clean",
+            "confidence": 100,
+            "techniques": [],
+            "reason": "The page is a standard professional academic portfolio containing factual biographical information and research publications."
+          },
+          {
+            "model_id": "nemotron-3.5-super-vl",
+            "model_name": "Nemotron 3.5 Super VL",
+            "focus": "Sparse MoE Logical Fallacies, Whataboutism & Visual Integrity (NVIDIA)",
+            "vision_capable": true,
+            "vision_inspected": true,
+            "mode": "live_nemotron_b300",
+            "note": "Live via Nemotron 3.5 Super VL B300 API (Vision + Text)",
+            "vote": "clean",
+            "confidence": 100,
+            "techniques": [],
+            "reason": "The page is a standard academic CV containing factual biographical details, publication lists, and research visualizations without persuasive manipulation."
+          },
+          {
+            "model_id": "gemini-3.1-flash-lite",
+            "model_name": "Gemini 3.1 Flash Lite VL",
+            "focus": "Multimodal Propaganda, Loaded Language & Source Provenance (Google)",
+            "vision_capable": true,
+            "vision_inspected": true,
+            "mode": "live_router",
+            "note": "Live via Hostinger AI Router (Vision + Text)",
+            "vote": "clean",
+            "confidence": 100,
+            "techniques": [],
+            "reason": "This is a standard academic professional profile page containing biographical information, research interests, and links to peer-reviewed publications."
+          },
+          {
+            "model_id": "kimi-k2.6",
+            "model_name": "Kimi K2.6 VL",
+            "focus": "Cross-Cultural Framing, Scapegoating & Narrative Bias (MoonshotAI)",
+            "vision_capable": true,
+            "vision_inspected": true,
+            "mode": "live_router",
+            "note": "Live via Hostinger AI Router (Vision + Text)",
+            "vote": "clean",
+            "confidence": 100,
+            "techniques": [],
+            "reason": "Standard academic personal website containing factual biographical information, research publications, and presentation materials with no detected persuasive manipulation or propaganda."
+          },
+          {
+            "model_id": "claude-haiku-4.5",
+            "model_name": "Claude Haiku 4.5 VL",
+            "focus": "Editorial Context, False Dilemma & Citation Auditing (Anthropic)",
+            "vision_capable": true,
+            "vision_inspected": true,
+            "mode": "live_router",
+            "note": "Live via Hostinger AI Router (Vision + Text)",
+            "vote": "clean",
+            "confidence": 95,
+            "techniques": [],
+            "reason": "This is a straightforward academic researcher profile page with factual information about credentials, affiliations, research interests, and publications—no persuasive manipulation or propaganda techniques detected."
+          }
+        ]
+      },
+      "sections": [
+        {
+          "section_id": "sec-1",
+          "heading": "Introduction",
+          "text": "Julius Pesonen\n\nI'm a research scientist in the Spectrophotogrammetry research group at [the Finnish Geospatial Research Institute. ](https://www.maanmittauslaitos.fi/en/research)\n\nI'm currently pursuing a doctoral degree at Aalto University under the supervision of [Professor Arno Solin](https://users.aalto.fi/~asolin/), and I'm advised by [Professor Eija Honkavaara.](https://www.maanmittauslaitos.fi/en/research/contact-information/staff/eija-honkavaara) From September 2025 to June 2026, I visited the [Department of Optics and Associated Techniques (DOTA)](https://www.onera.fr/en/phy-dota) at ONERA, Toulouse.\n\n[Scholar](https://scholar.google.com/citations?user=doUGlWAAAAAJ&hl=en) / [LinkedIn](https://www.linkedin.com/in/julius-pesonen/) / [Email](mailto:julius.pesonen@nls.fi)\n[\n![profile photo](https://julppe.github.io/images/profile_compressed1.jpeg)\n](https://julppe.github.io/images/profile_compressed1.jpeg)",
+          "is_flagged": false,
+          "questionable_votes": 0,
+          "clean_votes": 5,
+          "total_models": 5,
+          "consensus_techniques": [],
+          "trigger_quotes": [],
+          "plain_language_verdict": "All 5 model(s) voted this section Clean.",
+          "model_votes": [
+            {
+              "model_id": "gemma-4-31b",
+              "model_name": "Gemma 4 31B VL",
+              "vote": "clean",
+              "techniques": [],
+              "trigger_quote": "",
+              "reason": "Contains objective biographical details and professional affiliations."
+            },
+            {
+              "model_id": "nemotron-3.5-super-vl",
+              "model_name": "Nemotron 3.5 Super VL",
+              "vote": "clean",
+              "techniques": [],
+              "trigger_quote": "",
+              "reason": "Provides factual biographical and institutional information without persuasive language."
+            },
+            {
+              "model_id": "gemini-3.1-flash-lite",
+              "model_name": "Gemini 3.1 Flash Lite VL",
+              "vote": "clean",
+              "techniques": [],
+              "trigger_quote": "",
+              "reason": "This section provides standard professional biographical information."
+            },
+            {
+              "model_id": "kimi-k2.6",
+              "model_name": "Kimi K2.6 VL",
+              "vote": "clean",
+              "techniques": [],
+              "trigger_quote": "",
+              "reason": "Standard academic biography listing institutional affiliations, advisors, and contact links without persuasive or emotional language."
+            },
+            {
+              "model_id": "claude-haiku-4.5",
+              "model_name": "Claude Haiku 4.5 VL",
+              "vote": "clean",
+              "techniques": [],
+              "trigger_quote": "",
+              "reason": "Standard academic introduction with verifiable institutional affiliations, supervisor names, and contact links; purely informational with no loaded language or false claims."
+            }
+          ]
+        },
+        {
+          "section_id": "sec-2",
+          "heading": "Recent events",
+          "text": "Older presentation materials are found in the last section of the page.\n\n- October 2026: [Poster on aerial 3D CV](https://raw.githubusercontent.com/Julppe/Julppe.github.io/master/posters/ellis_munich_poster.pptx.pdf) at FCAI AI Day.\n- September 2026: Online seminar talk on [weakly supervised ML for remote sensing](https://raw.githubusercontent.com/Julppe/Julppe.github.io/master/presentations/Seeing_beyond_the_labels.pdf) as part of the [MILO seminar series.](https://www.milo-seminars.org/)\n- September 2026: [Poster on aerial 3D CV](https://raw.githubusercontent.com/Julppe/Julppe.github.io/master/posters/ellis_munich_poster.pptx.pdf) at ELLIS Summerschool in Munich.",
+          "is_flagged": false,
+          "questionable_votes": 0,
+          "clean_votes": 5,
+          "total_models": 5,
+          "consensus_techniques": [],
+          "trigger_quotes": [],
+          "plain_language_verdict": "All 5 model(s) voted this section Clean.",
+          "model_votes": [
+            {
+              "model_id": "gemma-4-31b",
+              "model_name": "Gemma 4 31B VL",
+              "vote": "clean",
+              "techniques": [],
+              "trigger_quote": "",
+              "reason": "Lists factual academic events and presentations."
+            },
+            {
+              "model_id": "nemotron-3.5-super-vl",
+              "model_name": "Nemotron 3.5 Super VL",
+              "vote": "clean",
+              "techniques": [],
+              "trigger_quote": "",
+              "reason": "Lists past events and links to materials objectively."
+            },
+            {
+              "model_id": "gemini-3.1-flash-lite",
+              "model_name": "Gemini 3.1 Flash Lite VL",
+              "vote": "clean",
+              "techniques": [],
+              "trigger_quote": "",
+              "reason": "This section lists academic events and presentations in a factual manner."
+            },
+            {
+              "model_id": "kimi-k2.6",
+              "model_name": "Kimi K2.6 VL",
+              "vote": "clean",
+              "techniques": [],
+              "trigger_quote": "",
+              "reason": "Factual chronological list of recent academic presentations and events with neutral, informative wording."
+            },
+            {
+              "model_id": "claude-haiku-4.5",
+              "model_name": "Claude Haiku 4.5 VL",
+              "vote": "clean",
+              "techniques": [],
+              "trigger_quote": "",
+              "reason": "Chronological listing of recent academic events and presentations with direct links to materials; factual and transparent."
+            }
+          ]
+        },
+        {
+          "section_id": "sec-3",
+          "heading": "Research",
+          "text": "I'm interested in computer vision, deep learning, remote sensing and robotics. In my doctoral works, I'm exploring weakly supervised and real-time deep learning methods in practical remote sensing applications with limited inference resources.\n\n![Page image](https://julppe.github.io/images/treeseg.jpg)\n\n[ Learning Image-based Tree Crown Segmentation from Enhanced Lidar-based Pseudo-labels  ](https://arxiv.org/abs/2602.13022)\nJulius Pesonen, Stefan Rua, Josef Taher, Niko Koivumäki, Xiaowei Yu, Eija Honkavaara\n*ArXiv, 2026*\n[paper](https://arxiv.org/pdf/2602.13022)\n\nTraining a tree crown instance segmentation model for multispectral aerial imagery using automatically generated labels from sparse aerial laser scanning point clouds.\n\n![Page image](https://julppe.github.io/images/pf_teaser11.png)\n\n[ Distant Object Localisation from Noisy Image Segmentation Sequences  ](https://fgi_nls.gitlab.io/public/distant-localisation/)\nJulius Pesonen, Arno Solin, Eija Honkavaara\n*29th International...",
+          "is_flagged": false,
+          "questionable_votes": 0,
+          "clean_votes": 5,
+          "total_models": 5,
+          "consensus_techniques": [],
+          "trigger_quotes": [],
+          "plain_language_verdict": "All 5 model(s) voted this section Clean.",
+          "model_votes": [
+            {
+              "model_id": "gemma-4-31b",
+              "model_name": "Gemma 4 31B VL",
+              "vote": "clean",
+              "techniques": [],
+              "trigger_quote": "",
+              "reason": "Describes research interests and cites academic papers objectively."
+            },
+            {
+              "model_id": "nemotron-3.5-super-vl",
+              "model_name": "Nemotron 3.5 Super VL",
+              "vote": "clean",
+              "techniques": [],
+              "trigger_quote": "",
+              "reason": "Describes research interests and publications factually."
+            },
+            {
+              "model_id": "gemini-3.1-flash-lite",
+              "model_name": "Gemini 3.1 Flash Lite VL",
+              "vote": "clean",
+              "techniques": [],
+              "trigger_quote": "",
+              "reason": "This section describes research interests and links to academic papers."
+            },
+            {
+              "model_id": "kimi-k2.6",
+              "model_name": "Kimi K2.6 VL",
+              "vote": "clean",
+              "techniques": [],
+              "trigger_quote": "",
+              "reason": "Objective description of research interests and peer-reviewed publication details typical of an academic portfolio."
+            },
+            {
+              "model_id": "claude-haiku-4.5",
+              "model_name": "Claude Haiku 4.5 VL",
+              "vote": "clean",
+              "techniques": [],
+              "trigger_quote": "",
+              "reason": "Research summary describing genuine academic interests and published work with arXiv citations and co-author attribution; objective scholarly documentation."
+            }
+          ]
+        },
+        {
+          "section_id": "sec-4",
+          "heading": "Presentation materials",
+          "text": "- October 2026 FCAI AI Day poster titled [3D Computer Vision for Localisation of Distant Objects](https://raw.githubusercontent.com/Julppe/Julppe.github.io/master/posters/ellis_munich_poster.pptx.pdf)\n- September 2026 MILO online seminar talk titled [Seeing beyond the labels: Weakly supervised deep learning in remote sensing.](https://raw.githubusercontent.com/Julppe/Julppe.github.io/master/presentations/Seeing_beyond_the_labels.pdf)\n- September 2026 ELLIS Munich summer school poster titled [3D Computer Vision for Localisation of Distant Objects](https://raw.githubusercontent.com/Julppe/Julppe.github.io/master/posters/ellis_munich_poster.pptx.pdf)\n- June 2026 FUSION presentation titled [Distant Object Localisation from Noisy Image Segmentation Sequences](https://raw.githubusercontent.com/Julppe/Julppe.github.io/master/presentations/FUSION2026_distant_localisation.pdf)\n- June 2026 EARSeL Workshop on Imaging Spectroscopyposter poster titled [Adapting Vision Transformers for High...",
+          "is_flagged": false,
+          "questionable_votes": 0,
+          "clean_votes": 5,
+          "total_models": 5,
+          "consensus_techniques": [],
+          "trigger_quotes": [],
+          "plain_language_verdict": "All 5 model(s) voted this section Clean.",
+          "model_votes": [
+            {
+              "model_id": "gemma-4-31b",
+              "model_name": "Gemma 4 31B VL",
+              "vote": "clean",
+              "techniques": [],
+              "trigger_quote": "",
+              "reason": "Provides a factual list of presentation materials."
+            },
+            {
+              "model_id": "nemotron-3.5-super-vl",
+              "model_name": "Nemotron 3.5 Super VL",
+              "vote": "clean",
+              "techniques": [],
+              "trigger_quote": "",
+              "reason": "Lists presentation materials with titles and links."
+            },
+            {
+              "model_id": "gemini-3.1-flash-lite",
+              "model_name": "Gemini 3.1 Flash Lite VL",
+              "vote": "clean",
+              "techniques": [],
+              "trigger_quote": "",
+              "reason": "This section provides a list of academic presentation materials."
+            },
+            {
+              "model_id": "kimi-k2.6",
+              "model_name": "Kimi K2.6 VL",
+              "vote": "clean",
+              "techniques": [],
+              "trigger_quote": "",
+              "reason": "Plain inventory of presentation materials and posters with titles and direct links, devoid of rhetorical framing."
+            },
+            {
+              "model_id": "claude-haiku-4.5",
+              "model_name": "Claude Haiku 4.5 VL",
+              "vote": "clean",
+              "techniques": [],
+              "trigger_quote": "",
+              "reason": "Organized archive of presentation materials with dates, venues, and downloadable links; factual reference list with no persuasive intent."
+            }
+          ]
+        }
+      ],
+      "images": [
+        {
+          "image_id": "img-1",
+          "src": "https://julppe.github.io/images/profile_compressed1.jpeg",
+          "alt": "profile photo",
+          "is_flagged": false,
+          "questionable_votes": 0,
+          "clean_votes": 5,
+          "total_models": 5,
+          "consensus_flags": [],
+          "plain_language_verdict": "All 5 model(s) judged this image Clean / Authentic.",
+          "model_votes": [
+            {
+              "model_id": "gemma-4-31b",
+              "model_name": "Gemma 4 31B VL",
+              "vision_inspected": true,
+              "vote": "clean",
+              "flags": [],
+              "reason": "Authentic personal profile photograph with no signs of synthetic generation."
+            },
+            {
+              "model_id": "nemotron-3.5-super-vl",
+              "model_name": "Nemotron 3.5 Super VL",
+              "vision_inspected": true,
+              "vote": "clean",
+              "flags": [],
+              "reason": "Appears to be an authentic photograph of a person with natural features and lighting."
+            },
+            {
+              "model_id": "gemini-3.1-flash-lite",
+              "model_name": "Gemini 3.1 Flash Lite VL",
+              "vision_inspected": true,
+              "vote": "clean",
+              "flags": [],
+              "reason": "This is a standard, authentic professional headshot."
+            },
+            {
+              "model_id": "kimi-k2.6",
+              "model_name": "Kimi K2.6 VL",
+              "vision_inspected": true,
+              "vote": "clean",
+              "flags": [],
+              "reason": "Authentic-looking portrait with natural skin texture, consistent lighting, and realistic fabric details; no synthetic artifacts detected."
+            },
+            {
+              "model_id": "claude-haiku-4.5",
+              "model_name": "Claude Haiku 4.5 VL",
+              "vision_inspected": true,
+              "vote": "clean",
+              "flags": [],
+              "reason": "Authentic portrait photograph showing natural skin texture, realistic lighting, consistent eye focus, and genuine photographic artifacts; no AI-generation indicators detected."
+            }
+          ]
+        },
+        {
+          "image_id": "img-2",
+          "src": "https://julppe.github.io/images/treeseg.jpg",
+          "alt": "Page image",
+          "is_flagged": false,
+          "questionable_votes": 0,
+          "clean_votes": 5,
+          "total_models": 5,
+          "consensus_flags": [],
+          "plain_language_verdict": "All 5 model(s) judged this image Clean / Authentic.",
+          "model_votes": [
+            {
+              "model_id": "gemma-4-31b",
+              "model_name": "Gemma 4 31B VL",
+              "vision_inspected": true,
+              "vote": "clean",
+              "flags": [],
+              "reason": "Technical scientific visualization of tree crown segmentation for research purposes."
+            },
+            {
+              "model_id": "nemotron-3.5-super-vl",
+              "model_name": "Nemotron 3.5 Super VL",
+              "vision_inspected": true,
+              "vote": "clean",
+              "flags": [],
+              "reason": "Displays a scientific segmentation map of aerial imagery, not a synthetic scene."
+            },
+            {
+              "model_id": "gemini-3.1-flash-lite",
+              "model_name": "Gemini 3.1 Flash Lite VL",
+              "vision_inspected": true,
+              "vote": "clean",
+              "flags": [],
+              "reason": "This is a technical visualization of computer vision segmentation results, not a deceptive image."
+            },
+            {
+              "model_id": "kimi-k2.6",
+              "model_name": "Kimi K2.6 VL",
+              "vision_inspected": true,
+              "vote": "clean",
+              "flags": [],
+              "reason": "Standard scientific visualization of segmentation boundaries over aerial imagery; typical research figure without manipulative framing."
+            },
+            {
+              "model_id": "claude-haiku-4.5",
+              "model_name": "Claude Haiku 4.5 VL",
+              "vision_inspected": true,
+              "vote": "clean",
+              "flags": [],
+              "reason": "Genuine remote-sensing or aerial imagery showing tree crown segmentation with realistic multispectral coloring and natural variation; consistent with documented computer vision research output."
+            }
+          ]
+        },
+        {
+          "image_id": "img-3",
+          "src": "https://julppe.github.io/images/pf_teaser11.png",
+          "alt": "Page image",
+          "is_flagged": false,
+          "questionable_votes": 0,
+          "clean_votes": 5,
+          "total_models": 5,
+          "consensus_flags": [],
+          "plain_language_verdict": "All 5 model(s) judged this image Clean / Authentic.",
+          "model_votes": [
+            {
+              "model_id": "gemma-4-31b",
+              "model_name": "Gemma 4 31B VL",
+              "vision_inspected": false,
+              "vote": "clean",
+              "flags": [],
+              "reason": "Technical research teaser image showing data analysis."
+            },
+            {
+              "model_id": "nemotron-3.5-super-vl",
+              "model_name": "Nemotron 3.5 Super VL",
+              "vision_inspected": false,
+              "vote": "clean",
+              "flags": [],
+              "reason": "Shows a technical visualization of localization results, consistent with academic figures."
+            },
+            {
+              "model_id": "gemini-3.1-flash-lite",
+              "model_name": "Gemini 3.1 Flash Lite VL",
+              "vision_inspected": false,
+              "vote": "clean",
+              "flags": [],
+              "reason": "This is a technical diagram related to research, not a deceptive image."
+            },
+            {
+              "model_id": "kimi-k2.6",
+              "model_name": "Kimi K2.6 VL",
+              "vision_inspected": false,
+              "vote": "clean",
+              "flags": [],
+              "reason": "Research teaser figure from an academic paper; standard educational scientific imagery based on page context."
+            },
+            {
+              "model_id": "claude-haiku-4.5",
+              "model_name": "Claude Haiku 4.5 VL",
+              "vision_inspected": false,
+              "vote": "clean",
+              "flags": [],
+              "reason": "Image metadata referenced but not provided for detailed analysis; based on context (research teaser image), appears to be legitimate research visualization."
+            }
+          ]
+        },
+        {
+          "image_id": "img-4",
+          "src": "https://julppe.github.io/images/bff_dataset.png",
+          "alt": "Page image",
+          "is_flagged": false,
+          "questionable_votes": 0,
+          "clean_votes": 5,
+          "total_models": 5,
+          "consensus_flags": [],
+          "plain_language_verdict": "All 5 model(s) judged this image Clean / Authentic.",
+          "model_votes": [
+            {
+              "model_id": "gemma-4-31b",
+              "model_name": "Gemma 4 31B VL",
+              "vision_inspected": false,
+              "vote": "clean",
+              "flags": [],
+              "reason": "Technical dataset visualization used for academic demonstration."
+            },
+            {
+              "model_id": "nemotron-3.5-super-vl",
+              "model_name": "Nemotron 3.5 Super VL",
+              "vision_inspected": false,
+              "vote": "clean",
+              "flags": [],
+              "reason": "Context suggests a dataset visualization consistent with the page's academic nature."
+            },
+            {
+              "model_id": "gemini-3.1-flash-lite",
+              "model_name": "Gemini 3.1 Flash Lite VL",
+              "vision_inspected": false,
+              "vote": "clean",
+              "flags": [],
+              "reason": "This is a technical dataset visualization, not a deceptive image."
+            },
+            {
+              "model_id": "kimi-k2.6",
+              "model_name": "Kimi K2.6 VL",
+              "vision_inspected": false,
+              "vote": "clean",
+              "flags": [],
+              "reason": "Dataset visualization from academic research; standard documentary scientific imagery based on page context."
+            },
+            {
+              "model_id": "claude-haiku-4.5",
+              "model_name": "Claude Haiku 4.5 VL",
+              "vision_inspected": false,
+              "vote": "clean",
+              "flags": [],
+              "reason": "Image metadata referenced but not provided for detailed analysis; based on context (dataset visualization), appears to be legitimate research documentation."
+            }
+          ]
+        }
+      ]
+    },
+    "provenance": {
+      "overall_trust_score": 80,
+      "trust_tier": "high",
+      "summary": "Trust Score 80/100 (High): Custom external domain. 50 verifiable inline citations spanning 18 domain(s).",
+      "signals": {
+        "domain_reputation": {
+          "label": "Domain & Publisher Identity",
+          "score": 60,
+          "detail": "HTTPS verified; Custom external domain (julppe.github.io)"
+        },
+        "content_originality": {
+          "label": "Content Originality",
+          "score": 92,
+          "detail": "25/25 unique structural blocks; 1218 words extracted"
+        },
+        "ai_generation_risk": {
+          "label": "Human & Visual Authenticity",
+          "score": 78,
+          "detail": "Natural structural sentence variance; no synthetic/fabricated attribution detected"
+        },
+        "link_network_integrity": {
+          "label": "Citation & Link Integrity",
+          "score": 97,
+          "detail": "50 verifiable inline citations spanning 18 domain(s)"
+        }
+      }
+    }
   }
 }

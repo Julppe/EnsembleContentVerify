@@ -22,6 +22,7 @@ import html as html_lib
 import html.parser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
+import mimetypes
 import os
 import random
 import re
@@ -1641,6 +1642,33 @@ class AppHandler(BaseHTTPRequestHandler):
         if path in ("/slides", "/slides.html"):
             with open(os.path.join(APP_DIR, "static", "slides.html"), "r", encoding="utf-8") as f:
                 self._send_html(f.read())
+            return
+
+        if path.startswith("/static/") or path.startswith("/screenshots/"):
+            rel_sub = path[len("/static/"):] if path.startswith("/static/") else path.lstrip("/")
+            static_root = os.path.realpath(os.path.join(APP_DIR, "static"))
+            target_path = os.path.realpath(os.path.join(static_root, rel_sub))
+            if target_path.startswith(static_root + os.sep) and os.path.isfile(target_path):
+                ext = os.path.splitext(target_path)[1].lower()
+                mime_map = {
+                    ".png": "image/png",
+                    ".jpg": "image/jpeg",
+                    ".jpeg": "image/jpeg",
+                    ".webp": "image/webp",
+                    ".gif": "image/gif",
+                    ".svg": "image/svg+xml",
+                }
+                ctype = mime_map.get(ext) or mimetypes.guess_type(target_path)[0] or "application/octet-stream"
+                with open(target_path, "rb") as f:
+                    raw = f.read()
+                self.send_response(200)
+                self.send_header("Content-Type", ctype)
+                self.send_header("Content-Length", str(len(raw)))
+                self.end_headers()
+                if self.command != "HEAD":
+                    self.wfile.write(raw)
+                return
+            self._send_json({"ok": False, "error": "Static asset not found"}, status=404)
             return
 
         if path.startswith("/toy-site/"):
