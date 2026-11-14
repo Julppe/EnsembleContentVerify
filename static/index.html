@@ -663,11 +663,6 @@
       font-weight: 600;
     }
 
-    /* Extracted Images Section in Reader */
-    .reader-images-block {
-      margin-bottom: 24px;
-    }
-
     .section-eyebrow {
       font-size: 11.5px;
       font-weight: 600;
@@ -675,77 +670,6 @@
       letter-spacing: 0.05em;
       color: var(--muted);
       margin-bottom: 10px;
-    }
-
-    .reader-images-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
-      gap: 12px;
-    }
-
-    .reader-img-card {
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      background: var(--surface);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
-    }
-
-    .reader-img-card.clickable {
-      cursor: pointer;
-    }
-
-    .reader-img-card.clickable:hover {
-      border-color: var(--border-strong);
-      box-shadow: var(--shadow-md);
-      transform: translateY(-1px);
-    }
-
-    .reader-img-card.flagged {
-      border-color: var(--red-border);
-      box-shadow: inset 3px 0 0 var(--red);
-      background: var(--red-soft);
-    }
-
-    .reader-img-card.flagged:hover {
-      border-color: var(--red);
-    }
-
-    .reader-img-thumb {
-      width: 100%;
-      height: 130px;
-      object-fit: cover;
-      background: var(--surface-subtle);
-      display: block;
-    }
-
-    .img-fallback {
-      width: 100%;
-      height: 130px;
-      background: var(--surface-subtle);
-      color: var(--muted);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      padding: 10px;
-      text-align: center;
-    }
-
-    .reader-img-meta {
-      padding: 9px 11px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .reader-img-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 6px;
     }
 
     .code-id {
@@ -758,178 +682,269 @@
       border: 1px solid var(--border);
     }
 
-    .reader-img-alt {
-      font-size: 12px;
+    .img-fallback {
+      width: 100%;
+      min-height: 110px;
+      background: var(--surface-subtle);
       color: var(--muted);
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    /* Natural Original Webpage Preview + Coloured Overlining */
+    .webpage-canvas {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
       overflow: hidden;
     }
 
-    /* Article Reader Sections */
-    .reader-sections {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .reader-sec {
-      padding: 16px 18px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      transition: border-color 0.15s ease, background-color 0.15s ease;
-    }
-
-    .reader-sec.reviewed-clean {
-      cursor: pointer;
-    }
-
-    .reader-sec.reviewed-clean:hover {
-      border-color: var(--border-strong);
-      background: var(--surface-hover);
-    }
-
-    .reader-sec.flagged {
-      border-color: var(--red-border);
-      border-left: 3.5px solid var(--red);
-      background: var(--red-soft);
-      cursor: pointer;
-    }
-
-    .reader-sec.flagged.partial {
-      border-color: var(--amber-border);
-      border-left: 3.5px solid var(--amber);
-      background: var(--amber-soft);
-    }
-
-    .reader-sec-head {
+    .webpage-browser-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 10px;
+      padding: 10px 16px;
+      background: var(--surface-subtle);
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .webpage-url-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 4px 12px;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--text-secondary);
+      font-size: 12px;
+    }
+
+    .webpage-legend {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-size: 11.5px;
+    }
+
+    .legend-swatch {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .legend-bar {
+      display: inline-block;
+      width: 16px;
+      height: 3px;
+      border-radius: 2px;
+    }
+
+    .legend-bar.red { background: var(--red); }
+    .legend-bar.amber { background: var(--amber); }
+
+    .webpage-doc {
+      max-width: 740px;
+      margin: 0 auto;
+      padding: 32px 36px 46px;
+      color: var(--text);
+      font-family: Georgia, "Times New Roman", -apple-system, BlinkMacSystemFont, "Segoe UI", serif;
+      font-size: 16px;
+      line-height: 1.72;
+    }
+
+    .webpage-title {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.24;
+      letter-spacing: -0.02em;
+      color: var(--text);
       margin-bottom: 8px;
     }
 
-    .reader-sec-tags {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .inspect-hint {
-      font-family: inherit;
-      font-size: 11.5px;
-      font-weight: 500;
+    .webpage-byline {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      font-size: 12.5px;
       color: var(--muted);
-      opacity: 0.88;
-      background: transparent;
-      border: none;
-      padding: 2px 6px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.12s ease, opacity 0.12s ease;
+      padding-bottom: 18px;
+      margin-bottom: 22px;
+      border-bottom: 1px solid var(--border);
     }
 
-    .inspect-hint:hover {
-      opacity: 1;
-      background: var(--surface-subtle);
+    .webpage-byline a {
+      color: var(--accent);
+      text-decoration: none;
     }
 
-    .inspect-hint:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
+    .webpage-byline a:hover {
+      text-decoration: underline;
     }
 
-    .reader-sec.flagged .inspect-hint {
-      color: var(--red-text);
+    .webpage-lead-figures {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin: 0 0 24px;
     }
 
-    .reader-sec.flagged.partial .inspect-hint {
-      color: var(--amber-text);
+    .webpage-sec {
+      margin-bottom: 22px;
     }
 
-    .reader-sec-title {
-      font-size: 16.5px;
+    .webpage-sec-heading {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      font-size: 20px;
       font-weight: 650;
-      line-height: 1.35;
+      line-height: 1.32;
       color: var(--text);
-      margin-bottom: 10px;
-      letter-spacing: -0.01em;
+      margin: 26px 0 10px;
+      letter-spacing: -0.015em;
     }
 
-    .reader-sec-title a,
-    .reader-sec-body a {
+    .webpage-sec-heading a,
+    .webpage-sec-body a {
       color: var(--accent);
       text-decoration: underline;
       text-underline-offset: 2px;
     }
 
-    .reader-sec-body {
-      font-size: 14.5px;
-      line-height: 1.7;
-      color: var(--text-secondary);
+    .webpage-sec-body p {
+      margin-bottom: 13px;
     }
 
-    .reader-sec-body p {
-      margin-bottom: 10px;
-    }
-
-    .reader-sec-body p:last-child {
+    .webpage-sec-body p:last-child {
       margin-bottom: 0;
     }
 
-    .reader-sec-body ul,
-    .reader-sec-body ol {
-      padding-left: 20px;
-      margin-bottom: 10px;
+    .webpage-sec-body ul,
+    .webpage-sec-body ol {
+      padding-left: 22px;
+      margin-bottom: 13px;
     }
 
-    .reader-sec-body li {
-      margin-bottom: 4px;
+    .webpage-sec-body li {
+      margin-bottom: 5px;
     }
 
-    .reader-sec-body blockquote {
+    .webpage-sec-body blockquote {
       border-left: 3px solid var(--border-strong);
-      padding-left: 12px;
-      color: var(--muted);
-      margin: 10px 0;
+      padding-left: 14px;
+      color: var(--text-secondary);
+      margin: 14px 0;
+      font-style: italic;
     }
 
-    .reader-sec-body img {
-      max-width: 100%;
-      max-height: 320px;
-      border-radius: 8px;
-      margin: 8px 0;
-      border: 1px solid var(--border);
-      display: block;
-    }
-
-    .reader-sec-body code {
+    .webpage-sec-body code {
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 0.88em;
+      font-size: 0.85em;
       padding: 1px 5px;
       border-radius: 4px;
       background: var(--code-bg);
       border: 1px solid var(--border);
     }
 
-    /* Clickable Trigger Quote Highlight */
-    mark.flag-mark {
-      background: var(--mark-bg);
-      color: inherit;
-      padding: 1px 4px;
-      border-radius: 4px;
-      border-bottom: 1.5px solid var(--mark-border);
+    .webpage-img-wrap {
+      display: inline-block;
+      margin: 8px 0 12px;
+      max-width: 100%;
+    }
+
+    .webpage-img-wrap img {
+      max-width: 100%;
+      max-height: 300px;
+      border-radius: 6px;
+      display: block;
+    }
+
+    .webpage-img-caption {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      font-size: 11.5px;
+      color: var(--muted);
+      margin-top: 5px;
+      max-width: 340px;
+    }
+
+    /* Suspicious Image Overlining (Only rendered when >= 1 model flagged the image) */
+    .webpage-img-wrap.flagged {
+      border-top: 4px solid var(--red);
+      outline: 1.5px solid var(--red-border);
+      background: var(--red-soft);
+      border-radius: 8px;
+      padding: 7px 8px 8px;
       cursor: pointer;
+      transition: background-color 0.14s ease, outline-color 0.14s ease;
+    }
+
+    .webpage-img-wrap.flagged:hover {
+      outline-color: var(--red);
+    }
+
+    .webpage-img-wrap.flagged.uncertain {
+      border-top-color: var(--amber);
+      outline-color: var(--amber-border);
+      background: var(--amber-soft);
+    }
+
+    .webpage-img-wrap.flagged.uncertain:hover {
+      outline-color: var(--amber);
+    }
+
+    .webpage-img-flagbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--red-text);
+      margin-bottom: 6px;
+    }
+
+    .webpage-img-wrap.flagged.uncertain .webpage-img-flagbar {
+      color: var(--amber-text);
+    }
+
+    /* Suspicious Text Overlining (Only applied to content flagged by >= 1 model) */
+    mark.flag-mark {
+      background: rgba(239, 68, 68, 0.11);
+      color: inherit;
+      padding: 2px 3px 1px;
+      border-radius: 2px;
+      border-top: 2.5px solid var(--red);
+      border-bottom: none;
+      cursor: pointer;
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
       transition: background-color 0.14s ease;
     }
 
     mark.flag-mark:hover {
-      background: var(--mark-bg-hover);
+      background: rgba(239, 68, 68, 0.22);
+    }
+
+    mark.flag-mark.uncertain {
+      background: rgba(245, 158, 11, 0.14);
+      border-top-color: var(--amber);
+    }
+
+    mark.flag-mark.uncertain:hover {
+      background: rgba(245, 158, 11, 0.26);
     }
 
     /* Pills & Badges */
@@ -1574,7 +1589,6 @@
       </a>
       <nav class="topbar-actions" aria-label="Primary actions">
         <a href="/slides" class="btn btn-ghost">Slides</a>
-        <button type="button" class="btn btn-ghost" id="metrics-btn">Metrics</button>
         <button type="button" class="btn btn-secondary" id="add-url-btn">+ Add URL</button>
         <button type="button" class="btn btn-icon" id="theme-toggle-btn" aria-label="Switch theme" title="Switch theme">🌙</button>
       </nav>
@@ -1637,22 +1651,6 @@
         </div>
       </div>
       <div class="modal-body" id="summary-body"></div>
-    </div>
-  </div>
-
-  <!-- Header Modal: Benchmark Precision & FPR Metrics -->
-  <div class="modal-backdrop" id="metrics-modal" role="dialog" aria-modal="true" aria-labelledby="metrics-title">
-    <div class="modal modal-summary">
-      <div class="modal-head">
-        <div class="modal-head-text">
-          <div class="modal-title" id="metrics-title">Ensemble Benchmark Metrics</div>
-          <div class="modal-subtitle">Precision, Recall, False-Positive Rate &amp; Inter-Model Agreement</div>
-        </div>
-        <div class="modal-head-actions">
-          <button type="button" class="modal-close" data-close-modal="metrics-modal" aria-label="Close metrics">✕</button>
-        </div>
-      </div>
-      <div class="modal-body" id="metrics-body"></div>
     </div>
   </div>
 
@@ -1766,13 +1764,6 @@
       return safeHref(raw);
     }
 
-    function formatPct(val) {
-      if (val === null || val === undefined || Number.isNaN(Number(val))) return '—';
-      const n = Number(val);
-      const pct = n <= 1 && n >= 0 ? n * 100 : n;
-      return `${pct.toFixed(1).replace(/\.0$/, '')}%`;
-    }
-
     function explainTechnique(name) {
       if (TECHNIQUE_EXPLANATIONS[name]) return TECHNIQUE_EXPLANATIONS[name];
       const lower = String(name || '').toLowerCase();
@@ -1789,7 +1780,7 @@
     }
 
     /* ----- Modal Lifecycle ----- */
-    const MODAL_STACK_ORDER = ['inspector-modal', 'reader-modal', 'summary-modal', 'metrics-modal', 'add-site-modal'];
+    const MODAL_STACK_ORDER = ['inspector-modal', 'reader-modal', 'summary-modal', 'add-site-modal'];
 
     function syncBodyScrollLock() {
       const anyOpen = MODAL_STACK_ORDER.some(id => document.getElementById(id)?.classList.contains('open'));
@@ -2040,7 +2031,21 @@
     }
 
     /* ----- Safe Markdown Rendering ----- */
-    function formatInlineMarkdown(rawText) {
+    function normalizeImgKey(url) {
+      return String(url || '').replace(/&amp;/g, '&').trim();
+    }
+
+    function renderFlaggedImgHtml(src, escapedAlt, imgMeta) {
+      const qVotes = imgMeta.qVotes ?? 0;
+      const totalM = imgMeta.totalM ?? 0;
+      const cls = imgMeta.isUncertain ? 'flagged uncertain' : 'flagged';
+      const lbl = imgMeta.isUncertain
+        ? `Uncertain (${qVotes}/${totalM} model flagged image)`
+        : `Suspicious (${qVotes}/${totalM} models flagged image)`;
+      return `<span class="webpage-img-wrap ${cls}" role="button" tabindex="0" data-inspect-image="${escapeHtml(imgMeta.image_id)}" aria-label="${escapeHtml(lbl)}"><span class="webpage-img-flagbar">${escapeHtml(lbl)} · Click to inspect</span><img src="${escapeHtml(src)}" alt="${escapedAlt}" loading="lazy" data-img-fallback="true" /></span>`;
+    }
+
+    function formatInlineMarkdown(rawText, imgCtx = null) {
       // Collapse multi-line linked images: [\n![alt](img)\n](href) -> ![alt](img)
       let normalized = String(rawText || '').replace(
         /\[\s*(!\[[^\]]*\]\([^)]+\))\s*\]\([^)]+\)/g,
@@ -2055,6 +2060,13 @@
       s = s.replace(/!\[([^\]]*)\]\(([^\s()]*(?:\([^\s()]*\)[^\s()]*)*)\)/g, (_, alt, url) => {
         const cleanSrc = safeImgSrc(url.replace(/&amp;/g, '&'));
         if (!cleanSrc) return '';
+        const imgMeta = imgCtx?.bySrc?.[normalizeImgKey(cleanSrc)];
+        if (imgMeta) {
+          imgCtx.matchedIds?.add(imgMeta.image_id);
+          if (imgMeta.isFlagged) {
+            return renderFlaggedImgHtml(cleanSrc, alt, imgMeta);
+          }
+        }
         return `<img src="${escapeHtml(cleanSrc)}" alt="${alt}" loading="lazy" data-img-fallback="true" />`;
       });
 
@@ -2072,7 +2084,7 @@
       return s;
     }
 
-    function markdownToSafeHtml(md) {
+    function markdownToSafeHtml(md, imgCtx = null) {
       const cleaned = String(md || '').replace(
         /\[\s*(!\[[^\]]*\]\([^)]+\))\s*\]\([^)]+\)/g,
         '$1'
@@ -2096,29 +2108,29 @@
         }
         if (line.startsWith('### ')) {
           closeList();
-          html += `<h3>${formatInlineMarkdown(line.slice(4))}</h3>`;
+          html += `<h3>${formatInlineMarkdown(line.slice(4), imgCtx)}</h3>`;
         } else if (line.startsWith('## ')) {
           closeList();
-          html += `<h2>${formatInlineMarkdown(line.slice(3))}</h2>`;
+          html += `<h2>${formatInlineMarkdown(line.slice(3), imgCtx)}</h2>`;
         } else if (line.startsWith('# ')) {
           closeList();
-          html += `<h1>${formatInlineMarkdown(line.slice(2))}</h1>`;
+          html += `<h1>${formatInlineMarkdown(line.slice(2), imgCtx)}</h1>`;
         } else if (line.startsWith('> ')) {
           closeList();
-          html += `<blockquote>${formatInlineMarkdown(line.slice(2))}</blockquote>`;
+          html += `<blockquote>${formatInlineMarkdown(line.slice(2), imgCtx)}</blockquote>`;
         } else if (line.startsWith('- ') || line.startsWith('* ')) {
           if (!inList) {
             html += '<ul>';
             inList = true;
           }
-          html += `<li>${formatInlineMarkdown(line.slice(2))}</li>`;
+          html += `<li>${formatInlineMarkdown(line.slice(2), imgCtx)}</li>`;
         } else {
           closeList();
-          html += `<p>${formatInlineMarkdown(line)}</p>`;
+          html += `<p>${formatInlineMarkdown(line, imgCtx)}</p>`;
         }
       }
       closeList();
-      return html || '<p style="color:var(--muted);">(No text extracted for this section)</p>';
+      return html;
     }
 
     function normalizeForQuoteMatch(str) {
@@ -2128,18 +2140,48 @@
         .replace(/[\u201c\u201d]/g, '"');
     }
 
-    /* DOM-safe text-node quote highlighter so attributes & HTML tags are never broken */
-    function highlightQuotesInElement(rootEl, quotes, sectionId) {
+    function wrapTextNodesWithOverline(rootEl, sectionId, isUncertain) {
+      const walker = document.createTreeWalker(rootEl, NodeFilter.SHOW_TEXT, {
+        acceptNode(node) {
+          if (!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+          if (node.parentElement && node.parentElement.closest('mark.flag-mark, script, style, .webpage-img-flagbar')) {
+            return NodeFilter.FILTER_REJECT;
+          }
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
+
+      const textNodes = [];
+      let curr;
+      while ((curr = walker.nextNode())) {
+        textNodes.push(curr);
+      }
+
+      for (const textNode of textNodes) {
+        const mark = document.createElement('mark');
+        mark.className = isUncertain ? 'flag-mark uncertain' : 'flag-mark';
+        mark.setAttribute('role', 'button');
+        mark.setAttribute('tabindex', '0');
+        mark.setAttribute('data-inspect-section', sectionId);
+        mark.setAttribute('aria-label', 'Inspect model votes for flagged phrase');
+        mark.textContent = textNode.nodeValue;
+        textNode.parentNode.replaceChild(mark, textNode);
+      }
+    }
+
+    /* DOM-safe text-node quote highlighter with coloured overlines; returns match count */
+    function highlightQuotesInElement(rootEl, quotes, sectionId, isUncertain = false) {
       const cleanQuotes = [...new Set((quotes || []).map(q => String(q || '').trim()).filter(q => q.length > 3))];
-      if (!cleanQuotes.length) return;
+      if (!cleanQuotes.length) return 0;
       cleanQuotes.sort((a, b) => b.length - a.length);
 
+      let matches = 0;
       for (const quote of cleanQuotes) {
         const normQuote = normalizeForQuoteMatch(quote);
         const walker = document.createTreeWalker(rootEl, NodeFilter.SHOW_TEXT, {
           acceptNode(node) {
             if (!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
-            if (node.parentElement && node.parentElement.closest('mark.flag-mark, script, style')) {
+            if (node.parentElement && node.parentElement.closest('mark.flag-mark, script, style, .webpage-img-flagbar')) {
               return NodeFilter.FILTER_REJECT;
             }
             return NodeFilter.FILTER_ACCEPT;
@@ -2165,13 +2207,14 @@
               frag.appendChild(document.createTextNode(text.slice(searchFrom, idx)));
             }
             const mark = document.createElement('mark');
-            mark.className = 'flag-mark';
+            mark.className = isUncertain ? 'flag-mark uncertain' : 'flag-mark';
             mark.setAttribute('role', 'button');
             mark.setAttribute('tabindex', '0');
             mark.setAttribute('data-inspect-section', sectionId);
-            mark.setAttribute('aria-label', 'Inspect model votes for highlighted phrase');
+            mark.setAttribute('aria-label', 'Inspect model votes for flagged phrase');
             mark.textContent = text.slice(idx, idx + quote.length);
             frag.appendChild(mark);
+            matches += 1;
 
             searchFrom = idx + quote.length;
             idx = normText.indexOf(normQuote, searchFrom);
@@ -2182,6 +2225,7 @@
           textNode.parentNode.replaceChild(frag, textNode);
         }
       }
+      return matches;
     }
 
     function wireImageFallbacks(container) {
@@ -2201,7 +2245,7 @@
       if (!site) return;
 
       state.activeModalSiteId = siteId;
-      document.getElementById('reader-title').textContent = site.title || site.domain || 'Full Page & Highlights';
+      document.getElementById('reader-title').textContent = site.title || site.domain || 'Original Page Preview';
       document.getElementById('reader-subtitle').textContent = site.url || site.domain || '';
       const bodyEl = document.getElementById('reader-body');
       openModal('reader-modal');
@@ -2252,124 +2296,143 @@
         ? page.images
         : (review?.images || []);
 
+      const pageTitle = page.title || site.title || site.domain || 'Untitled Page';
+      const displayUrl = site.url || `https://${site.domain || 'example.com'}`;
+      const safePageHref = safeHref(displayUrl);
+      const flaggedSecCount = review?.flagged_sections_count ?? 0;
+
       const metaSub = [
         site.domain,
         page.word_count ? `${page.word_count} words` : null,
-        `${rawSections.length} sections`,
-        `${rawImages.length} images`
+        review ? `${flaggedSecCount} flagged area(s) overlined` : null
       ].filter(Boolean).join(' · ');
       document.getElementById('reader-subtitle').textContent = metaSub;
 
-      const hintBanner = `
-        <div class="reader-hint">
-          <span aria-hidden="true">💡</span>
-          <span>Click any <strong>highlighted section or image</strong> to inspect individual model votes &amp; reasoning.</span>
-        </div>
-      `;
+      // Map image URLs so inline markdown renders overlays natively when flagged
+      const imgBySrc = {};
+      rawImages.forEach(im => {
+        const revImg = revImagesById[im.image_id] || im;
+        const qVotes = revImg.questionable_votes ?? 0;
+        const totalM = revImg.total_models ?? (review?.models_count || 0);
+        const isFlagged = Boolean(revImg.is_flagged);
+        const isUncertain = isFlagged && totalM > 1 && qVotes === 1;
+        const meta = {
+          image_id: im.image_id,
+          isFlagged,
+          isUncertain,
+          qVotes,
+          totalM
+        };
+        [im.src, safeImgSrc(im.src)].forEach(candidate => {
+          const key = normalizeImgKey(candidate);
+          if (key && !imgBySrc[key]) imgBySrc[key] = meta;
+        });
+      });
+      const matchedImageIds = new Set();
+      const imgCtx = { bySrc: imgBySrc, matchedIds: matchedImageIds };
 
-      const imagesHtml = rawImages.length ? `
-        <div class="reader-images-block">
-          <div class="section-eyebrow">Extracted Images (${rawImages.length})</div>
-          <div class="reader-images-grid">
-            ${rawImages.map(im => {
-              const revImg = revImagesById[im.image_id] || im;
-              const isReviewed = Boolean(review && revImagesById[im.image_id]);
-              const isFlagged = Boolean(revImg.is_flagged);
-              const src = safeImgSrc(im.src);
-              const qVotes = revImg.questionable_votes ?? 0;
-              const totalM = revImg.total_models ?? (review?.models_count || 0);
-              const flags = (revImg.consensus_flags || []).map(f =>
-                `<span class="pill red">${escapeHtml(f.name)}</span>`
-              ).join('');
+      // Render article body sections naturally, leaving clean sections completely plain
+      let sectionsHtml = '';
+      if (rawSections.length) {
+        sectionsHtml = rawSections.map(sec => {
+          const rawHeading = String(sec.heading || '').trim();
+          const showHeading = Boolean(
+            rawHeading
+            && !/^sec_\d+$/i.test(rawHeading)
+            && rawHeading.toLowerCase() !== pageTitle.trim().toLowerCase()
+          );
+          const headingHtml = showHeading
+            ? `<h2 class="webpage-sec-heading">${formatInlineMarkdown(rawHeading, imgCtx)}</h2>`
+            : '';
+          const bodyHtml = markdownToSafeHtml(sec.text || '', imgCtx);
+          return `
+            <section class="webpage-sec" data-section-id="${escapeHtml(sec.section_id)}">
+              ${headingHtml}
+              <div class="webpage-sec-body">${bodyHtml}</div>
+            </section>
+          `;
+        }).join('');
+      } else {
+        sectionsHtml = `
+          <section class="webpage-sec">
+            <div class="webpage-sec-body">${markdownToSafeHtml(page.readable_markdown || '', imgCtx)}</div>
+          </section>
+        `;
+      }
 
-              const badgeHtml = isFlagged
-                ? `<span class="pill red">Flagged ${qVotes}/${totalM}</span>`
-                : (isReviewed ? `<span class="pill green">Clean</span>` : `<span class="pill">Unreviewed</span>`);
-
-              return `
-                <div
-                  class="reader-img-card ${isFlagged ? 'flagged' : ''} ${isReviewed ? 'clickable' : ''}"
-                  ${isReviewed ? `role="button" tabindex="0" data-inspect-image="${escapeHtml(im.image_id)}"` : ''}
-                >
-                  ${src
-                    ? `<img class="reader-img-thumb" src="${escapeHtml(src)}" alt="${escapeHtml(im.alt || im.image_id)}" loading="lazy" data-img-fallback="true" />`
-                    : `<div class="img-fallback">No image preview</div>`
-                  }
-                  <div class="reader-img-meta">
-                    <div class="reader-img-top">
-                      <code class="code-id">${escapeHtml(im.image_id)}</code>
-                      ${badgeHtml}
-                    </div>
-                    ${flags ? `<div style="display:flex;flex-wrap:wrap;gap:4px;">${flags}</div>` : ''}
-                    <div class="reader-img-alt">${escapeHtml(im.alt || 'Extracted page image')}</div>
-                  </div>
-                </div>
-              `;
-            }).join('')}
-          </div>
+      // Render unplaced page images naturally below the headline (only flagged ones carry overlays)
+      const unplacedImages = rawImages.filter(im => !matchedImageIds.has(im.image_id) && safeImgSrc(im.src));
+      const leadFiguresHtml = unplacedImages.length ? `
+        <div class="webpage-lead-figures">
+          ${unplacedImages.map(im => {
+            const revImg = revImagesById[im.image_id] || im;
+            const src = safeImgSrc(im.src);
+            const qVotes = revImg.questionable_votes ?? 0;
+            const totalM = revImg.total_models ?? (review?.models_count || 0);
+            const isFlagged = Boolean(revImg.is_flagged);
+            const isUncertain = isFlagged && totalM > 1 && qVotes === 1;
+            if (isFlagged) {
+              return renderFlaggedImgHtml(src, escapeHtml(im.alt || ''), {
+                image_id: im.image_id,
+                isFlagged: true,
+                isUncertain,
+                qVotes,
+                totalM
+              });
+            }
+            return `<img src="${escapeHtml(src)}" alt="${escapeHtml(im.alt || '')}" loading="lazy" data-img-fallback="true" />`;
+          }).join('')}
         </div>
       ` : '';
 
-      let sectionsHtml = '';
-      if (rawSections.length) {
-        sectionsHtml = `
-          <div class="section-eyebrow">Page Sections (${rawSections.length})</div>
-          <div class="reader-sections">
-            ${rawSections.map(sec => {
-              const revSec = revSectionsById[sec.section_id] || sec;
-              const isReviewed = Boolean(review && revSectionsById[sec.section_id]);
-              const isFlagged = Boolean(revSec.is_flagged);
-              const qVotes = revSec.questionable_votes ?? 0;
-              const totalM = revSec.total_models ?? (review?.models_count || 0);
-              const isPartial = isFlagged && totalM > 0 && qVotes < totalM;
+      const bylineParts = [site.domain, page.word_count ? `${page.word_count} words` : null].filter(Boolean).join(' · ');
 
-              const techPills = (revSec.consensus_techniques || []).map(t =>
-                `<span class="pill ${isPartial ? 'amber' : 'red'}">${escapeHtml(t.name)} (${t.count}/${totalM})</span>`
-              ).join('');
-
-              const statusPill = isFlagged
-                ? `<span class="pill ${isPartial ? 'amber' : 'red'}">${qVotes}/${totalM} models flagged</span>`
-                : (isReviewed ? `<span class="pill green">Clean</span>` : '');
-
-              const inspectCue = isReviewed
-                ? `<button type="button" class="inspect-hint" data-inspect-section="${escapeHtml(sec.section_id)}">${isFlagged ? 'Click to inspect votes →' : 'Inspect votes'}</button>`
-                : '';
-
-              return `
-                <article
-                  class="reader-sec ${isFlagged ? (isPartial ? 'flagged partial' : 'flagged') : (isReviewed ? 'reviewed-clean' : '')}"
-                  data-section-id="${escapeHtml(sec.section_id)}"
-                  ${isReviewed ? `data-inspect-section="${escapeHtml(sec.section_id)}"` : ''}
-                >
-                  <div class="reader-sec-head">
-                    <div class="reader-sec-tags">
-                      <code class="code-id">${escapeHtml(sec.section_id)}</code>
-                      ${statusPill}
-                      ${techPills}
-                    </div>
-                    ${inspectCue}
-                  </div>
-                  <h2 class="reader-sec-title">${formatInlineMarkdown(sec.heading || sec.section_id)}</h2>
-                  <div class="reader-sec-body">${markdownToSafeHtml(sec.text || '')}</div>
-                </article>
-              `;
-            }).join('')}
+      bodyEl.innerHTML = `
+        <div class="webpage-canvas">
+          <div class="webpage-browser-bar">
+            <div class="webpage-url-pill" title="${escapeHtml(displayUrl)}">
+              ${safePageHref
+                ? `<a href="${escapeHtml(safePageHref)}" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none;">${escapeHtml(displayUrl)}</a>`
+                : escapeHtml(displayUrl)}
+            </div>
+            <div class="webpage-legend" aria-label="Overline highlight legend">
+              <span><span style="display:inline-block;width:16px;border-top:2.5px solid var(--red);vertical-align:middle;margin-right:5px;"></span>2+ models</span>
+              <span><span style="display:inline-block;width:16px;border-top:2.5px solid var(--amber);vertical-align:middle;margin-right:5px;"></span>1 model (uncertain)</span>
+            </div>
           </div>
-        `;
-      } else {
-        sectionsHtml = `<div class="reader-sec"><div class="reader-sec-body">${markdownToSafeHtml(page.readable_markdown)}</div></div>`;
-      }
-
-      bodyEl.innerHTML = hintBanner + imagesHtml + sectionsHtml;
+          <article class="webpage-doc">
+            <h1 class="webpage-title">${escapeHtml(pageTitle)}</h1>
+            ${bylineParts ? `<div class="webpage-byline">${escapeHtml(bylineParts)}</div>` : ''}
+            ${leadFiguresHtml}
+            ${sectionsHtml}
+          </article>
+        </div>
+      `;
       wireImageFallbacks(bodyEl);
 
-      // Apply DOM-safe trigger quote highlighting to flagged sections
+      // Apply coloured overline highlights ONLY to suspicious content flagged by >= 1 model
       if (review) {
-        bodyEl.querySelectorAll('.reader-sec').forEach(secEl => {
+        bodyEl.querySelectorAll('.webpage-sec').forEach(secEl => {
           const sid = secEl.getAttribute('data-section-id');
           const revSec = revSectionsById[sid];
-          if (revSec && revSec.trigger_quotes?.length) {
-            highlightQuotesInElement(secEl, revSec.trigger_quotes, sid);
+          if (!revSec || !revSec.is_flagged) return;
+
+          const qVotes = revSec.questionable_votes ?? 0;
+          const totalM = revSec.total_models ?? (review.models_count || 0);
+          const isUncertain = totalM > 1 && qVotes === 1;
+
+          const hits = revSec.trigger_quotes?.length
+            ? highlightQuotesInElement(secEl, revSec.trigger_quotes, sid, isUncertain)
+            : 0;
+
+          if (hits === 0) {
+            const targets = secEl.querySelectorAll('.webpage-sec-body p, .webpage-sec-body li, .webpage-sec-body blockquote');
+            if (targets.length) {
+              targets.forEach(t => wrapTextNodesWithOverline(t, sid, isUncertain));
+            } else {
+              const headingEl = secEl.querySelector('.webpage-sec-heading');
+              if (headingEl) wrapTextNodesWithOverline(headingEl, sid, isUncertain);
+            }
           }
         });
       }
@@ -2683,124 +2746,6 @@
       bodyEl.innerHTML = bannerHtml + provenanceHtml + modelsHtml;
     }
 
-    /* ----- Metrics Modal (/api/metrics) ----- */
-    async function openMetricsModal() {
-      const bodyEl = document.getElementById('metrics-body');
-      bodyEl.innerHTML = `<div class="reader-hint">Loading benchmark evaluation metrics…</div>`;
-      openModal('metrics-modal');
-
-      try {
-        const res = await fetch('/api/metrics');
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json();
-        renderMetricsContent(data);
-      } catch (err) {
-        bodyEl.innerHTML = `<div class="form-error">Unable to load benchmark metrics (${escapeHtml(err.message)}).</div>`;
-      }
-    }
-
-    function renderMetricsContent(data) {
-      const pm = data.page_metrics || {};
-      const sm = data.section_metrics || {};
-      const vm = data.visual_metrics || {};
-      const perModel = data.per_model || [];
-
-      const kpisHtml = `
-        <div class="kpi-grid">
-          <div class="kpi-card">
-            <div class="kpi-label">Precision</div>
-            <div class="kpi-value">${formatPct(pm.precision)}</div>
-            <div class="kpi-sub">${pm.evaluated_pages ?? 0} evaluated pages</div>
-          </div>
-          <div class="kpi-card">
-            <div class="kpi-label">Recall</div>
-            <div class="kpi-value">${formatPct(pm.recall)}</div>
-            <div class="kpi-sub">${pm.tp ?? 0} TP / ${(pm.tp ?? 0) + (pm.fn ?? 0)} actual pos</div>
-          </div>
-          <div class="kpi-card">
-            <div class="kpi-label">F1 Score</div>
-            <div class="kpi-value">${formatPct(pm.f1_score)}</div>
-            <div class="kpi-sub">Harmonic mean</div>
-          </div>
-          <div class="kpi-card">
-            <div class="kpi-label">Overall FPR</div>
-            <div class="kpi-value">${formatPct(pm.false_positive_rate)}</div>
-            <div class="kpi-sub">${pm.fp ?? 0} false positives</div>
-          </div>
-          <div class="kpi-card">
-            <div class="kpi-label">Hard-Negative FPR</div>
-            <div class="kpi-value" style="color:${Number(pm.hard_negative_fpr) === 0 ? 'var(--green-text)' : 'var(--text)'};">${formatPct(pm.hard_negative_fpr)}</div>
-            <div class="kpi-sub">${pm.hard_negative_fp ?? 0}/${pm.hard_negative_total ?? 0} encyclopedic refs</div>
-          </div>
-        </div>
-      `;
-
-      const middleHtml = `
-        <div class="metrics-two-col">
-          <div class="panel-box">
-            <div class="section-eyebrow">Page-Level Confusion Matrix</div>
-            <div class="cm-grid">
-              <div class="cm-cell"><span>True Positives (TP)</span><strong style="color:var(--green-text);">${pm.tp ?? 0}</strong></div>
-              <div class="cm-cell"><span>False Positives (FP)</span><strong style="color:${(pm.fp ?? 0) > 0 ? 'var(--red-text)' : 'var(--text)'};">${pm.fp ?? 0}</strong></div>
-              <div class="cm-cell"><span>False Negatives (FN)</span><strong style="color:${(pm.fn ?? 0) > 0 ? 'var(--amber-text)' : 'var(--text)'};">${pm.fn ?? 0}</strong></div>
-              <div class="cm-cell"><span>True Negatives (TN)</span><strong style="color:var(--green-text);">${pm.tn ?? 0}</strong></div>
-            </div>
-          </div>
-          <div class="panel-box">
-            <div class="section-eyebrow">Sections, Visual Forensics &amp; Agreement</div>
-            <div class="stat-list">
-              <div class="stat-row">
-                <span>Sections Flagged / Total</span>
-                <strong>${sm.flagged_sections ?? 0} / ${sm.total_sections ?? 0} (${sm.clean_sections ?? 0} clean)</strong>
-              </div>
-              <div class="stat-row">
-                <span>Visual Forensics Precision</span>
-                <strong>${formatPct(vm.precision)} (${vm.flagged_images ?? 0}/${vm.evaluated_images ?? 0} images)</strong>
-              </div>
-              <div class="stat-row">
-                <span>Visual Forensics Recall</span>
-                <strong>${formatPct(vm.recall)}</strong>
-              </div>
-              <div class="stat-row">
-                <span>Pairwise Inter-Model Agreement</span>
-                <strong>${formatPct(data.pairwise_agreement)}</strong>
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
-
-      const tableHtml = perModel.length ? `
-        <div class="section-eyebrow">Per-Model Accuracy &amp; Consensus Agreement</div>
-        <div class="metrics-table-wrap">
-          <table class="metrics-table">
-            <thead>
-              <tr>
-                <th>Model</th>
-                <th>Page Accuracy</th>
-                <th>Precision</th>
-                <th>Recall</th>
-                <th>Agreement w/ Consensus</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${perModel.map(m => `
-                <tr>
-                  <td>${escapeHtml(m.model_name || m.model_id)}</td>
-                  <td>${formatPct(m.page_accuracy)}</td>
-                  <td>${formatPct(m.precision)}</td>
-                  <td>${formatPct(m.recall)}</td>
-                  <td>${formatPct(m.agreement_with_consensus)}</td>
-                </tr>
-              `).join('')}
-            </tbody>
-          </table>
-        </div>
-      ` : '';
-
-      document.getElementById('metrics-body').innerHTML = kpisHtml + middleHtml + tableHtml;
-    }
-
     /* ----- Add URL Modal (/api/websites) ----- */
     function openAddUrlModal() {
       const input = document.getElementById('new-site-url');
@@ -2853,7 +2798,6 @@
 
     /* ----- Event Wiring ----- */
     document.getElementById('theme-toggle-btn').addEventListener('click', toggleTheme);
-    document.getElementById('metrics-btn').addEventListener('click', openMetricsModal);
     document.getElementById('add-url-btn').addEventListener('click', openAddUrlModal);
     document.getElementById('add-site-form').addEventListener('submit', handleAddSiteSubmit);
 

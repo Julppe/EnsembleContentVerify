@@ -37,17 +37,17 @@ Hostinger VPS · https://checkem.tech/
 
 ---
 
-# Measured Accuracy
+# Uncertainty & Failure Boundaries
 
-- **Page Precision:** `100%` (`TP=2, FP=0, F1=1.00`)
-- **Hard-Negative FPR:** `0.0%` (`0/6` Wikipedia propaganda articles)
-- **Visual Recall:** `100%` (`4/4` synthetic images)
-- **Jury Agreement:** `100%` across `11 Pages · 75 Sections · 22 Images`
+- `0 / 3 Flagged` ➔ **Unmarked Webpage Text**
+- `1 / 3 Uncertain Split` ➔ **Amber Overline** *(inspect disagreement)*
+- `2–3 / 3 Consensus` ➔ **Red Overline** *(named technique + votes)*
+- **Where It Can Fail:** Urgent Advocacy (`.org`), Educational AI Images in Encyclopedias, Calm-Toned Factual Errors
 
 ---
 
 # Minimalist Progressive UX
 
-`1. Traffic-Light Status Bar` ➔ `2. Inline VLM Votes & Trust Score` ➔ `3. Clickable Highlight → Model Reasons`
+`1. Traffic-Light Status Bar` ➔ `2. Inline VLM Votes & Trust Score` ➔ `3. Webpage Preview w/ Coloured Overlines → Model Reasons`
 
 **Live App:** [https://checkem.tech/](https://checkem.tech/) · **Web Slides:** [https://checkem.tech/slides](https://checkem.tech/slides)

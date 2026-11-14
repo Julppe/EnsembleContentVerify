@@ -5,71 +5,54 @@
 [![Python 3.12](https://img.shields.io/badge/Python-3.12-blue)](https://www.python.org/)
 [![Docker Compose](https://img.shields.io/badge/Deploy-Docker%20%2B%20Traefik-2496ed)](docker-compose.yml)
 
-**CheckEm** ([https://checkem.tech/](https://checkem.tech/)) is a multimodal Vision-Language Model (VLM) ensemble web application that evaluates web articles and embedded imagery for propaganda, rhetorical manipulation, and source provenance — explaining every verdict in plain language rather than outputting an opaque score.
+**CheckEm** ([https://checkem.tech/](https://checkem.tech/)) is a multimodal Vision-Language Model (VLM) ensemble web application that highlights suspicious framing directly over webpage previews, explains the manipulation tactic in plain language, and makes **model uncertainty and failure boundaries** visible to the reader instead of hiding behind an opaque score.
 
-> **Interactive Presentation Deck:** View live at [https://checkem.tech/slides](https://checkem.tech/slides) or read the Markdown source in [`docs/PRESENTATION.md`](docs/PRESENTATION.md).
+> **Visual Presentation Deck (5 Slides):** View live at [https://checkem.tech/slides](https://checkem.tech/slides) or read [`docs/PRESENTATION.md`](docs/PRESENTATION.md).
 
 ---
 
-## Core Challenge Pillars
+## Core Design Principles
 
 ### 1. Name the Technique
-CheckEm classifies specific manipulation techniques across both extracted article text sections (`sec-1..sec-N`) and images (`img-1..img-K`), highlighting the trigger phrase inline and explaining the tactic in plain language so a reader learns *why* content is persuasive or misleading:
+CheckEm runs parallel text and vision inference across extracted page sections (`sec-1..sec-N`) and images (`img-1..img-K`). Inside the full-page preview, suspicious passages and visuals are highlighted with **coloured overlining** (amber for minority/uncertain flags, red for multi-model consensus), and clicking any highlight reveals every juror's vote, quote, and plain-language explanation:
 - **Text Manipulation Taxonomy**: `Loaded Language`, `Fear Appeal`, `Whataboutism`, `Fabricated Authority`, `False Dilemma`, `Scapegoating / Ad Hominem`
 - **Visual Forensics Taxonomy**: `AI-Generated / Synthetic Image`, `Manipulative Visual Framing`
 
 ### 2. Trust the Source (4-Signal Provenance Scoring)
-Separate *how* a page argues from *who* is behind it. Every cataloged or submitted URL receives a transparent **0–100 Trust Score** across four measurable dimensions (`compute_provenance_score()` in [`app.py`](app.py)):
+CheckEm deliberately separates *rhetorical tone* from *who stands behind the page* (`compute_provenance_score()` in [`app.py`](app.py)):
 1. **Domain & Publisher Identity (32%)**: HTTPS status, TLD authority (`.gov`, `.int`, `.org`), subdomain checks, and institutional reputation.
-2. **Content Originality (20%)**: Structural paragraph uniqueness vs cloned boilerplate ratio and depth.
-3. **Human & Visual Authenticity (24%)**: Sentence-length variance paired with VLM synthetic image / fabricated-authority detection.
-4. **Citation & Link Network Integrity (24%)**: Count and domain diversity of verifiable outbound references vs unlinked "secret report / insider" assertions.
+2. **Content Originality (20%)**: Unique structural block ratio vs duplicated boilerplate.
+3. **Human & Visual Authenticity (24%)**: Sentence-length variance paired with VLM synthetic-image and fabricated-authority signals.
+4. **Citation & Link Network Integrity (24%)**: Verifiable outbound links and domain diversity vs unlinked "secret report" claims.
 
-For example, `www.eff.org` scores **87/100 (High Provenance)** as an established `.org` with 33 cited links across 4 domains even when its campaign text uses persuasive rhetoric, whereas the unverified synthetic sample `civic-pulse-daily.hostingersite.com` scores **32/100 (Low Provenance)**.
+This keeps credible advocacy distinct from fabricated sites: e.g., `www.eff.org` retains a **High Provenance (`87/100`)** score even when its campaign text is flagged for persuasive framing, whereas `civic-pulse-daily.hostingersite.com` scores **Low Provenance (`32/100`)**.
 
-### 3. Transparent & Measurable Precision / False-Positive Rate
-Rather than demoing only easy happy-path propaganda samples, CheckEm includes **6 Hard-Negative Wikipedia pages** (articles *defining* propaganda, deepfakes, loaded language, whataboutism, false dilemma, and synthetic media) alongside public-health, government, advocacy, tutorial, and synthetic propaganda pages.
+### 3. Embracing Uncertainty & Exposing Where AI Fails
+Propaganda and manipulation detection is inherently ambiguous — headline claims of "100% accuracy" on small test sets hide where automated systems break down. Instead of presenting brittle certainty, CheckEm is built to **surface uncertainty and expose likely failure modes directly in the UI**:
 
-Measured across our live 11-page evaluation corpus (**75 text sections**, **22 content images**) via [`benchmarks/evaluate.py`](benchmarks/evaluate.py) and `GET /api/metrics`:
-
-| Metric | Measured Result | Scope |
-|---|---:|---|
-| **Page Precision** | **100.0%** | `TP = 2`, `FP = 0` |
-| **Page Recall / F1** | **100.0% / 1.00** | `FN = 0`, `TN = 9` |
-| **Overall False-Positive Rate (FPR)** | **0.0%** | `0 / 9` clean pages misclassified |
-| **Hard-Negative FPR (Wikipedia)** | **0.0%** | `0 / 6` educational articles about manipulation |
-| **Image Forensics Precision & Recall** | **100.0% / 100.0%** | `4 / 4` synthetic/deepfake images flagged |
-| **Inter-Model Pairwise Agreement** | **100.0%** | Across all 3 jury models |
-
-> Note on Image vs Text Separation: On *Deepfake (Wikipedia)* (`0/7` flagged text sections, `3/3` flagged illustrative deepfake images) and *Synthetic Media (Wikipedia)* (`0/7` flagged text sections, `1/2` flagged AI-generated artwork image), the ensemble correctly leaves objective encyclopedic prose clean while alerting readers that the embedded visuals are synthetic (`Mixed / Yellow` indicator).
+- **Disagreement Visualized In-Place**: Rather than collapsing predictions into a binary label, the webpage preview differentiates **1/3 minority suspicion (amber overline — uncertain / inspect disagreement)** from **2/3–3/3 consensus (red overline)**, while leaving unflagged text untouched so clean passages read naturally.
+- **Educational Context vs Active Persuasion**: Pages *describing* propaganda or synthetic media (such as Wikipedia's *Deepfake* or *Synthetic Media* entries) test the boundary between neutral reference prose and embedded illustrative examples — where CheckEm leaves the encyclopedia text clean while overlining specific synthetic images (`1/3` or `3/3` votes) so you can see why one model reacted to an image while prose remained objective.
+- **Known Failure Modes Surfaced to the User**:
+  1. **Advocacy Policy Prose vs Manipulation**: Legitimate advocacy organizations (e.g., `eff.org`) use urgent words like *"threaten"* or *"dangerous"* to rally readers; rhetorical classifiers may flag that urgency even when provenance is trustworthy (`87/100`).
+  2. **Calm-Toned Factual Errors**: Rhetorical classifiers inspect *how* claims are framed, not real-time ground-truth databases — calm, dry misinformation without loaded language or broken citations can evade style-based flags.
+  3. **Vision Model Split Votes on Compressed Thumbnails**: Downscaled web thumbnails can cause `1/3` split votes on genuine vs AI-generated graphics; CheckEm exposes every individual vision rationale rather than hiding split votes.
 
 ---
 
 ## Minimalist Progressive-Disclosure UX
 
-The landing UI ([`static/index.html`](static/index.html)) uses a calm, minimalist progressive disclosure design (Light Mode default + Dark Mode toggle):
-1. **Initial View**: Thin horizontal bars showing **only** the traffic-light Status Dot (`Green` = clean, `Yellow` = mixed/partial flags/unreviewed, `Red` = flagged content), Page Title, and Expand Chevron.
-2. **Accordion Dropdown**: Clicking a bar expands inline to show per-model votes, flagged section/image counts, the Trust Score, and three actions:
-   - **Full Page & Highlights**: Opens the formatted full article with flagged sections, verbatim trigger quotes, and flagged images highlighted — click any highlighted item to inspect each model's vote and plain-language explanation.
-   - **Concise Model Summary**: Shows the ensemble tally, detected tactics, 4-signal Trust Score breakdown, and side-by-side model verdicts.
+The landing UI ([`static/index.html`](static/index.html)) follows a quiet, progressive disclosure flow (Light Mode default + Dark Mode toggle):
+1. **Initial View**: Only thin horizontal bars with Status Dot (`Green` = clean, `Yellow` = split / partial / unreviewed, `Red` = majority flagged), Page Title, and Expand Chevron.
+2. **Inline Dropdown**: Click any bar to see which model voted what, flagged counts, Trust Score, and three actions:
+   - **Full Page Preview**: Renders the page like a clean webpage with **coloured overlining only on content flagged by at least one model** — click any overlined text or image to inspect the models' votes and disagreements.
+   - **Concise Model Summary**: Displays the ensemble tally, Trust the Source breakdown, and each model's concise view.
    - **Original Page ↗**: Opens the live source URL in a new tab.
 
 ---
 
-## Judging Criteria Alignment
+## Tech Subchallenges & Open-Weight Compute
 
-| Judging Criterion | Weight | How CheckEm Delivers |
-|---|---:|---|
-| **Detection Quality** *(accuracy, false-positive handling, explainability)* | **40%** | `100.0%` Page Precision & `0.0%` Hard-Negative FPR across 6 Wikipedia articles *about* manipulation (`benchmarks/evaluate.py`, `/api/metrics`), `100%` synthetic image recall (`4/4`), inline trigger-quote highlighting, and plain-language pedagogical verdicts. |
-| **Technical Execution & Hostinger Deployment** | **25%** | Live on Hostinger VPS at [https://checkem.tech/](https://checkem.tech/) via Hostinger DNS API + Docker Compose + Traefik Let's Encrypt HTTPS, integrated with Hostinger AI Router, Oxylabs Web Scraper, and Verda Cloud GPU vLLM routing. |
-| **Originality & Real-World Impact** | **20%** | Separates persuasive framing (**Name the Technique**) from publisher credibility (**Trust the Source** 0–100 provenance score) and leverages open-weight Gemma QLoRA & Nemotron reasoning calibration to suppress false positives. |
-| **Demo Clarity** | **15%** | Minimalist 3-tier progressive UI ([`static/index.html`](static/index.html)) plus live keyboard-driven slide presentation at [https://checkem.tech/slides](https://checkem.tech/slides). |
-
----
-
-## Tech Subchallenges & Model Ensemble Roles
-
-Each open-weight juror and GPU compute backend has its own dedicated directory, documentation, and runnable code under [`challenges/`](challenges/):
+Each open-weight juror and GPU backend has its own dedicated README and runnable code under [`challenges/`](challenges/):
 
 | Subchallenge | Role in CheckEm | Directory & README |
 |---|---|---|
@@ -82,7 +65,7 @@ Each open-weight juror and GPU compute backend has its own dedicated directory, 
 ## Quickstart & Deployment
 
 ### 1. Configure Server Environment (`.env`)
-Copy `.env.example` to `.env` and fill in your credentials (never commit `.env` — end users browsing the web app do not need any keys):
+Copy `.env.example` to `.env` and fill in your backend keys (end users browsing the site do not need any keys):
 ```bash
 cp .env.example .env
 ```
@@ -91,7 +74,7 @@ cp .env.example .env
 ```bash
 docker compose up -d --build
 ```
-The service listens on `:8080`, labeled for Traefik HTTPS (`checkem.tech` / `www.checkem.tech`), and persists catalog & ensemble evaluations to `cache_store.json`.
+The service listens on `:8080`, routed via Traefik HTTPS (`checkem.tech`), persisting state in `cache_store.json`.
 
 ### 3. Run Locally Without Docker
 ```bash
@@ -100,25 +83,19 @@ python3 app.py
 # Open http://localhost:8080/ and http://localhost:8080/slides
 ```
 
-### 4. Recompute Benchmark Metrics
-```bash
-python3 benchmarks/evaluate.py
-```
-
 ---
 
 ## Repository Structure
 ```text
 ├── app.py                         # HTTP server, Oxylabs/fallback scraper, provenance & VLM ensemble
-├── benchmarks/evaluate.py         # Precision / Recall / Hard-Negative FPR evaluation CLI
-├── cache_store.json               # Pre-evaluated 11-page benchmark & review cache
+├── cache_store.json               # Pre-scraped real websites and multi-VLM ensemble reviews
 ├── challenges/
 │   ├── gemma/                     # Gemma QLoRA fine-tuning script & open-weights guide
 │   ├── nemotron/                  # Nemotron 3.5 VL fallacy pipeline & README
 │   └── verda-cloud/               # Verda GPU vLLM docker-compose & deploy script
-├── docs/PRESENTATION.md           # Marp Markdown slide deck
+├── docs/PRESENTATION.md           # Marp Markdown 5-slide visual deck
 ├── static/
-│   ├── index.html                 # Minimalist 3-tier progressive web UI
+│   ├── index.html                 # Minimalist 3-tier progressive web UI with overlined page preview
 │   └── slides.html                # Visual-first 5-slide presentation served at /slides
 ├── Dockerfile
 ├── docker-compose.yml

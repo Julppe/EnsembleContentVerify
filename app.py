@@ -762,20 +762,6 @@ INSTITUTIONAL_DOMAINS = {
     "civic-pulse-daily.hostingersite.com": ("Unverified Synthetic Benchmark Subdomain", 22, "Free-tier/unverified subdomain mimicking news masthead without editorial registry"),
 }
 
-BENCHMARK_GROUND_TRUTH = {
-    "wiki-propaganda-techniques": {"page_label": "clean", "hard_negative": True, "synthetic_images": 0},
-    "wiki-synthetic-media": {"page_label": "clean", "hard_negative": True, "synthetic_images": 1},
-    "wiki-deepfake": {"page_label": "clean", "hard_negative": True, "synthetic_images": 3},
-    "wiki-loaded-language": {"page_label": "clean", "hard_negative": True, "synthetic_images": 0},
-    "wiki-whataboutism": {"page_label": "clean", "hard_negative": True, "synthetic_images": 0},
-    "wiki-false-dilemma": {"page_label": "clean", "hard_negative": True, "synthetic_images": 0},
-    "who-healthy-diet": {"page_label": "clean", "hard_negative": False, "synthetic_images": 0},
-    "hostinger-vps-tutorial": {"page_label": "clean", "hard_negative": False, "synthetic_images": 0},
-    "nasa-home": {"page_label": "clean", "hard_negative": False, "synthetic_images": 0},
-    "eff-ai-policy": {"page_label": "questionable", "hard_negative": False, "synthetic_images": 0},
-    "toy-civic-pulse": {"page_label": "questionable", "hard_negative": False, "synthetic_images": 0},
-}
-
 
 def compute_provenance_score(site: dict) -> dict:
     """Computes transparent 4-signal Trust the Source provenance scoring (0-100)."""
@@ -868,138 +854,6 @@ def compute_provenance_score(site: dict) -> dict:
             "ai_generation_risk": {"label": "Human & Visual Authenticity", "score": ai_score, "detail": ai_note},
             "link_network_integrity": {"label": "Citation & Link Integrity", "score": link_score, "detail": link_note},
         },
-    }
-
-
-def compute_benchmark_metrics() -> dict:
-    """Computes precision, recall, F1, false-positive rate (incl. Hard Negatives), and agreement."""
-    with STATE_LOCK:
-        sites_snapshot = {k: v for k, v in SITE_STORE.items()}
-
-    tp = fp = tn = fn = 0
-    hn_total = hn_fp = 0
-    total_sections = flagged_sections = 0
-    total_images = flagged_images = 0
-    img_tp = img_fp = img_fn = 0
-
-    model_stats = {}
-    pairwise_same = 0
-    pairwise_total = 0
-
-    for site_id, gt in BENCHMARK_GROUND_TRUTH.items():
-        site = sites_snapshot.get(site_id)
-        if not site or not site.get("review"):
-            continue
-        review = site["review"]
-        pe = review.get("page_ensemble") or {}
-        pred_pos = pe.get("verdict") in ("questionable", "split")
-        actual_pos = gt["page_label"] == "questionable"
-
-        if pred_pos and actual_pos:
-            tp += 1
-        elif pred_pos and not actual_pos:
-            fp += 1
-        elif not pred_pos and not actual_pos:
-            tn += 1
-        else:
-            fn += 1
-
-        if gt.get("hard_negative"):
-            hn_total += 1
-            if pred_pos:
-                hn_fp += 1
-
-        total_sections += review.get("total_sections_count") or 0
-        flagged_sections += review.get("flagged_sections_count") or 0
-        total_images += review.get("total_images_count") or 0
-        f_img = review.get("flagged_images_count") or 0
-        flagged_images += f_img
-
-        gt_img = gt.get("synthetic_images", 0)
-        if gt_img > 0:
-            img_tp += min(gt_img, f_img)
-            img_fn += max(0, gt_img - f_img)
-        elif f_img > 0:
-            img_fp += f_img
-
-        votes = pe.get("model_votes") or []
-        for mv in votes:
-            mid = mv.get("model_id", "unknown")
-            st = model_stats.setdefault(mid, {
-                "model_id": mid,
-                "model_name": mv.get("model_name", mid),
-                "tp": 0, "fp": 0, "tn": 0, "fn": 0, "agree": 0, "n": 0,
-            })
-            m_pos = mv.get("vote") == "questionable"
-            st["n"] += 1
-            if m_pos == pred_pos:
-                st["agree"] += 1
-            if m_pos and actual_pos:
-                st["tp"] += 1
-            elif m_pos and not actual_pos:
-                st["fp"] += 1
-            elif not m_pos and not actual_pos:
-                st["tn"] += 1
-            else:
-                st["fn"] += 1
-
-        for i in range(len(votes)):
-            for j in range(i + 1, len(votes)):
-                pairwise_total += 1
-                if votes[i].get("vote") == votes[j].get("vote"):
-                    pairwise_same += 1
-
-    precision = tp / (tp + fp) if (tp + fp) else 0.0
-    recall = tp / (tp + fn) if (tp + fn) else 0.0
-    f1 = (2 * precision * recall / (precision + recall)) if (precision + recall) else 0.0
-    fpr = fp / (fp + tn) if (fp + tn) else 0.0
-    hn_fpr = hn_fp / hn_total if hn_total else 0.0
-    img_prec = img_tp / (img_tp + img_fp) if (img_tp + img_fp) else 0.0
-    img_rec = img_tp / (img_tp + img_fn) if (img_tp + img_fn) else 0.0
-
-    per_model_list = []
-    for st in model_stats.values():
-        m_p = st["tp"] / (st["tp"] + st["fp"]) if (st["tp"] + st["fp"]) else 0.0
-        m_r = st["tp"] / (st["tp"] + st["fn"]) if (st["tp"] + st["fn"]) else 0.0
-        m_acc = (st["tp"] + st["tn"]) / st["n"] if st["n"] else 0.0
-        per_model_list.append({
-            "model_id": st["model_id"],
-            "model_name": st["model_name"],
-            "page_accuracy": round(m_acc, 4),
-            "precision": round(m_p, 4),
-            "recall": round(m_r, 4),
-            "agreement_with_consensus": round(st["agree"] / st["n"], 4) if st["n"] else 0.0,
-        })
-
-    return {
-        "ok": True,
-        "page_metrics": {
-            "evaluated_pages": tp + fp + tn + fn,
-            "tp": tp,
-            "fp": fp,
-            "tn": tn,
-            "fn": fn,
-            "precision": round(precision, 4),
-            "recall": round(recall, 4),
-            "f1_score": round(f1, 4),
-            "false_positive_rate": round(fpr, 4),
-            "hard_negative_total": hn_total,
-            "hard_negative_fp": hn_fp,
-            "hard_negative_fpr": round(hn_fpr, 4),
-        },
-        "section_metrics": {
-            "total_sections": total_sections,
-            "flagged_sections": flagged_sections,
-            "clean_sections": total_sections - flagged_sections,
-        },
-        "visual_metrics": {
-            "evaluated_images": total_images,
-            "flagged_images": flagged_images,
-            "precision": round(img_prec, 4),
-            "recall": round(img_rec, 4),
-        },
-        "per_model": per_model_list,
-        "pairwise_agreement": round(pairwise_same / pairwise_total, 4) if pairwise_total else 0.0,
     }
 
 
@@ -1668,12 +1522,7 @@ class AppHandler(BaseHTTPRequestHandler):
             self._send_html(page["html"])
             return
 
-        if path == "/api/metrics":
-            self._send_json(compute_benchmark_metrics())
-            return
-
         if path == "/api/websites":
-            metrics_summary = compute_benchmark_metrics()
             with STATE_LOCK:
                 sites = list(SITE_STORE.values())
                 models = [
@@ -1691,7 +1540,6 @@ class AppHandler(BaseHTTPRequestHandler):
                 "websites": sites,
                 "models": models,
                 "techniques_taxonomy": MANIPULATION_TECHNIQUES,
-                "metrics_summary": metrics_summary,
             })
             return
 

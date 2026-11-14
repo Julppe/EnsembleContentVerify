@@ -395,44 +395,49 @@
       </div>
     </section>
 
-    <!-- SLIDE 4: Measured Accuracy -->
+    <!-- SLIDE 4: Uncertainty & Failure Boundaries -->
     <section class="slide">
       <div class="slide-head">
-        <h2>Measured Accuracy</h2>
+        <h2>Uncertainty &amp; Failure Boundaries</h2>
         <span class="slide-num">4 / 5</span>
       </div>
       <div class="visual-center">
-        <div class="gauges">
-          <div class="gauge-item">
-            <svg viewBox="0 0 160 160">
-              <circle cx="80" cy="80" r="64" fill="none" stroke="var(--border)" stroke-width="14"/>
-              <circle cx="80" cy="80" r="64" fill="none" stroke="var(--green)" stroke-width="14" stroke-dasharray="402" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 80 80)"/>
-              <text x="80" y="88" text-anchor="middle" fill="var(--text)" font-size="30" font-weight="800">100%</text>
-            </svg>
-            <div class="gauge-label">Page Precision</div>
-            <div class="gauge-sub">TP=2 · FP=0 · F1=1.00</div>
-          </div>
+        <svg viewBox="0 0 880 345" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Uncertainty levels and failure boundaries">
+          <!-- Uncertainty Spectrum Overlines -->
+          <rect x="20" y="24" width="260" height="84" rx="12" fill="var(--surface-alt)" stroke="var(--border)" stroke-width="1.5"/>
+          <text x="150" y="54" text-anchor="middle" fill="var(--green)" font-size="14" font-weight="800">0 / 3 Flagged</text>
+          <text x="150" y="82" text-anchor="middle" fill="var(--text)" font-size="14" font-weight="600">Unmarked Webpage Text</text>
 
-          <div class="gauge-item">
-            <svg viewBox="0 0 160 160">
-              <circle cx="80" cy="80" r="64" fill="none" stroke="var(--green)" stroke-width="14" stroke-dasharray="402" stroke-dashoffset="0"/>
-              <text x="80" y="88" text-anchor="middle" fill="var(--green)" font-size="30" font-weight="800">0.0%</text>
-            </svg>
-            <div class="gauge-label">Hard-Negative FPR</div>
-            <div class="gauge-sub">0/6 Wikipedia Articles</div>
-          </div>
+          <rect x="310" y="24" width="260" height="84" rx="12" fill="var(--amber-soft)" stroke="var(--amber)" stroke-width="2"/>
+          <line x1="340" y1="70" x2="540" y2="70" stroke="var(--amber)" stroke-width="4"/>
+          <text x="440" y="54" text-anchor="middle" fill="var(--amber)" font-size="14" font-weight="800">1 / 3 Uncertain Split</text>
+          <text x="440" y="90" text-anchor="middle" fill="var(--text)" font-size="13.5" font-weight="600">Amber Overline → Check Why</text>
 
-          <div class="gauge-item">
-            <svg viewBox="0 0 160 160">
-              <circle cx="80" cy="80" r="64" fill="none" stroke="var(--border)" stroke-width="14"/>
-              <circle cx="80" cy="80" r="64" fill="none" stroke="var(--accent)" stroke-width="14" stroke-dasharray="402" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 80 80)"/>
-              <text x="80" y="88" text-anchor="middle" fill="var(--text)" font-size="30" font-weight="800">100%</text>
-            </svg>
-            <div class="gauge-label">Visual Recall</div>
-            <div class="gauge-sub">4/4 Synthetic Images</div>
-          </div>
-        </div>
-        <div class="tagline">11 Pages · 75 Sections · 22 Images · 100% Jury Agreement</div>
+          <rect x="600" y="24" width="260" height="84" rx="12" fill="var(--red-soft)" stroke="var(--red)" stroke-width="2"/>
+          <line x1="630" y1="70" x2="830" y2="70" stroke="var(--red)" stroke-width="4"/>
+          <text x="730" y="54" text-anchor="middle" fill="var(--red)" font-size="14" font-weight="800">2–3 / 3 Suspicious</text>
+          <text x="730" y="90" text-anchor="middle" fill="var(--text)" font-size="13.5" font-weight="600">Red Overline → Jury Consensus</text>
+
+          <!-- Arrow down to Exposed Failure Cases -->
+          <line x1="20" y1="138" x2="860" y2="138" stroke="var(--border)" stroke-width="1.5"/>
+          <text x="440" y="168" text-anchor="middle" fill="var(--muted)" font-size="13" font-weight="800">WHERE PREDICTIONS CAN FAIL (VISIBLE TO USER)</text>
+
+          <rect x="20" y="192" width="260" height="126" rx="12" fill="var(--surface-alt)" stroke="var(--border)" stroke-width="1.5"/>
+          <text x="150" y="232" text-anchor="middle" fill="var(--text)" font-size="15.5" font-weight="800">Urgent Advocacy</text>
+          <text x="150" y="260" text-anchor="middle" fill="var(--muted)" font-size="13">Credible .org policy urgency</text>
+          <text x="150" y="284" text-anchor="middle" fill="var(--amber)" font-size="13" font-weight="700">vs Trust Score 87/100</text>
+
+          <rect x="310" y="192" width="260" height="126" rx="12" fill="var(--surface-alt)" stroke="var(--border)" stroke-width="1.5"/>
+          <text x="440" y="232" text-anchor="middle" fill="var(--text)" font-size="15.5" font-weight="800">Educational AI Images</text>
+          <text x="440" y="260" text-anchor="middle" fill="var(--muted)" font-size="13">Synthetic demo in neutral wiki</text>
+          <text x="440" y="284" text-anchor="middle" fill="var(--amber)" font-size="13" font-weight="700">Visual Only · Text Clean</text>
+
+          <rect x="600" y="192" width="260" height="126" rx="12" fill="var(--surface-alt)" stroke="var(--border)" stroke-width="1.5"/>
+          <text x="730" y="232" text-anchor="middle" fill="var(--text)" font-size="15.5" font-weight="800">Dry Falsehoods</text>
+          <text x="730" y="260" text-anchor="middle" fill="var(--muted)" font-size="13">Detects rhetoric, not live facts</text>
+          <text x="730" y="284" text-anchor="middle" fill="var(--red)" font-size="13" font-weight="700">Need Provenance + Citations</text>
+        </svg>
+        <div class="tagline">Disagreement Exposed In-Place — Never Hidden Behind a Single Score</div>
       </div>
     </section>
 
@@ -467,13 +472,14 @@
 
           <path d="M574 115 L612 115" stroke="var(--muted)" stroke-width="2" marker-end="url(#arr3)"/>
 
-          <!-- Step 3: Highlight -> Vote Inspector -->
+          <!-- Step 3: Coloured Overline -> Vote Inspector -->
           <rect x="620" y="54" width="240" height="122" rx="12" fill="var(--surface-alt)" stroke="var(--red)" stroke-width="2"/>
-          <rect x="638" y="74" width="204" height="26" rx="5" fill="var(--red-soft)" stroke="var(--red)"/>
-          <text x="740" y="91" text-anchor="middle" fill="var(--red)" font-size="12" font-weight="700">Fear Appeal · Loaded Words</text>
+          <line x1="638" y1="73" x2="842" y2="73" stroke="var(--red)" stroke-width="4"/>
+          <rect x="638" y="75" width="204" height="26" rx="4" fill="var(--red-soft)"/>
+          <text x="740" y="92" text-anchor="middle" fill="var(--red)" font-size="12" font-weight="700">Coloured Overline Highlight</text>
           <text x="642" y="124" fill="var(--text)" font-size="12" font-weight="600">Gemma: 🚩 · Nemotron: 🚩 · Gemini: 🚩</text>
           <rect x="638" y="136" width="204" height="20" rx="4" fill="var(--border)"/>
-          <text x="740" y="206" text-anchor="middle" fill="var(--muted)" font-size="13" font-weight="700">3. Click Highlight → Reasons</text>
+          <text x="740" y="206" text-anchor="middle" fill="var(--muted)" font-size="13" font-weight="700">3. Click Overline → Reasons</text>
 
           <defs>
             <marker id="arr3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
